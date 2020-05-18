@@ -12,29 +12,29 @@ router.get('/', function (req, res) {
 // List out all creators so people can tip them & logn have the same endpoint.
 // To consume the url is: http://localhost:8000/api/user
 // Contains update profile, get all creators and login.
-router.route('/user')
+router.route('/user/')
     .get(UserController.getAllCreators)
     .post(UserController.Login)
     .put(UserController.updateProfile);
 
 // Find username so that no two people can have the same
 // to consume use the url http://localhost:8000/api/user/findusername
-router.route('/user/findusername')
+router.route('/user/findusername/')
     .get(UserController.findUsername)
 
 // Signup
 // To consume use the url http://localhost:8000/api/user/signup
-router.route('/user/signup')
+router.route('/user/signup/')
     .post(UserController.Signup)
 
 // Transactions section
 //post: Create transactions, get: Find creators transactions. 
-router.route('/transactions')
+router.route('/transactions/')
     .post(transactionController.createTransactions)
     .get(transactionController.findMyTransactions)
 
 // Find all transactions for admin.
-router.route('/alltransactions')
+router.route('/alltransactions/')
     .get(transactionController.findAllTransactions)
 
 // Export API routes
