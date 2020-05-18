@@ -27,12 +27,13 @@ router.route('/user/findusername')
 router.route('/user/signup')
     .post(UserController.Signup)
 
-// Transactions sections
+// Transactions section
+//post: Create transactions, get: Find creators transactions. 
 router.route('/transactions')
     .post(transactionController.createTransactions)
     .get(transactionController.findMyTransactions)
 
-
+// Find all transactions for admin.
 router.route('/alltransactions')
     .get(transactionController.findAllTransactions)
 
