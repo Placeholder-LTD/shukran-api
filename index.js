@@ -1,21 +1,16 @@
 // Import express
 let express = require('express')
+let cors = require('cors')
 // Initialize the app
 let app = express();
 let bodyParser = require('body-parser');
 // Import Mongoose
 let mongoose = require('mongoose');
-
-app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-    res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
-    next();
-});
 app.use(bodyParser.urlencoded({
    extended: true
 }));
 app.use(bodyParser.json());
+app.use(cors())
 
 // Connect to Mongoose and set connection variable
 // Deprecated: mongoose.connect('mongodb://localhost/shukran');
