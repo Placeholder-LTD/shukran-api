@@ -49,3 +49,15 @@ exports.findUsername = async (req, res) => {
     }
 }
 
+exports.updateProfile = async(req, res) => {
+    try {
+        const id = req.params.id
+        const users = req.body
+        const { ...updateData } = users
+        const update = await User.findByIdAndUpdate(id, updateData, { new: true })
+        return update
+    } catch(err){
+        console.log(error)
+    }
+}
+
