@@ -1,7 +1,6 @@
-// Filename: api-routes.js
-// Initialize express router
 let router = require('express').Router();
-var UserController = require('../controller/UserController');
+let UserController = require('../controller/UserController');
+let transactionController = require('../controller/TransactionController')
 // Set default API response
 router.get('/', function (req, res) {
     res.json({
@@ -27,5 +26,15 @@ router.route('/user/findusername')
 // To consume use the url http://localhost:8000/api/user/signup
 router.route('/user/signup')
     .post(UserController.Signup)
+
+// Transactions sections
+router.route('/transactions')
+    .post(transactionController.createTransactions)
+    .get(transactionController.findMyTransactions)
+
+
+router.route('/alltransactions')
+    .get(transactionController.findAllTransactions)
+
 // Export API routes
 module.exports = router;
