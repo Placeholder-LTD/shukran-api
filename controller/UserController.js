@@ -1,17 +1,17 @@
 var User = require('../model/User')
 
 exports.getAllCreators = async (req, res) => {
-    var user = User.find()
+    let user = User.find()
     return user
 }
 
 // Login function requires username and password.
 exports.Login = async (req, res) => {
    try {
-    var username = req.body.username
-    var password = req.body.password
+    let username = req.body.username
+    let password = req.body.password
 
-    var user = User.find({
+    let user = User.find({
         $and: [
             {'username': username, 'password': password}
         ]
@@ -24,7 +24,7 @@ exports.Login = async (req, res) => {
 
 exports.Signup = async (req,res) => {
     try {
-        var check = User.find({'email': req.body.email})
+        let check = User.find({'email': req.body.email})
         if ((await check).length === 0) {
             const user = new User(req.body)
             return user.save()
@@ -38,7 +38,7 @@ exports.Signup = async (req,res) => {
 
 exports.findUsername = async (req, res) => {
     try {
-        var check = User.find({'username': req.body.username})
+        let check = User.find({'username': req.body.username})
         if ((await check).length === 0) {
             return 'Username is available'
         } else {

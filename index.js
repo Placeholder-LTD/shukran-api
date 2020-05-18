@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 // Connect to Mongoose and set connection variable
 // Deprecated: mongoose.connect('mongodb://localhost/shukran');
 mongoose.connect('mongodb://localhost/shukran', { useNewUrlParser: true, useUnifiedTopology: true});
-var db = mongoose.connection;
+let db = mongoose.connection;
 if(!db)
     console.log("Error connecting db")
 else
