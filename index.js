@@ -5,17 +5,18 @@ let app = express();
 let bodyParser = require('body-parser');
 // Import Mongoose
 let mongoose = require('mongoose');
-// Configure bodyparser to handle post requests
-app.use(bodyParser.urlencoded({
-   extended: true
-}));
-app.use(bodyParser.json());
+
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
     res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
     next();
 });
+app.use(bodyParser.urlencoded({
+   extended: true
+}));
+app.use(bodyParser.json());
+
 // Connect to Mongoose and set connection variable
 // Deprecated: mongoose.connect('mongodb://localhost/shukran');
 mongoose.connect('mongodb://localhost/shukran', { useNewUrlParser: true, useUnifiedTopology: true});
