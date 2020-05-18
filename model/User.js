@@ -9,6 +9,7 @@ var userSchema = mongoose.Schema({
     account_name: String,
     account_number: String,
     summary: String,
+    audience_size: String,
     create_date: {
         type: Date,
         default: Date.now

@@ -6,7 +6,7 @@ let transactionSchema = mongoose.Schema({
     supporter: String,
     amount: Number,
     message: String,
-    create_date: {
+    transaction_date: {
         type: Date,
         default: Date.now
     }
