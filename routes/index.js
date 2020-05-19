@@ -38,7 +38,7 @@ const routes = [
         handler: transactionController.findOneTransaction
     },
     {
-        method: 'GET',
+        method: 'POST',
         url: '/api/findall',
         handler: transactionController.findAllMyTransaction
     },
