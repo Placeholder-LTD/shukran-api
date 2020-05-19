@@ -9,11 +9,16 @@ const routes = [
     },
     {
         method: 'GET',
+        url: '/api/allusers',
+        handler: userController.getAll
+    },
+    {
+        method: 'POST',
         url: '/api/login',
         handler: userController.login
     },
     {
-        method: 'GET',
+        method: 'POST',
         url: '/api/myprofile',
         handler: userController.findMyProfile
     },
