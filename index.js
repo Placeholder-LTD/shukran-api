@@ -10,16 +10,27 @@ app.use(bodyParser.urlencoded({
    extended: true
 }));
 app.use(bodyParser.json());
-app.use(cors())
+// app.use(cors())
 
 // Connect to Mongoose and set connection variable
 // Deprecated: mongoose.connect('mongodb://localhost/shukran');
-mongoose.connect('mongodb://localhost/shukran', { useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect('mongodb://localhost/shukran', { useNewUrlParser: true, useUnifiedTopology: true}).catch(error => handleError(error));
 let db = mongoose.connection;
 if(!db)
     console.log("Error connecting db")
 else
     console.log("Db connected successfully")
+
+    //CORS middleware
+var corsMiddleware = function(req, res, next) {
+    res.setHeader('Access-Control-Allow-Origin', '*'); // replace localhost with actual host
+    res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET, PUT, PATCH, POST, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-Requested-With, Authorization');
+
+    next();
+}
+
+app.use(corsMiddleware);
 
 // Import routes
 let apiRoutes = require("./routes/route")

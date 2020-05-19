@@ -23,13 +23,27 @@ exports.Login = async (req, res) => {
 
 exports.Signup = async (req,res) => {
     try {
-        let check = User.find({'email': req.body.email})
+        let check = User.find({'email': req.body.email}).exec()
+            .then(user => {
+                if (user.length >= 1) {
+                    return res.json({"message": "User's email exist"})
+                } else {
+                    const user = new User(req.body)
+                    // return user.save()
+                    user.save()
+                    return res.json({"message": "User saved"})
+                }
+            })
+        /* console.log('found users', check)
         if ((await check).length === 0) {
             const user = new User(req.body)
-            return user.save()
+            // return user.save()
+            user.save()
+            res.json({"message": "User saved"})
         } else {
-            return {"message": "User's email exist"}
-        }
+            // return {"message": "User's email exist"}
+            res.json({"message": "User's email exist"})
+        } */
     } catch(err) {
         console.log(err)
     }
