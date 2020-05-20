@@ -1,14 +1,15 @@
 const mongoose = require('mongoose')
 
-const DocSchema = mongoose.Schema({
+const TransSchema = mongoose.Schema({
     username: String,
-    supporter: String,
-    amount: Number,
+    supporter_nickname: String,
+    amount: String,
     message: String,
+    status: String,
     transaction_date: {
         type: Date,
         default: Date.now
     }
 })
 
-module.exports = mongoose.model('Document', DocSchema)
+module.exports = mongoose.model('Transaction', TransSchema)
