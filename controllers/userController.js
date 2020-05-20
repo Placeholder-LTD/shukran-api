@@ -50,9 +50,19 @@ exports.findMyProfile = async (req, reply) => {
         throw boom.boomify(error)
     }
 }
+
+exports.deleteUser = async (req, reply) => {
+    try {
+        let id = req.body.id
+        let user = User.findByIdAndDelete(id)
+        return user
+    } catch (error) {
+        throw boom.boomify(error)
+    }
+}
 exports.updateUser = async (req, reply) => {
     try {
-      const id = req.params.id
+      const id = req.body.id
       const users = req.body
       const { ...updateData } = users
       const update = await User.findByIdAndUpdate(id, updateData, { new: true })

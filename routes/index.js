@@ -33,6 +33,11 @@ const routes = [
         handler: transactionController.createTransaction
     },
     {
+        method: 'POST',
+        url: '/api/deleteuser',
+        handler: userController.deleteUser
+    },
+    {
         method: 'GET',
         url: '/api/findone',
         handler: transactionController.findOneTransaction
