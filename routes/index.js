@@ -48,8 +48,13 @@ const routes = [
         handler: transactionController.findAllMyTransaction
     },
     {
+        method: 'GET',
+        url: '/api/alltransactions',
+        handler: transactionController.AllTransactions
+    },
+    {
         method: 'POST',
-        url: '/api/deletedoc',
+        url: '/api/deletetransaction',
         handler: transactionController.deleteTransaction
     }
 ]

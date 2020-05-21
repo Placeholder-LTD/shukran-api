@@ -10,10 +10,23 @@ exports.createTransaction = async (req, reply) => {
       throw boom.boomify(err)
     }
 }
-
+exports.AllTransactions = async (req, reply) => {
+    try {
+        var trans = Trans.find()
+        return trans
+    } catch (error) {
+        throw boom.boomify(error)
+    }
+}
  exports.findAllMyTransaction = async (req, reply) => {
     try {
-        var trans = Trans.find({'username': req.body.username})
+        var username = req.body.username
+        var status = req.body.status
+        var trans = Trans.find({
+            $and: [
+                {'username': username, 'status': status}
+            ]
+        })
         return trans  
     } catch (err) {
       throw boom.boomify(err)
