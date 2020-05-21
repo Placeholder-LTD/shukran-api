@@ -1,5 +1,6 @@
 const userController = require('../controllers/userController')
 const transactionController = require('../controllers/transactionController')
+const feedbackController = require('../controllers/FeedbackController')
 
 const routes = [
     {
@@ -56,6 +57,21 @@ const routes = [
         method: 'POST',
         url: '/api/deletetransaction',
         handler: transactionController.deleteTransaction
+    },
+    {
+        method:'POST',
+        url: '/api/updatetransaction',
+        handler: transactionController.updateTransaction
+    },
+    {
+        method: 'GET',
+        url: '/api/allfeedback',
+        handler: feedbackController.getAll
+    },
+    {
+        method: 'POST',
+        url: '/api/givefeedback',
+        handler: feedbackController.newFeedback
     }
 ]
 

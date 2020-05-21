@@ -10,6 +10,7 @@ const userSchema = new mongoose.Schema({
     account_number: String,
     summary: String,
     bank: String,
+    phone: String,
     audience_size: String,
     create_date: {
         type: Date,
