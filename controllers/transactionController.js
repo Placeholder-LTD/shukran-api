@@ -18,6 +18,15 @@ exports.AllTransactions = async (req, reply) => {
         throw boom.boomify(error)
     }
 }
+exports.findRequested = async (req, reply) => {
+    try {
+        var status = req.body.status
+        var trans = Trans.find({'status': status})
+        return trans  
+    } catch (err) {
+      throw boom.boomify(err)
+    }
+}
  exports.findAllMyTransaction = async (req, reply) => {
     try {
         var username = req.body.username

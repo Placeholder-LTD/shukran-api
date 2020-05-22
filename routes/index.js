@@ -72,6 +72,11 @@ const routes = [
         method: 'POST',
         url: '/api/givefeedback',
         handler: feedbackController.newFeedback
+    },
+    {
+        method: 'POST',
+        url: '/api/requests',
+        handler: transactionController.findRequested
     }
 ]
 
