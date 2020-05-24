@@ -4,15 +4,14 @@ const fastify = require('fastify')({
 })
 
 const cors = require('cors')
-
+require('dotenv').config()
 fastify.use(cors())
-fastify.options('*', cors())
 const mongoose = require('mongoose')
 const routes = require('./routes')
 routes.forEach((route, index) => {
   fastify.route(route)
 })  
-require('dotenv').config()
+
 
 var db = process.env.MONGODB_URL
 
