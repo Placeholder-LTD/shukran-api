@@ -12,6 +12,7 @@ fastify.use(cors())
 fastify.register(require('fastify-cors'), {
   "origin": '*',
   "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+  allowedHeaders: ["Access-Control-Allow-Headers" , "Origin,Accept", "X-Requested-With", "Content-Type", "Access-Control-Request-Method", "Access-Control-Request-Headers"],
   "preflightContinue": true,
   "optionsSuccessStatus": 201
   })
