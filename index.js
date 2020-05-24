@@ -2,29 +2,22 @@
 const fastify = require('fastify')({
     logger: true
 })
-
-require('dotenv').config()
-fastify.register(require('fastify-cors'), { 
-  origin: true,
-  'methods': "GET, POST"
-})
 const cors = require('cors')
-fastify.use(cors())
-const mongoose = require('mongoose')
-
-
-const routes = require('./routes')
-routes.forEach((route, index) => {
-  fastify.route(route)
-})  
+require('dotenv').config()
 
 
 var db = process.env.MONGODB_URL
 
+fastify.use(cors())
+const mongoose = require('mongoose') 
 
 mongoose.connect(db)
 .then(() => console.log('MongoDB connected...'))
 .catch(err => console.log(err))
+const routes = require('./routes')
+routes.forEach((route, index) => {
+  fastify.route(route)
+}) 
   // Declare a route
 fastify.get('/', async (request, reply) => {
     return { hello: 'world' }
