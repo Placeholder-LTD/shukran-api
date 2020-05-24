@@ -7,13 +7,10 @@ require('dotenv').config()
 
 
 var db = process.env.MONGODB_URL
+var cors = require('cors');
 
-//fastify.use(cors())
-fastify.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
+// use it before all route definitions
+app.use(cors({origin: 'https:shukran.netlify.app'}));
 
 const mongoose = require('mongoose') 
 
