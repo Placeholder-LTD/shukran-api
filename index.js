@@ -10,7 +10,7 @@ var db = process.env.MONGODB_URL
 var cors = require('cors');
 
 // use it before all route definitions
-app.use(cors({origin: 'https:shukran.netlify.app'}));
+fastify.use(cors({origin: 'https:shukran.netlify.app'}));
 
 const mongoose = require('mongoose') 
 
