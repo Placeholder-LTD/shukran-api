@@ -12,10 +12,12 @@ const routes = require('./routes')
 routes.forEach((route, index) => {
   fastify.route(route)
 })  
+require('dotenv').config()
+
+var db = process.env.MONGODB_URL
 
 
-
-mongoose.connect('mongodb://theAkomolafe:Holyjesus2016@ds363038.mlab.com:63038/shukrani')
+mongoose.connect(db)
 .then(() => console.log('MongoDB connected...'))
 .catch(err => console.log(err))
   // Declare a route
@@ -26,7 +28,7 @@ fastify.get('/', async (request, reply) => {
   // Run the server!
 const start = async () => {
     try {
-      await fastify.listen(process.env.PORT || 3000)
+      await fastify.listen(process.env.PORT || 3000,  '0.0.0.0')
       fastify.log.info(`server listening on ${fastify.server.address().port}`)
     } catch (err) {
       fastify.log.error(err)
