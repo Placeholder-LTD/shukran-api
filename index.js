@@ -15,7 +15,7 @@ routes.forEach((route, index) => {
 
 
 
-mongoose.connect('mongodb://localhost/shukrani')
+mongoose.connect('mongodb://theAkomolafe:Holyjesus2016@ds363038.mlab.com:63038/shukrani')
 .then(() => console.log('MongoDB connected...'))
 .catch(err => console.log(err))
   // Declare a route
