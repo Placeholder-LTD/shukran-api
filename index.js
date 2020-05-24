@@ -4,9 +4,12 @@ const fastify = require('fastify')({
 })
 
 require('dotenv').config()
-var cors = require('cors')
+fastify.register(require('fastify-cors'), { 
+  origin: true,
+  'methods': "GET, POST"
+})
+const cors = require('cors')
 fastify.use(cors())
-fastify.options('*', (request, reply) => { reply.send() })
 const mongoose = require('mongoose')
 
 
