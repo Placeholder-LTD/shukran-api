@@ -9,10 +9,10 @@ require('dotenv').config()
 var db = process.env.MONGODB_URL
 
 //fastify.use(cors())
-fastify.use(function(req, res, next) { 
-  reply.header("Access-Control-Allow-Origin", "https://shukran.netlify.app"); 
-  reply.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Origin, Cache-Control"); 
-next() 
+fastify.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
 });
 
 const mongoose = require('mongoose') 
