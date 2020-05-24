@@ -4,14 +4,12 @@ const fastify = require('fastify')({
 })
 
 require('dotenv').config()
-
+var cors = require('cors')
+fastify.use(cors())
+fastify.options('*', (request, reply) => { reply.send() })
 const mongoose = require('mongoose')
 
-fastify.use(function(req, res, next) { 
-  reply.header("Access-Control-Allow-Origin", "*"); 
-  reply.header("Access-Control-Allow-Headers", 
-  "Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Origin, Cache-Control");
-   next() });
+
 const routes = require('./routes')
 routes.forEach((route, index) => {
   fastify.route(route)
