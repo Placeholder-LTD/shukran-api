@@ -10,7 +10,7 @@ var db = process.env.MONGODB_URL
 
 //fastify.use(cors())
 fastify.use(function(req, res, next) { 
-  reply.header("Access-Control-Allow-Origin", "*"); 
+  reply.header("Access-Control-Allow-Origin", "https://shukran.netlify.app"); 
   reply.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Origin, Cache-Control"); 
 next() 
 });
