@@ -2,25 +2,18 @@
 const fastify = require('fastify')({
     logger: true
 })
-const cors = require('cors')
+//const cors = require('cors')
 require('dotenv').config()
 
 
 var db = process.env.MONGODB_URL
 
-fastify.use(cors())
-fastify.register(require('fastify-cors'), {
-  "origin": '*',
-  "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
-  allowedHeaders: ["Access-Control-Allow-Headers" , "Origin,Accept", "X-Requested-With", "Content-Type", "Access-Control-Request-Method", "Access-Control-Request-Headers"],
-  "preflightContinue": true,
-  "optionsSuccessStatus": 201
-  })
-  fastify.addHook('onSend', (request, reply, payload, next) => {
-  reply.header("Access-Control-Allow-Origin", "https://shukran.netlify.app");
-  reply.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Origin, Cache-Control");
-  next()
-  })
+//fastify.use(cors())
+fastify.use(function(req, res, next) { 
+  reply.header("Access-Control-Allow-Origin", "*"); 
+  reply.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Origin, Cache-Control"); 
+next() 
+});
 
 const mongoose = require('mongoose') 
 
