@@ -9,6 +9,17 @@ require('dotenv').config()
 var db = process.env.MONGODB_URL
 
 fastify.use(cors())
+fastify.register(require('fastify-cors'), {
+  "origin": '*',
+  "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+  "preflightContinue": true,
+  "optionsSuccessStatus": 201
+  })
+  fastify.addHook('onSend', (request, reply, payload, next) => {
+  reply.header("Access-Control-Allow-Origin", "https://shukran.netlify.app");
+  reply.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Origin, Cache-Control");
+  next()
+  })
 
 const mongoose = require('mongoose') 
 
