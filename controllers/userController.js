@@ -30,7 +30,11 @@ exports.login = async (req, reply) => {
     try {
         let username = req.body.username
         let password = req.body.password
-        let users = User.find({'username': username, 'password': password})
+        const users = User.find({
+            $and: [
+                {'username': username, 'password': password}
+            ]
+        })
         return users
     } catch(err) {
         throw boom.boomify(err)
