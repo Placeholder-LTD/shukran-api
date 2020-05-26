@@ -30,7 +30,7 @@ exports.login = async (req, reply) => {
     try {
         let username = req.body.username
         let password = req.body.password
-        const users = User.find({
+        let users = User.findOne({
             $and: [
                 {'username': username, 'password': password}
             ]
