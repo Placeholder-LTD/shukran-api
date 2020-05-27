@@ -51,7 +51,7 @@ exports.findMyProfile = async (req, reply) => {
     }
 }
 
-exports.devareUser = async (req, reply) => {
+exports.deleteUser = async (req, reply) => {
     try {
         var id = req.body.id
         var user = User.findByIdAndDelete(id)
