@@ -6,7 +6,7 @@ const User = require('../models/User')
 // Add a new user
 exports.signup = async (req, reply) => {
     try {
-        let check = User.find({'email': req.body.email})
+        var check = User.find({'email': req.body.email})
         if ((await check).length === 0) {
             const user = new User(req.body)
             return user.save()
@@ -20,7 +20,7 @@ exports.signup = async (req, reply) => {
 
 exports.getAll = async(req, reply) => {
     try {
-        let users = User.find()
+        var users = User.find()
         return users
     } catch (error) {
         throw boom.boomify(error)
@@ -28,8 +28,8 @@ exports.getAll = async(req, reply) => {
 }
 exports.login = async (req, reply) => {
     try {
-        let username = req.body.username
-        let password = req.body.password
+        var username = req.body.username
+        var password = req.body.password
         const users = User.find({
             $and: [
                 {'username': username, 'password': password}
@@ -43,18 +43,18 @@ exports.login = async (req, reply) => {
 
 exports.findMyProfile = async (req, reply) => {
     try {
-        let username = req.body.username
-        let user = User.find({'username': username})
+        var username = req.body.username
+        var user = User.find({'username': username})
         return user
     } catch (error) {
         throw boom.boomify(error)
     }
 }
 
-exports.deleteUser = async (req, reply) => {
+exports.devareUser = async (req, reply) => {
     try {
-        let id = req.body.id
-        let user = User.findByIdAndDelete(id)
+        var id = req.body.id
+        var user = User.findByIdAndDelete(id)
         return user
     } catch (error) {
         throw boom.boomify(error)
