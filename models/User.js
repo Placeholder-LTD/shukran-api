@@ -12,6 +12,7 @@ const userSchema = new mongoose.Schema({
     bank: String,
     phone: String,
     audience_size: String,
+    primary_link: String,
     create_date: {
         type: Date,
         default: Date.now
