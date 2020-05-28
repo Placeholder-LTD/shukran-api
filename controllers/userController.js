@@ -33,7 +33,7 @@ exports.signup = async (req, reply) => {
                 }
            });
            const mailOptions = {
-            from: "olamideakomolafe1234@gmail.com",
+            from: "Ola from Shukran <olamideakomolafe1234@gmail.com>",
             to: req.body.email,
             subject: "Welcome to Shukran " + req.body.username,
             generateTextFromHTML: true,
