@@ -19,10 +19,7 @@ exports.createTransaction = async (req, reply) => {
     try {
          const transaction = new Trans(req.body)
          var email = req.body.email
-         if (email == ''){
-             return transaction.save()
-         } else {
-            const smtpTransport = nodemailer.createTransport({
+        const smtpTransport = nodemailer.createTransport({
                 service: "gmail",
                 auth: {
                      type: "OAuth2",
@@ -47,8 +44,7 @@ exports.createTransaction = async (req, reply) => {
                 error ? console.log(error) : console.log(response);
                 smtpTransport.close();
            });
-           return transaction.save() 
-         }
+        return transaction.save() 
     } catch (err) {
       throw boom.boomify(err)
     }
