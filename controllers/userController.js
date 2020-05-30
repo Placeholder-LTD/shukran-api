@@ -3,13 +3,13 @@ const nodemailer = require("nodemailer");
 const { google } = require("googleapis");
 const OAuth2 = google.auth.OAuth2;
 const oauth2Client = new OAuth2(
-    "555666574645-fljat93at4kcf6fampm8in4tufrimkng.apps.googleusercontent.com", // ClientID
-    "RS3EYIwzMnW5vzmOmiKA4yNk", // Client Secret
+    "355490130720-q9f2krivetnprnl59p10uu100578cffs.apps.googleusercontent.com", // ClientID
+    "s3HyZjhGv8ZojjMapouHGgH1", // Client Secret
     "https://developers.google.com/oauthplayground" // Redirect URL
 );
 
 oauth2Client.setCredentials({
-    refresh_token: "1//04fDoK5BWRldYCgYIARAAGAQSNwF-L9IrT8IJtGYY2NV-nAshhtqaSCsz66m8C5zG3nY6_3S6JPhB8HF40CuDSWlolOOe96ciulA"
+    refresh_token: "1//04op4GMHXQPVRCgYIARAAGAQSNwF-L9Irmq_36btkeFfuRVSYPqQz6c3TWbl5JGHy1uAN39eSEMGzUnp79t8Q46ZMlB0uO1vwzks"
 });
 const accessToken = oauth2Client.getAccessToken()
 
@@ -30,15 +30,15 @@ exports.signup = async (req, reply) => {
                 service: "gmail",
                 auth: {
                      type: "OAuth2",
-                     user: "olamideakomolafe1234@gmail.com", 
-                     clientId: "555666574645-fljat93at4kcf6fampm8in4tufrimkng.apps.googleusercontent.com",
-                     clientSecret: "RS3EYIwzMnW5vzmOmiKA4yNk",
-                     refreshToken: "1//04fDoK5BWRldYCgYIARAAGAQSNwF-L9IrT8IJtGYY2NV-nAshhtqaSCsz66m8C5zG3nY6_3S6JPhB8HF40CuDSWlolOOe96ciulA",
+                     user: "theolaakomolafe@gmail.com", 
+                     clientId: "355490130720-q9f2krivetnprnl59p10uu100578cffs.apps.googleusercontent.com",
+                     clientSecret: "s3HyZjhGv8ZojjMapouHGgH1",
+                     refreshToken: "1//04op4GMHXQPVRCgYIARAAGAQSNwF-L9Irmq_36btkeFfuRVSYPqQz6c3TWbl5JGHy1uAN39eSEMGzUnp79t8Q46ZMlB0uO1vwzks",
                      accessToken: accessToken
                 }
            });
            const mailOptions = {
-            from: "Obakam from Shukran <olamideakomolafe1234@gmail.com>",
+            from: "Obakam from Shukran <theolaakomolafe@gmail.com>",
             to: req.body.email,
             subject: "Welcome to Shukran " + req.body.username.capitalize(),
             generateTextFromHTML: true,
