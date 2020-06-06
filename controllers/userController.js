@@ -38,11 +38,11 @@ exports.signup = async (req, reply) => {
                 }
            });
            const mailOptions = {
-            from: "Obakam from Shukran <theolaakomolafe@gmail.com>",
+            from: "Ola from Shukran <theolaakomolafe@gmail.com>",
             to: req.body.email,
             subject: "Welcome to Shukran " + req.body.username.capitalize(),
             generateTextFromHTML: true,
-            html: "<h2>Shukran for being a part of our journey <b>"+ req.body.username.capitalize() + "</b></h2> <br>"
+            html: "<h2>Shukran for being a part of our journey <b>"+ req.body.username.capitalize() + "</b></h2>"
             + "<p>We are working on helping you earn regardless of your audience size.</p>"
             + "We'll keep you updated as updates are being added.</p><br> <p> Feel free to use the 'Give feedback' button anytime.</p> <br>"
             + "<a href='useshukran.com/accounts'>Go back to Login</a>"
