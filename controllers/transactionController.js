@@ -14,12 +14,16 @@ oauth2Client.setCredentials({
     refresh_token: "1//04op4GMHXQPVRCgYIARAAGAQSNwF-L9Irmq_36btkeFfuRVSYPqQz6c3TWbl5JGHy1uAN39eSEMGzUnp79t8Q46ZMlB0uO1vwzks"
 });
 const accessToken = oauth2Client.getAccessToken()
-
+// Capitalize function
+String.prototype.capitalize = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+}
 exports.createTransaction = async (req, reply) => {
     try {
          const transaction = new Trans(req.body)
          var email = req.body.email
-        const smtpTransport = nodemailer.createTransport({
+
+         const smtpTransport = nodemailer.createTransport({
                 service: "gmail",
                 auth: {
                      type: "OAuth2",
@@ -31,13 +35,12 @@ exports.createTransaction = async (req, reply) => {
                 }
            });
            const mailOptions = {
-            from: "Obakam from Shukran <theolaakomolafe@gmail.com>",
+            from: "Ola from Shukran <theolaakomolafe@gmail.com>",
             to: email,
             subject: "You just got tipped " + req.body.username.capitalize(),
             generateTextFromHTML: true,
-            html: "<h2>Hi <b>"+ req.body.username.capitalize() + ",</b></h2> <br>"
-            + req.body.supporter_nickname
-            + "just tipped you!"
+            html: "<h2>Hi <b>"+ req.body.username.capitalize() + ",</b></h2>"
+            + req.body.supporter_nickname + " just tipped you!" + "<br>"
             + "<a href='useshukran.com/accounts'>Login to find out how much.</a>"
             };
             smtpTransport.sendMail(mailOptions, (error, response) => {
