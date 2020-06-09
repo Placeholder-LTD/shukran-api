@@ -35,6 +35,11 @@ const routes = [
     },
     {
         method: 'POST',
+        url: '/api/resetpassword/',
+        handler: userController.resetPassword
+    },
+    {
+        method: 'POST',
         url: '/api/deleteuser/',
         handler: userController.deleteUser
     },

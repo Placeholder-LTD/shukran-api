@@ -83,6 +83,21 @@ exports.login = async (req, reply) => {
     }
 }
 
+exports.resetPassword = async (req, reply) => {
+    try {
+        var username = req.body.username
+        var email = req.body.email
+        const users = User.find({
+            $and: [
+                {'username': username, 'email': email}
+            ]
+        })
+       return users
+    } catch(err) {
+        throw boom.boomify(err)
+    }
+}
+
 exports.findMyProfile = async (req, reply) => {
     try {
         var username = req.body.username
