@@ -11,6 +11,7 @@ const userSchema = new mongoose.Schema({
     summary: String,
     bank: String,
     phone: String,
+    redirect: String,
     audience_size: String,
     primary_link: String,
     create_date: {
