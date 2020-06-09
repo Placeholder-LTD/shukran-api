@@ -34,7 +34,7 @@ exports.createTransaction = async (req, reply) => {
                      accessToken: accessToken
                 }
            });
-           const mailOptions = {
+        const mailOptions = {
             from: "Ola from Shukran <theolaakomolafe@gmail.com>",
             to: email,
             subject: "You just got tipped " + req.body.username.capitalize(),
@@ -43,10 +43,10 @@ exports.createTransaction = async (req, reply) => {
             + req.body.supporter_nickname + " just tipped you!" + "<br>"
             + "<a href='useshukran.com/accounts'>Login to find out how much.</a>"
             };
-            smtpTransport.sendMail(mailOptions, (error, response) => {
+        smtpTransport.sendMail(mailOptions, (error, response) => {
                 error ? console.log(error) : console.log(response);
                 smtpTransport.close();
-           });
+        });
         return transaction.save() 
     } catch (err) {
       throw boom.boomify(err)
