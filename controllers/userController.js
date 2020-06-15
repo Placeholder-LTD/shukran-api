@@ -51,7 +51,7 @@ exports.signup = async (req, reply) => {
                 error ? console.log(error) : console.log(response);
                 smtpTransport.close();
            });
-            return user.save()
+         return user.save()
         } else {
             return {"message": "User's email exist"}
         }
