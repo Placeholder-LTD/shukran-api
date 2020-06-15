@@ -10,7 +10,7 @@ var db = process.env.MONGODB_URL
 var cors = require('cors');
 
 // use it before all route definitions
-fastify.use(cors({origin: 'https://useshukran.com'}));
+fastify.use(cors({origin: ['https://useshukran.com', 'http://localhost']}));
 
 const mongoose = require('mongoose') 
 
