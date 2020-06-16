@@ -14,7 +14,7 @@ fastify.use(cors({origin: ['https://useshukran.com', 'http://localhost']}));
 
 const mongoose = require('mongoose') 
 
-mongoose.connect(db)
+mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
 .then(() => console.log('MongoDB connected...'))
 .catch(err => console.log(err))
 const routes = require('./routes')
