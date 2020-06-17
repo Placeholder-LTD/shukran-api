@@ -14,10 +14,11 @@ const userSchema = new mongoose.Schema({
     redirect: String,
     audience_size: String,
     primary_link: String,
+    picture_id: String,
     create_date: {
         type: Date,
         default: Date.now
     }
 })
 
-module.exports = mongoose.model('User', userSchema,'users')
+module.exports = mongoose.model('User', userSchema, 'users')

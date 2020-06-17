@@ -2,31 +2,32 @@
 const fastify = require('fastify')({
     logger: true
 })
-//const cors = require('cors')
+const cors = require('cors')
 require('dotenv').config()
 
 
 var db = process.env.MONGODB_URL
-var cors = require('cors');
 
+fastify.register(require('fastify-multipart'))
 // use it before all route definitions
-fastify.use(cors({origin: ['https://useshukran.com']}));
+fastify.use(cors({origin: ['https://useshukran.com', 'http://localhost:8080']}));
+
 
 const mongoose = require('mongoose') 
 
-mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
 .then(() => console.log('MongoDB connected...'))
 .catch(err => console.log(err))
 const routes = require('./routes')
 routes.forEach((route, index) => {
   fastify.route(route)
 }) 
-  // Declare a route
+// Declare a route
 fastify.get('/', async (request, reply) => {
     return { hello: 'world' }
 })
 
-  // Run the server!
+// Run the server!
 const start = async () => {
     try {
       await fastify.listen(process.env.PORT || 3000,  '0.0.0.0')
