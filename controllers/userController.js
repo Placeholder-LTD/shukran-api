@@ -140,9 +140,12 @@ exports.updateUser = async (req, reply) => {
 
 
             async function onEnd(err) {
-                if (err) reply.code(500).send()
                 console.log('upload completed')
-                reply.code(200).send() //return update
+                if (err) {
+                    reply.code(500).send()
+                } else {
+                    reply.code(200).send()
+                } //return update
             }
 
             async function handler(fieldname, filestream, filename, transferEncoding, mimetype) {
@@ -152,7 +155,6 @@ exports.updateUser = async (req, reply) => {
                 });
 
                 filestream.on('end', function () {
-
                     console.log('File [' + fieldname + '] Finished. Got ' + 'bytes');
                 });
 
@@ -185,6 +187,8 @@ exports.updateUser = async (req, reply) => {
                         function (file) {
                             console.log('upload File Id: ', file.data.id); // save to db
                             updateData['picture_id'] = file.data.id
+
+                            console.log('checking again', updateData)
 
                             update = User.findByIdAndUpdate(updateData['id'], updateData, { new: true })
 
