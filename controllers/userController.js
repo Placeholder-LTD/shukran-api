@@ -129,23 +129,13 @@ exports.updateUser = async (req, reply) => {
             console.log('\n\nmultipart')
             const mp = req.multipart(handler, onEnd)
             let updateData = {};
-            let update = null;
-            // mp is an instance of
-            // https://www.npmjs.com/package/busboy
 
             mp.on('field', function (key, value) {
                 console.log('form-data', key, value)
                 updateData[key] = value;
             })
 
-
-            async function onEnd(err) {
-                console.log('upload completed')
-                if (err) {
-                    reply.code(500).send()
-                } else {
-                    reply.code(200).send()
-                } //return update
+            async function onEnd(err, what) { // comes here after filestream.on('end', ...) synchoronously
             }
 
             async function handler(fieldname, filestream, filename, transferEncoding, mimetype) {
@@ -156,54 +146,46 @@ exports.updateUser = async (req, reply) => {
 
                 filestream.on('end', function () {
                     console.log('File [' + fieldname + '] Finished. Got ' + 'bytes');
+
                 });
+                try {
+                    const acceptedfiles = ['image/gif', 'image/jpeg', 'image/png', 'image/tiff', 'image/vnd.wap.wbmp', 'image/x-icon', 'image/x-jng', 'image/x-ms-bmp', 'image/svg+xml', 'image/webp'];
 
-                const acceptedfiles = ['image/gif', 'image/jpeg', 'image/png', 'image/tiff', 'image/vnd.wap.wbmp', 'image/x-icon', 'image/x-jng', 'image/x-ms-bmp', 'image/svg+xml', 'image/webp'];
+                    // if we listend for 'file', even if there's no file, we still come here
+                    // so we're checking if it's empty before doing anything.
 
-                // if we listend for 'file', even if there's no file, we still come here
-                // so we're checking if it's empty before doing anything.
+                    // this is not a good method
 
-                // this is not a good method
+                    /**One thing you might be able to try is to read 0 bytes from the stream first and see if you get the appropriate 'end' event or not (perhaps on the next tick) */
+                    if (filename != '' && acceptedfiles.includes(mimetype)) { // filename: 1848-1844-1-PB.pdf, encoding: 7bit, mimetype: application/pdf
 
-                /**One thing you might be able to try is to read 0 bytes from the stream first and see if you get the appropriate 'end' event or not (perhaps on the next tick) */
-                if (filename != '' && acceptedfiles.includes(mimetype)) { // filename: 1848-1844-1-PB.pdf, encoding: 7bit, mimetype: application/pdf
+                        let fileMetadata = {
+                            'name': filename, // Date.now() + '.jpg',
+                            parents: ['1VuuAuYvstl3hQCBl0mZcj0RROm1S863t'] // upload to folder shukran-creators
+                        };
+                        let media = {
+                            mimeType: mimetype,
+                            body: filestream
+                        };
 
-                    var fileMetadata = {
-                        'name': filename, // Date.now() + 'test.jpg',
-                        parents: ['1VuuAuYvstl3hQCBl0mZcj0RROm1S863t'] // upload to folder shukran-creators
-                    };
-                    var media = {
-                        mimeType: mimetype,
-                        body: filestream // fs.createReadStream("C:\\Users\\NWACHUKWU\\Pictures\\ad\\IMG-20180511-WA0001.jpg")
-                    };
-
-                    console.log('\nstarting')
-
-                    await ggle.drive.files.create({
-                        resource: fileMetadata,
-                        media: media,
-                        fields: 'id',
-                    }).then(
-                        function (file) {
-                            console.log('upload File Id: ', file.data.id); // save to db
-                            updateData['picture_id'] = file.data.id
-
-                            console.log('checking again', updateData)
-
-                            update = User.findByIdAndUpdate(updateData['id'], updateData, { new: true })
-
-                        }, function (err) {
-                            // Handle error
-                            console.error('upload error !!', err);
+                        let g = await ggle.drive.files.create({
+                            resource: fileMetadata,
+                            media: media,
+                            fields: 'id',
+                        });
+                        if (g.data.id) {
+                            updateData['picture_id'] = g.data.id
+                            update = await User.findByIdAndUpdate(updateData['id'], updateData, { new: true })
+                            console.info('political g.data.webViewLink', g.data.webViewLink)
+                            reply.code(200).send(g.data.id)
+                        } else {
+                            throw new Error(`upload error! status: ${g.status}`);
                         }
-                    )/* .finally(() => {
-                            console.log('finally in upload')
-                        }) */;
+                    }
+                } catch (error) {
+                    console.error('upload error !!', error);
+                    reply.code(500).send(error)
                 }
-
-                // https://stackoverflow.com/questions/26859563/node-stream-data-from-busboy-to-google-drive
-                // https://stackoverflow.com/a/26859673/9259701
-                // filestream.resume() // must always be last in this callback else server HANGS
 
             }
         } else {
@@ -214,8 +196,6 @@ exports.updateUser = async (req, reply) => {
             const update = await User.findByIdAndUpdate(id, updateData, { new: true })
             return update
         }
-
-
     } catch (err) {
         throw boom.boomify(err)
     }

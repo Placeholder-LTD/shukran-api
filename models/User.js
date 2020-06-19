@@ -14,7 +14,10 @@ const userSchema = new mongoose.Schema({
     redirect: String,
     audience_size: String,
     primary_link: String,
-    picture_id: String,
+    picture_id: {
+        type: String,
+        default: '1l6Yn2_89KDaDZhH67Ge4Z6T8x7C0Q91J'
+    },
     create_date: {
         type: Date,
         default: Date.now
