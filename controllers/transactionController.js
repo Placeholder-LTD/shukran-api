@@ -41,7 +41,7 @@ exports.createTransaction = async (req, reply) => {
             generateTextFromHTML: true,
             html: "<h2>Hi <b>"+ req.body.username.capitalize() + ",</b></h2>"
             + req.body.supporter_nickname + " just tipped you!" + "<br>"
-            + "<a href='useshukran.com/accounts'>Login to find out how much.</a>"
+            + "<a href='https://useshukran.com/accounts'>Login to find out how much.</a>"
             };
         smtpTransport.sendMail(mailOptions, (error, response) => {
                 error ? console.log(error) : console.log(response);
