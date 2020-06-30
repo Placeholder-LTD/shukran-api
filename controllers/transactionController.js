@@ -56,7 +56,7 @@ exports.AllTransactions = async (req, reply) => {
     try {
         var trans = Trans.find()
         return trans
-    } catch (error) {
+    } catch (error) { 
         throw boom.boomify(error)
     }
 }

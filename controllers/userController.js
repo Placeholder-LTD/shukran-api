@@ -49,7 +49,7 @@ exports.signup = async (req, reply) => {
                 generateTextFromHTML: true,
                 html: "<h2>Shukran for being a part of our journey <b>" + req.body.username.capitalize() + "</b></h2>"
                     + "<p>We are working on helping you earn regardless of your audience size.</p>" +
-                    "<p>It's as simple as CUSE</p><br><ul><li><b>Create an account.</b></li><li><b>Update your information.</b></li>" +
+                    "<p>It's as simple as CUSE</p><ul><li><b>Create an account.</b></li><li><b>Update your information.</b></li>" +
                     "<li><b>Share your referal link.</b></li><li><b>Earn your way to becoming a media company.</b></li></ul>"+ "We'll keep you updated as updates are being added.</p><br> <p> Feel free to use the 'Give feedback' button anytime.</p><br>"
                     + "<a href='https://useshukran.com/accounts'>Go back to Login</a>"
             };
