@@ -10,8 +10,7 @@ var db = process.env.MONGODB_URL
 
 fastify.register(require('fastify-multipart'))
 // use it before all route definitions
-fastify.use(cors({origin: ['https://useshukran.com', 'http://localhost:8080']}));
-
+fastify.use(cors({origin: ['https://shukranstaging.netlify.app', 'https://useshukran.com', 'http://localhost:8080']}));
 
 const mongoose = require('mongoose') 
 
