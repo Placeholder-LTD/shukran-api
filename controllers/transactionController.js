@@ -19,7 +19,6 @@ String.prototype.capitalize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
 }
 exports.createTransaction = async (req, reply) => {
-    console.log('money', req.body)
     try {
         const transaction = new Trans(req.body)
                     var email = req.body.email
