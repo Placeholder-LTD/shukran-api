@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema({
     primary_link: String,
     picture_id: {
         type: String,
-        default: '1l6Yn2_89KDaDZhH67Ge4Z6T8x7C0Q91J'
+        default: '1aMDqEuCDesg0cTpHJj0IHehEDUEk3l_F', // '1l6Yn2_89KDaDZhH67Ge4Z6T8x7C0Q91J' // red shapes pattern
     },
     create_date: {
         type: Date,
