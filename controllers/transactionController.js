@@ -1,5 +1,5 @@
 const boom = require('boom')
-const fx = require('money');
+// const fx = require('money');
 const Trans =  require('../models/Transactions')
 const nodemailer = require("nodemailer");
 const { google } = require("googleapis");
@@ -19,24 +19,9 @@ String.prototype.capitalize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
 }
 exports.createTransaction = async (req, reply) => {
+    console.log('money', req.body)
     try {
-        const ex = () => {
-            req.body.amount = fx(req.body.amount).from(req.body.currency).to("NGN")
-            req.body.currency = "NGN"
-          };
-        // convert to naira if money isn't in naira.
-        if (req.body.currency !== "NGN") {
-            // hide app_id
-            await fetch(`https://openexchangerates.org/api/latest.json?app_id=91527baa61514e6e81db3a2604a4822f`)
-                .then(resp => resp.json())
-                .then(data => {
-                    fx.base = "USD"; // must be USD, [free plan]
-                    fx.rates = data.rates;
-                })
-                .then(ex)
-                .catch(err => console.error("fetch ex rates err", err)).finally(() => {
-
-                    const transaction = new Trans(req.body)
+        const transaction = new Trans(req.body)
                     var email = req.body.email
            
                     const smtpTransport = nodemailer.createTransport({
@@ -64,8 +49,6 @@ exports.createTransaction = async (req, reply) => {
                            smtpTransport.close();
                    });
                    return transaction.save() 
-                });
-        }
          
     } catch (err) {
       throw boom.boomify(err)
