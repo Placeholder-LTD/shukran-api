@@ -34,36 +34,39 @@ exports.createTransaction = async (req, reply) => {
                     fx.rates = data.rates;
                 })
                 .then(ex)
-                .catch(err => console.error("fetch ex rates err", err));
-        }
-         const transaction = new Trans(req.body)
-         var email = req.body.email
+                .catch(err => console.error("fetch ex rates err", err)).finally(() => {
 
-         const smtpTransport = nodemailer.createTransport({
-                service: "gmail",
-                auth: {
-                     type: "OAuth2",
-                     user: "theolaakomolafe@gmail.com", 
-                     clientId: "355490130720-q9f2krivetnprnl59p10uu100578cffs.apps.googleusercontent.com",
-                     clientSecret: "s3HyZjhGv8ZojjMapouHGgH1",
-                     refreshToken: "1//04op4GMHXQPVRCgYIARAAGAQSNwF-L9Irmq_36btkeFfuRVSYPqQz6c3TWbl5JGHy1uAN39eSEMGzUnp79t8Q46ZMlB0uO1vwzks",
-                     accessToken: accessToken
-                }
-           });
-        const mailOptions = {
-            from: "Ola from Shukran <theolaakomolafe@gmail.com>",
-            to: email,
-            subject: "You just got tipped " + req.body.username.capitalize(),
-            generateTextFromHTML: true,
-            html: "<h2>Hi <b>"+ req.body.username.capitalize() + ",</b></h2>"
-            + req.body.supporter_nickname + " just tipped you!" + "<br>"
-            + "<a href='https://useshukran.com/accounts'>Login to find out how much.</a>"
-            };
-        smtpTransport.sendMail(mailOptions, (error, response) => {
-                error ? console.log(error) : console.log(response);
-                smtpTransport.close();
-        });
-        return transaction.save() 
+                    const transaction = new Trans(req.body)
+                    var email = req.body.email
+           
+                    const smtpTransport = nodemailer.createTransport({
+                           service: "gmail",
+                           auth: {
+                                type: "OAuth2",
+                                user: "theolaakomolafe@gmail.com", 
+                                clientId: "355490130720-q9f2krivetnprnl59p10uu100578cffs.apps.googleusercontent.com",
+                                clientSecret: "s3HyZjhGv8ZojjMapouHGgH1",
+                                refreshToken: "1//04op4GMHXQPVRCgYIARAAGAQSNwF-L9Irmq_36btkeFfuRVSYPqQz6c3TWbl5JGHy1uAN39eSEMGzUnp79t8Q46ZMlB0uO1vwzks",
+                                accessToken: accessToken
+                           }
+                      });
+                   const mailOptions = {
+                       from: "Ola from Shukran <theolaakomolafe@gmail.com>",
+                       to: email,
+                       subject: "You just got tipped " + req.body.username.capitalize(),
+                       generateTextFromHTML: true,
+                       html: "<h2>Hi <b>"+ req.body.username.capitalize() + ",</b></h2>"
+                       + req.body.supporter_nickname + " just tipped you!" + "<br>"
+                       + "<a href='https://useshukran.com/accounts'>Login to find out how much.</a>"
+                       };
+                   smtpTransport.sendMail(mailOptions, (error, response) => {
+                           error ? console.log(error) : console.log(response);
+                           smtpTransport.close();
+                   });
+                   return transaction.save() 
+                });
+        }
+         
     } catch (err) {
       throw boom.boomify(err)
     }
