@@ -6,6 +6,7 @@ const TransSchema = mongoose.Schema({
     amount: String,
     message: String,
     status: String,
+    currency: String,
     transaction_date: {
         type: Date,
         default: Date.now

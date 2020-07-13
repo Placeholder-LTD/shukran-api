@@ -21,6 +21,7 @@
     "fastify-multipart": "1.0.6",
     "fastify-swagger": "^2.5.1",
     "googleapis": "^51.0.0",
+    "money": "0.2.0",
     "mongoose": "^5.9.9",
     "nodemailer": "^6.4.6",
     "nodemon": "^2.0.3"
