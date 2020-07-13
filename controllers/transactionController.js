@@ -22,6 +22,7 @@ exports.createTransaction = async (req, reply) => {
     try {
         const ex = () => {
             req.body.amount = fx(req.body.amount).from(req.body.currency).to("NGN")
+            req.body.currency = "NGN"
           };
         // convert to naira if money isn't in naira.
         if (req.body.currency !== "NGN") {
