@@ -21,7 +21,17 @@ String.prototype.capitalize = function() {
 exports.createTransaction = async (req, reply) => {
     try {
         const transaction = new Trans(req.body)
-                    var email = req.body.email
+                    let email = req.body.email
+                    let email_html_body;
+                    if (req.body.status == 'received') {
+                        email_html_body = "<h2>Hi <b>"+ req.body.username.capitalize() + ",</b></h2>"
+                       + req.body.supporter_nickname + " just tipped you!" + "<br>"
+                       + "<a href='https://useshukran.com/accounts'>Login to find out how much.</a>";
+                    } else if (req.body.status == 'paid') {
+                        email_html_body = "<h2>Hi <b>"+ req.body.username.capitalize() + ",</b></h2>"
+                       + "Your payout request has been completed." + "<br>"
+                       + "Shukran!";
+                    }
            
                     const smtpTransport = nodemailer.createTransport({
                            service: "gmail",
@@ -39,14 +49,15 @@ exports.createTransaction = async (req, reply) => {
                        to: email,
                        subject: "You just got tipped " + req.body.username.capitalize(),
                        generateTextFromHTML: true,
-                       html: "<h2>Hi <b>"+ req.body.username.capitalize() + ",</b></h2>"
-                       + req.body.supporter_nickname + " just tipped you!" + "<br>"
-                       + "<a href='https://useshukran.com/accounts'>Login to find out how much.</a>"
+                       html: email_html_body
                        };
-                   smtpTransport.sendMail(mailOptions, (error, response) => {
-                           error ? console.log(error) : console.log(response);
-                           smtpTransport.close();
-                   });
+
+                   if (req.body.status !== "requested") { // don't send email when they request payouts
+                        smtpTransport.sendMail(mailOptions, (error, response) => {
+                            error ? console.log(error) : console.log(response);
+                            smtpTransport.close();
+                        });
+                   }
                    return transaction.save() 
          
     } catch (err) {
