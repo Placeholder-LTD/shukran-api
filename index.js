@@ -48,9 +48,8 @@ mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true, useFindA
                   console.error(err); // make this whole place silent
               } else {
                   console.log('it uploaded');
-                  // we should exit or halt or sth after here...
+                  // should we exit or halt or sth after here... ?
                   // return // ?
-                  // process.exit(0) // ?
               }
           });
         }
