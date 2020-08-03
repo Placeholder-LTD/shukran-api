@@ -35,6 +35,11 @@ const routes = [
     },
     {
         method: 'POST',
+        url: '/api/requestpayout/',
+        handler: transactionController.requestPayout
+    },
+    {
+        method: 'POST',
         url: '/api/resetpassword/',
         handler: userController.resetPassword
     },
