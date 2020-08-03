@@ -22,21 +22,6 @@ exports.createTransaction = async (req, reply) => {
     try {
         const transaction = new Trans(req.body)
                     let email = req.body.email
-                    let email_html_body, email_subject;
-                    if (req.body.status == 'received') {
-                        email_subject = "You just got tipped " + req.body.username.capitalize()
-
-                        email_html_body = "<h2>Hi <b>"+ req.body.username.capitalize() + ",</b></h2>"
-                       + req.body.supporter_nickname + " just tipped you!" + "<br>"
-                       + "<a href='https://useshukran.com/accounts'>Login to find out how much.</a>";
-                    } else if (req.body.status == 'paid') {
-                        email_subject = "Payout from Shukran";
-
-                        email_html_body = "<h2>Hi <b>"+ req.body.username.capitalize() + ",</b></h2>"
-                       + "Your payout request has been completed." + "<br>"
-                       + "Shukran!";
-                    }
-           
                     const smtpTransport = nodemailer.createTransport({
                            service: "gmail",
                            auth: {
@@ -51,17 +36,17 @@ exports.createTransaction = async (req, reply) => {
                    const mailOptions = {
                        from: "Ola from Shukran <theolaakomolafe@gmail.com>",
                        to: email,
-                       subject: email_subject,
+                       subject: "You just got tipped " + req.body.username.capitalize(),
                        generateTextFromHTML: true,
-                       html: email_html_body
+                       html: "<h2>Hi <b>"+ req.body.username.capitalize() + ",</b></h2>"
+                       + req.body.supporter_nickname + " just tipped you!" + "<br>"
+                       + "<a href='https://useshukran.com/accounts'>Login to find out how much.</a>"
                        };
 
-                   if (req.body.status !== "requested") { // don't send email when they request payouts
-                        smtpTransport.sendMail(mailOptions, (error, response) => {
-                            error ? console.log(error) : console.log(response);
-                            smtpTransport.close();
-                        });
-                   }
+                    smtpTransport.sendMail(mailOptions, (error, response) => {
+                        error ? console.log(error) : console.log(response);
+                        smtpTransport.close();
+                    });
                    return transaction.save() 
          
     } catch (err) {
