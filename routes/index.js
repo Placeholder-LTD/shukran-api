@@ -1,6 +1,7 @@
 const userController = require('../controllers/userController')
 const transactionController = require('../controllers/transactionController')
 const feedbackController = require('../controllers/FeedbackController')
+const productController = require('../controllers/ProductsController')
 
 const routes = [
     {
@@ -87,6 +88,26 @@ const routes = [
         method: 'POST',
         url: '/api/requests/',
         handler: transactionController.findRequested
+    },
+    {
+        method: 'POST',
+        url: '/api/createproducts/',
+        handler: productController.createProduct
+    },
+    {
+        method: 'POST',
+        url: '/api/findmyproducts/',
+        handler: productController.findMyProducts
+    },
+    {
+        method: 'POST',
+        url: '/api/deleteproduct/',
+        handler: productController.deleteProduct
+    },
+    {
+        method: 'POST',
+        url: '/api/updateproduct/',
+        handler: productController.updateProduct
     }
 ]
 
