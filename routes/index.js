@@ -2,7 +2,7 @@ const userController = require('../controllers/userController')
 const transactionController = require('../controllers/transactionController')
 const feedbackController = require('../controllers/FeedbackController')
 const productController = require('../controllers/ProductsController')
-const subscriptionController = require('../controllers/SubscriptionController')
+const subscriptionController = require('../controllers/subscriptionController')
 
 const routes = [
     {
