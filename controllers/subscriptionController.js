@@ -16,7 +16,7 @@ exports.createSubscription = async (req, reply) => { // https://attacomsian.com/
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer FLWSECK-b93f3a40802ee2c2fa85f83ba38e7bd6-X`
+                    'Authorization': `Bearer ${process.env.FLUTTERWAVE_SEC_KEY}`
                 }
             };
     
