@@ -18,6 +18,7 @@ const accessToken = oauth2Client.getAccessToken()
 String.prototype.capitalize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
 }
+
 exports.createTransaction = async (req, reply) => {
     try {
         const transaction = new Trans(req.body)
@@ -106,7 +107,7 @@ exports.findRequested = async (req, reply) => {
       throw boom.boomify(err)
     }
 }
- exports.findAllMyTransaction = async (req, reply) => {
+exports.findAllMyTransaction = async (req, reply) => {
     try {
         var username = req.body.username
         var status = req.body.status

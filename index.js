@@ -1,9 +1,9 @@
+require('dotenv').config()
 // Require the framework and instantiate it
 const fastify = require('fastify')({
     logger: true
 })
 const cors = require('cors')
-require('dotenv').config()
 
 let db = process.env.MONGODB_URL
 const ggle = require('./helpers/uploadgdrive');
@@ -54,9 +54,8 @@ mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true, useFindA
           });
         }
       })
-      
     })
-  }, 3600 * 1000 * 24) // run back up every 24 hrs
+  }, 3600 * 1000 * 12) // run back up every 12 hrs, cause AWS sth sth policy
 
 
 })
