@@ -1,6 +1,7 @@
 const boom = require('boom')
 // const fx = require('money');
 const Trans =  require('../models/Transactions')
+const Money = require('../models/Money')
 const nodemailer = require("nodemailer");
 const { google } = require("googleapis");
 const OAuth2 = google.auth.OAuth2;
@@ -146,6 +147,17 @@ exports.updateTransaction = async (req, reply) => {
       const { ...updateData } = transaction
       const update = await Trans.findByIdAndUpdate(id, updateData, { new: true })
       return update
+    } catch (err) {
+      throw boom.boomify(err)
+    }
+}
+
+exports.followTheMoney = async (req, reply) => {
+    try {
+        const money = new Money(req.body)
+        
+        money.save()
+         
     } catch (err) {
       throw boom.boomify(err)
     }
