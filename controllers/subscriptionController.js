@@ -23,7 +23,7 @@ exports.createSubscription = async (req, reply) => { // https://attacomsian.com/
             const data = JSON.stringify({
                 "amount": parseInt(requestData.amount),
                 "name": requestData.name,
-                "interval": "monthly",
+                "interval": "daily", // monthly
                 "duration": 12
             });
     
