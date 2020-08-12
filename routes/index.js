@@ -21,6 +21,11 @@ const routes = [
         handler: transactionController.followTheMoney
     },
     {
+        method: 'GET',
+        url: '/api/yoursupporters/',
+        handler: transactionController.getYourSupporters
+    },
+    {
         method: 'POST',
         url: '/api/login/',
         handler: userController.login

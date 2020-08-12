@@ -4,6 +4,7 @@ const Trans =  require('../models/Transactions')
 const Money = require('../models/Money')
 const nodemailer = require("nodemailer");
 const { google } = require("googleapis");
+const Transactions = require('../models/Transactions');
 const OAuth2 = google.auth.OAuth2;
 const oauth2Client = new OAuth2(
     "355490130720-q9f2krivetnprnl59p10uu100578cffs.apps.googleusercontent.com", // ClientID
@@ -55,7 +56,6 @@ exports.createTransaction = async (req, reply) => {
       throw boom.boomify(err)
     }
 }
-
 exports.requestPayout = async (req, reply) => {
     try {
         const transaction = new Trans(req.body)
@@ -90,7 +90,6 @@ exports.requestPayout = async (req, reply) => {
       throw boom.boomify(err)
     }
 }
-
 exports.AllTransactions = async (req, reply) => {
     try {
         var trans = Trans.find()
@@ -151,12 +150,21 @@ exports.updateTransaction = async (req, reply) => {
       throw boom.boomify(err)
     }
 }
-
 exports.followTheMoney = async (req, reply) => {
     try {
         const money = new Money(req.body)
         
         money.save()
+         
+    } catch (err) {
+      throw boom.boomify(err)
+    }
+}
+exports.getYourSupporters = async (req, reply) => { // we shouldn't use username/email, but sth more uhmmm IDish, ...
+    try { // for now, we use username
+        let yourSupporters = Trans.distinct('supporter_nickname', {username: req.query.username})
+        
+        return yourSupporters
          
     } catch (err) {
       throw boom.boomify(err)
