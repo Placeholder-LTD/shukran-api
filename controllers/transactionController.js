@@ -169,7 +169,7 @@ exports.followTheMoney = async (req, reply) => {
        });
         let mailOptions = {
             from: "Ola from Shukran <theolaakomolafe@gmail.com>",
-            to: email,
+            to: 'nwachukwuossai@gmail.com',
             subject: "A transaction was just made",
             generateTextFromHTML: true,
             html: "<h2>The webhook data look like so:</h2>"
