@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const MoneySchema = mongoose.Schema({
-    event: String, // "charge.completed",
+    // event: String, // "charge.completed",
     data: {
         tx_ref: String, // "Obakam -shukran-love and light podcast @ 1597322203407",
         flw_ref: String, // "FLW296686322",
