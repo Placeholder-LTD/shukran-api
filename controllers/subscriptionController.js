@@ -62,3 +62,42 @@ exports.createSubscription = async (req, reply) => { // https://attacomsian.com/
       throw boom.boomify(err)
     }
 }
+exports.getAllSubscriptions = async (req, reply) => {
+    try {
+        return new Promise((resolve, reject) => { // https://stackoverflow.com/a/59274104/9259701
+
+            let options = {
+                hostname: 'api.flutterwave.com', // don't add protocol
+                port: 443, // optional
+                path: '/v3/payment-plans',
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${process.env.FLUTTERWAVE_SEC_KEY}`
+                }
+            };
+    
+            https.get(options, (resp) => {
+                let getData = ''; // very important to initialize
+    
+                // A chunk of data has been recieved.
+                resp.on('data', (chunk) => {
+                    getData += chunk;
+                });
+    
+                // The whole response has been received. Print out the result.
+                resp.on('end', () => {
+                    let endData = JSON.parse(getData)
+                    resolve(endData); // we only need to return the id
+                });
+    
+            }).on("error", (err) => {
+                console.log("Error: ", err.message);
+                // return err
+                reject(err.message);
+            });
+        })
+    } catch (err) {
+        throw boom.boomify(err)
+    }
+}

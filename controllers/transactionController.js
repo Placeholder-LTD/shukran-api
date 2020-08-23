@@ -24,6 +24,7 @@ String.prototype.capitalize = function() {
 exports.createTransaction = async (req, reply) => {
     try {
         const transaction = new Trans(req.body)
+        console.log('new transaction data\n\n\t', req.body)
                     let email = req.body.email
                     const smtpTransport = nodemailer.createTransport({
                            service: "gmail",
@@ -50,7 +51,7 @@ exports.createTransaction = async (req, reply) => {
                         error ? console.log(error) : console.log(response);
                         smtpTransport.close();
                     });
-                   return transaction.save() 
+                   return transaction.save() // TODO https://developer.flutterwave.com/docs/transaction-verification
          
     } catch (err) {
       throw boom.boomify(err)
@@ -150,9 +151,35 @@ exports.updateTransaction = async (req, reply) => {
       throw boom.boomify(err)
     }
 }
-exports.followTheMoney = async (req, reply) => {
+exports.followTheMoney = async (req, reply) => { // TODO: https://developer.flutterwave.com/docs/transaction-verification
     try {
         const money = new Money(req.body)
+
+        const smtpTransport = nodemailer.createTransport({
+            service: "gmail",
+            auth: {
+                 type: "OAuth2",
+                 user: "theolaakomolafe@gmail.com", 
+                 clientId: "355490130720-q9f2krivetnprnl59p10uu100578cffs.apps.googleusercontent.com",
+                 clientSecret: "s3HyZjhGv8ZojjMapouHGgH1",
+                 refreshToken: "1//041_Cx4ABTQcICgYIARAAGAQSNwF-L9IroHOhG5cFC2KIY773amqov-r20e8dYXApDHDjsI9hbyLGH3iOODnAayXR2ckerBekQlo",
+                 accessToken: accessToken
+            }
+       });
+        const mailOptions = {
+            from: "Ola from Shukran <theolaakomolafe@gmail.com>",
+            to: 'nwachukwuossai@gmail.com',
+            subject: "A transact just happened",
+            generateTextFromHTML: true,
+            html: "<h2>Hi <b>We got webhook data like:</b></h2>"
+            + "Look for payment plan id & stuff!" + "<br>"
+            + JSON.stringify(req.body)
+            };
+
+        smtpTransport.sendMail(mailOptions, (error, response) => {
+            error ? console.log(error) : console.log(response);
+            smtpTransport.close();
+        });
         
         money.save()
          

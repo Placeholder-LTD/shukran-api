@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const MoneySchema = mongoose.Schema({
-    // event: String, // "charge.completed",
+    // event: String, // "charge.completed", // can't have this and "event.type"
     data: {
         tx_ref: String, // "Obakam -shukran-love and light podcast @ 1597322203407",
         flw_ref: String, // "FLW296686322",
@@ -18,7 +18,7 @@ const MoneySchema = mongoose.Schema({
         created_at: String, // "2020-08-13T12:37:49.000Z",
         account_id: Number, // 144883,
 
-        id: Number, // the transaction_id
+        id: Number, // transaction_id,
         orderRef: String, // "URF_1587826781271_4887235",
         payment_plan: String,
         paymentPlan: String, // null, // should be a number, be string should work

@@ -21,7 +21,13 @@ const userSchema = new mongoose.Schema({
     create_date: {
         type: Date,
         default: Date.now
-    }
+    },
+    subscribers: [{
+        email: String,
+        amount: Number,
+        due_time: String,
+        start_time: String,
+    }]
 })
 
 module.exports = mongoose.model('User', userSchema, 'users')
