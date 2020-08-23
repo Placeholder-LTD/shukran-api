@@ -10,7 +10,10 @@ const ggle = require('./helpers/uploadgdrive');
 fastify.register(require('fastify-multipart'))
 // use it before all route definitions
 fastify.use(cors({origin: ['https://shukranstaging.netlify.app', 'https://useshukran.com', 'http://localhost:8080']}));
-
+const hoss = require('hoss');
+  
+// At the beginning of your code, run the following for instrumentation
+hoss("development-5hDQ8UQHeP29JrBTtZT16T2ef45sQwuL7UFR1FnpfoPt");
 let fs = require('fs');
 const mongoose = require('mongoose')
 mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
