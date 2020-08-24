@@ -32,6 +32,11 @@ const routes = [
     },
     {
         method: 'POST',
+        url: '/api/sendmessage/',
+        handler: feedbackController.sendMessage
+    },
+    {
+        method: 'POST',
         url: '/api/login/',
         handler: userController.login
     },

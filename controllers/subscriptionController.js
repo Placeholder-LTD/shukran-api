@@ -2,11 +2,26 @@ const boom = require('boom')
 const https = require('https');
 const Subscription = require('../models/Subscription')
 
+/**
+ * when creating a subscription, who is this person deciding to subscribe to?
+ */
 exports.createSubscription = async (req, reply) => { // https://attacomsian.com/blog/node-make-http-requests
     try { // https://stackoverflow.com/a/40539133/9259701
 
+        // before we create a new subscription, let's check if we have a subscritpion with that amount before
+
         return new Promise((resolve, reject) => { // https://stackoverflow.com/a/59274104/9259701
 
+            /**
+             * expect requestData to look like:
+             * {
+             * "amount": parseInt(this.amount),
+                supporter_email: this.email,
+                creator: this.username,
+                creator_id: this.userinfos[0]._id,
+                "name": `shukraning-NGN${this.amount}`
+                },
+             */
             let requestData = req.body
 
             let options = {
@@ -26,6 +41,8 @@ exports.createSubscription = async (req, reply) => { // https://attacomsian.com/
                 "interval": "daily", // monthly
                 "duration": 12
             });
+
+            // make use of the subscirption creation date to know when the person started paying, and most importantly who they're paying to!
     
             const request = https.request(options, (resp) => {
                 let respData = '';
@@ -77,7 +94,7 @@ exports.getAllSubscriptions = async (req, reply) => {
                 }
             };
     
-            https.get(options, (resp) => {
+            https.request(options, (resp) => {
                 let getData = ''; // very important to initialize
     
                 // A chunk of data has been recieved.
@@ -85,17 +102,16 @@ exports.getAllSubscriptions = async (req, reply) => {
                     getData += chunk;
                 });
     
-                // The whole response has been received. Print out the result.
+                // The whole response has been received.
                 resp.on('end', () => {
-                    let endData = JSON.parse(getData)
-                    resolve(endData); // we only need to return the id
+                    resolve(JSON.parse(getData));
                 });
     
             }).on("error", (err) => {
                 console.log("Error: ", err.message);
                 // return err
                 reject(err.message);
-            });
+            }).end();
         })
     } catch (err) {
         throw boom.boomify(err)
