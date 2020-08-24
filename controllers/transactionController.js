@@ -22,7 +22,7 @@ exports.createTransaction = async (req, reply) => {
                         }
                       });
                    const mailOptions = {
-                       from: "Ola from Shukran <noty@useshukran.com>",
+                       from: "Ola from Shukran <contact@useshukran.com>",
                        to: email,
                        subject: "You just got tipped " + req.body.username.capitalize(),
                        generateTextFromHTML: true,
@@ -56,7 +56,7 @@ exports.requestPayout = async (req, reply) => {
                         }
                       });
                    const mailOptions = {
-                       from: "Ola from Shukran <noty@useshukran.com>",
+                       from: "Ola from Shukran <contact@useshukran.com>",
                        to: 'olamide@useshukran.com',
                        subject: "Payout request by " + req.body.username.capitalize(),
                        generateTextFromHTML: true,
