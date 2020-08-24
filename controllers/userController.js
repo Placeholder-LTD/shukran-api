@@ -32,18 +32,25 @@ exports.signup = async (req, reply) => {
         if ((await check).length === 0) {
             const user = new User(req.body)
             const smtpTransport = nodemailer.createTransport({
-                service: "gmail",
+                //service: "gmail",
+                host: 'smtp.zoho.com',
+                port: 465,
+                secure: true,
                 auth: {
+                    user: 'contact@useshukran.com',
+                    pass: 'Password2020'
+                }
+               /* auth: {
                     type: "OAuth2",
                     user: "theolaakomolafe@gmail.com",
                     clientId: "355490130720-q9f2krivetnprnl59p10uu100578cffs.apps.googleusercontent.com",
                     clientSecret: "s3HyZjhGv8ZojjMapouHGgH1",
                     refreshToken: "1//041_Cx4ABTQcICgYIARAAGAQSNwF-L9IroHOhG5cFC2KIY773amqov-r20e8dYXApDHDjsI9hbyLGH3iOODnAayXR2ckerBekQlo",
                     accessToken: accessToken
-                }
+                }*/
             });
             const mailOptions = {
-                from: "Ola from Shukran <theolaakomolafe@gmail.com>",
+                from: "Ola from Shukran <contact@useshukran.com>",
                 to: req.body.email,
                 subject: "Welcome to Shukran " + req.body.username.capitalize(),
                 generateTextFromHTML: true,
