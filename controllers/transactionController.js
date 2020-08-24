@@ -2,18 +2,7 @@ const boom = require('boom')
 // const fx = require('money');
 const Trans =  require('../models/Transactions')
 const nodemailer = require("nodemailer");
-const { google } = require("googleapis");
-const OAuth2 = google.auth.OAuth2;
-const oauth2Client = new OAuth2(
-    "355490130720-q9f2krivetnprnl59p10uu100578cffs.apps.googleusercontent.com", // ClientID
-    "s3HyZjhGv8ZojjMapouHGgH1", // Client Secret
-    "https://developers.google.com/oauthplayground" // Redirect URL
-);
 
-oauth2Client.setCredentials({
-    refresh_token: "1//041_Cx4ABTQcICgYIARAAGAQSNwF-L9IroHOhG5cFC2KIY773amqov-r20e8dYXApDHDjsI9hbyLGH3iOODnAayXR2ckerBekQlo"
-});
-const accessToken = oauth2Client.getAccessToken()
 // Capitalize function
 String.prototype.capitalize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
@@ -24,18 +13,16 @@ exports.createTransaction = async (req, reply) => {
         const transaction = new Trans(req.body)
                     let email = req.body.email
                     const smtpTransport = nodemailer.createTransport({
-                           service: "gmail",
-                           auth: {
-                                type: "OAuth2",
-                                user: "theolaakomolafe@gmail.com", 
-                                clientId: "355490130720-q9f2krivetnprnl59p10uu100578cffs.apps.googleusercontent.com",
-                                clientSecret: "s3HyZjhGv8ZojjMapouHGgH1",
-                                refreshToken: "1//041_Cx4ABTQcICgYIARAAGAQSNwF-L9IroHOhG5cFC2KIY773amqov-r20e8dYXApDHDjsI9hbyLGH3iOODnAayXR2ckerBekQlo",
-                                accessToken: accessToken
-                           }
+                        host: 'smtp.zoho.com',
+                        port: 465,
+                        secure: true,
+                        auth: {
+                            user: 'contact@useshukran.com',
+                            pass: 'Password2020'
+                        }
                       });
                    const mailOptions = {
-                       from: "Ola from Shukran <theolaakomolafe@gmail.com>",
+                       from: "Ola from Shukran <noty@useshukran.com>",
                        to: email,
                        subject: "You just got tipped " + req.body.username.capitalize(),
                        generateTextFromHTML: true,
@@ -60,18 +47,16 @@ exports.requestPayout = async (req, reply) => {
         const transaction = new Trans(req.body)
                     let email = req.body.email
                     const smtpTransport = nodemailer.createTransport({
-                           service: "gmail",
-                           auth: {
-                                type: "OAuth2",
-                                user: "theolaakomolafe@gmail.com", 
-                                clientId: "355490130720-q9f2krivetnprnl59p10uu100578cffs.apps.googleusercontent.com",
-                                clientSecret: "s3HyZjhGv8ZojjMapouHGgH1",
-                                refreshToken: "1//041_Cx4ABTQcICgYIARAAGAQSNwF-L9IroHOhG5cFC2KIY773amqov-r20e8dYXApDHDjsI9hbyLGH3iOODnAayXR2ckerBekQlo",
-                                accessToken: accessToken
-                           }
+                        host: 'smtp.zoho.com',
+                        port: 465,
+                        secure: true,
+                        auth: {
+                            user: 'contact@useshukran.com',
+                            pass: 'Password2020'
+                        }
                       });
                    const mailOptions = {
-                       from: "Ola from Shukran <theolaakomolafe@gmail.com>",
+                       from: "Ola from Shukran <noty@useshukran.com>",
                        to: 'olamide@useshukran.com',
                        subject: "Payout request by " + req.body.username.capitalize(),
                        generateTextFromHTML: true,
