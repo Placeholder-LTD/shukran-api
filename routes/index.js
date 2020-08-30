@@ -27,6 +27,11 @@ const routes = [
     },
     {
         method: 'GET',
+        url: '/api/getsubscribers/',
+        handler: subscriptionController.getSubscribers
+    },
+    {
+        method: 'GET',
         url: '/api/yoursupporters/',
         handler: transactionController.getYourSupporters
     },

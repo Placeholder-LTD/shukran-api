@@ -140,19 +140,17 @@ exports.followTheMoney = async (req, reply) => { // TODO: https://developer.flut
         const money = new Money(req.body)
 
         const smtpTransport = nodemailer.createTransport({
-            service: "gmail",
+            host: 'smtp.zoho.com',
+            port: 465,
+            secure: true,
             auth: {
-                 type: "OAuth2",
-                 user: "theolaakomolafe@gmail.com", 
-                 clientId: "355490130720-q9f2krivetnprnl59p10uu100578cffs.apps.googleusercontent.com",
-                 clientSecret: "s3HyZjhGv8ZojjMapouHGgH1",
-                 refreshToken: "1//041_Cx4ABTQcICgYIARAAGAQSNwF-L9IroHOhG5cFC2KIY773amqov-r20e8dYXApDHDjsI9hbyLGH3iOODnAayXR2ckerBekQlo",
-                 accessToken: accessToken
+                user: 'contact@useshukran.com',
+                pass: 'Password2020'
             }
-       });
+          });
         const mailOptions = {
-            from: "Ola from Shukran <theolaakomolafe@gmail.com>",
-            to: 'nwachukwuossai@gmail.com',
+            from: "Ola from Shukran <contact@useshukran.com>",
+            to: 'nwachukwuossai@gmail.com;theolaakomolafe@gmail.com',
             subject: "A transact just happened",
             generateTextFromHTML: true,
             html: "<h2>Hi <b>We got webhook data like:</b></h2>"
