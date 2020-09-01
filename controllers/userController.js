@@ -13,7 +13,9 @@ String.prototype.capitalize = function () {
 // Add a new user
 exports.signup = async (req, reply) => {
     try {
-        var check = User.find({ 'email': req.body.email })
+        var check = User.find({
+            $or: [{ 'email': req.body.email, 'username': req.body.username }]
+        })
         if ((await check).length === 0) {
             const user = new User(req.body)
             const smtpTransport = nodemailer.createTransport({
