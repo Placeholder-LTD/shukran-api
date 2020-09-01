@@ -9,7 +9,7 @@ let db = process.env.MONGODB_URL
 const ggle = require('./helpers/uploadgdrive');
 fastify.register(require('fastify-multipart'))
 // use it before all route definitions
-fastify.use(cors({origin: ['https://shukranstaging.netlify.app', 'https://useshukran.com', 'http://localhost:8080', 'null']}));
+fastify.use(cors({origin: ['https://shukranstaging.netlify.app', 'https://useshukran.com']}));
 const hoss = require('hoss');
   
 // At the beginning of your code, run the following for instrumentation
