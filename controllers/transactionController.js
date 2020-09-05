@@ -1,6 +1,7 @@
 const boom = require('boom')
 // const fx = require('money');
 const Trans =  require('../models/Transactions')
+const Money = require('../models/Money')
 const nodemailer = require("nodemailer");
 
 // Capitalize function
@@ -11,6 +12,7 @@ String.prototype.capitalize = function() {
 exports.createTransaction = async (req, reply) => {
     try {
         const transaction = new Trans(req.body)
+        console.log('new transaction data\n\n\t', req.body)
                     let email = req.body.email
                     const smtpTransport = nodemailer.createTransport({
                         host: 'smtp.zoho.com',
@@ -35,13 +37,12 @@ exports.createTransaction = async (req, reply) => {
                         error ? console.log(error) : console.log(response);
                         smtpTransport.close();
                     });
-                   return transaction.save() 
+                   return transaction.save() // TODO https://developer.flutterwave.com/docs/transaction-verification
          
     } catch (err) {
       throw boom.boomify(err)
     }
 }
-
 exports.requestPayout = async (req, reply) => {
     try {
         const transaction = new Trans(req.body)
@@ -74,7 +75,6 @@ exports.requestPayout = async (req, reply) => {
       throw boom.boomify(err)
     }
 }
-
 exports.AllTransactions = async (req, reply) => {
     try {
         var trans = Trans.find()
@@ -131,6 +131,50 @@ exports.updateTransaction = async (req, reply) => {
       const { ...updateData } = transaction
       const update = await Trans.findByIdAndUpdate(id, updateData, { new: true })
       return update
+    } catch (err) {
+      throw boom.boomify(err)
+    }
+}
+exports.followTheMoney = async (req, reply) => { // TODO: https://developer.flutterwave.com/docs/transaction-verification
+    try {
+        const money = new Money(req.body)
+
+        const smtpTransport = nodemailer.createTransport({
+            host: 'smtp.zoho.com',
+            port: 465,
+            secure: true,
+            auth: {
+                user: 'contact@useshukran.com',
+                pass: 'Password2020'
+            }
+          });
+        const mailOptions = {
+            from: "Ola from Shukran <contact@useshukran.com>",
+            to: 'nwachukwuossai@gmail.com;theolaakomolafe@gmail.com',
+            subject: "A transact just happened",
+            generateTextFromHTML: true,
+            html: "<h2>Hi <b>We got webhook data like:</b></h2>"
+            + "Look for payment plan id & stuff!" + "<br>"
+            + JSON.stringify(req.body)
+            };
+
+        smtpTransport.sendMail(mailOptions, (error, response) => {
+            error ? console.log(error) : console.log(response);
+            smtpTransport.close();
+        });
+        
+        money.save()
+         
+    } catch (err) {
+      throw boom.boomify(err)
+    }
+}
+exports.getYourSupporters = async (req, reply) => { // we shouldn't use username/email, but sth more uhmmm IDish, ...
+    try { // for now, we use username
+        let yourSupporters = Trans.distinct('supporter_nickname', {username: req.query.username})
+        
+        return yourSupporters
+         
     } catch (err) {
       throw boom.boomify(err)
     }

@@ -17,6 +17,31 @@ const routes = [
     },
     {
         method: 'POST',
+        url: '/api/followthemoney/',
+        handler: transactionController.followTheMoney
+    },
+    {
+        method: 'GET',
+        url: '/api/getsubscriptions/',
+        handler: subscriptionController.getAllSubscriptions
+    },
+    {
+        method: 'GET',
+        url: '/api/getsubscribers/',
+        handler: subscriptionController.getSubscribers
+    },
+    {
+        method: 'GET',
+        url: '/api/yoursupporters/',
+        handler: transactionController.getYourSupporters
+    },
+    {
+        method: 'POST',
+        url: '/api/sendmessage/',
+        handler: feedbackController.sendMessage
+    },
+    {
+        method: 'POST',
         url: '/api/login/',
         handler: userController.login
     },
