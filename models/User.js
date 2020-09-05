@@ -22,11 +22,28 @@ const userSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
+    folder_id: { // google folder id
+        type: String,
+        default: undefined
+    },
+    content: [{
+        filename: String,
+        file_type: String, // mime type
+        created_at: {
+            type: Date,
+            default: Date.now
+        },
+        file_id: String,
+    }],
     subscribers: [{
         email: String,
         amount: Number,
         due_time: String,
         start_time: String,
+        permissions: [{
+            id: String, // actually numbers as string
+            file: String // the file id
+        }],
     }]
 })
 

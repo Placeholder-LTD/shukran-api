@@ -117,7 +117,12 @@ exports.getAllSubscriptions = async (req, reply) => {
         throw boom.boomify(err)
     }
 }
-
+/**
+ * 
+ * @param {*} req 
+ * @param {*} reply 
+ * get details of all the subscribers of a creator
+ */
 exports.getSubscribers = async (req, reply) => {
 try { // https://stackoverflow.com/a/40539133/9259701
     // do a script that'll regularly update out db
@@ -219,4 +224,54 @@ try { // https://stackoverflow.com/a/40539133/9259701
 } catch (err) {
   throw boom.boomify(err)
 }
+}
+
+exports.createCreatorFolder = async (req, reply) => {
+    // check if they already have a folder id
+    // fetch ID of creator, get folder_id
+
+        var fileMetadata = {
+            'name': `${req.body.creator_id}-stuff`,
+            'mimeType': 'application/vnd.google-apps.folder',
+            'parents' : ['1J6ALbTDRqytQKRE7G1MD0JgS9MW3ib31'] // folder 'shukran-contents'
+            };
+            drive.files.create({
+            resource: fileMetadata,
+            fields: 'id'
+            }, function (err, file) {
+            if (err) {
+                // Handle error
+                console.error(err);
+            } else {
+                console.log('Folder Id: ', file.id);
+            }
+        });
+    
+}
+
+exports.uploadInCreatorFolder = async (req, reply) => {
+    // check if the creator already has a folder
+    this.createCreatorFolder(req);
+    let fileMetadata = {
+        'name': filename, // Date.now() + '.jpg',
+        parents: ['1J6ALbTDRqytQKRE7G1MD0JgS9MW3ib31'] // upload to folder shukran-contents
+    };
+    let media = {
+        mimeType: mimetype,
+        body: filestream
+    };
+
+    let g = await ggle.drive.files.create({
+        resource: fileMetadata,
+        media: media,
+        fields: 'id',
+    });
+    if (g.data.id) {
+        updateData['picture_id'] = g.data.id
+        update = await User.findByIdAndUpdate(updateData['id'], updateData, { new: true })
+        console.info('political g.data.webViewLink', g.data.webViewLink)
+        reply.code(200).send(g.data.id)
+    } else {
+        throw new Error(`upload error! status: ${g.status}`);
+    }
 }
