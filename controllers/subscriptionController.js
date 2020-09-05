@@ -202,7 +202,7 @@ try { // https://stackoverflow.com/a/40539133/9259701
 
 
     
-    // use req.query.id in prod
+    // not req.query.username use req.query.id in prod
 
     
 
@@ -215,7 +215,7 @@ try { // https://stackoverflow.com/a/40539133/9259701
     // https://stackoverflow.com/a/13437802/9259701
     // also check if their subscription is still active
     let subs = Subscription.find({
-        'name': new RegExp(`-shukraning-${req.query.username/* req.query.id */}`, 'gi'),
+        'name': new RegExp(`-shukraning-${/* req.query.username */req.query.id}`, 'gi'),
         status: 'active'
     }, { plan_token: 0, id: 0, _id: 0, __v: 0 }) // exclude these fields
     
