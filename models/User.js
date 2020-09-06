@@ -9,6 +9,7 @@ const userSchema = new mongoose.Schema({
     account_name: String,
     account_number: String,
     summary: String,
+    country: String,
     bank: String,
     phone: String,
     redirect: String,
