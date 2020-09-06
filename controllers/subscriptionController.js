@@ -226,6 +226,32 @@ try { // https://stackoverflow.com/a/40539133/9259701
 }
 }
 
+exports.getTotalRevenue = async(req, reply) => {
+    let money = Money.find({
+        'data.tx_ref': new RegExp(`-shukraning-${req.query.id}`, 'gi'), // ${/* req.query.id */}
+        'data.status': 'successful'
+    }, { _id: 0, __v: 0,
+        'event.type': 0,
+        'data.account_id': 0,
+        'data.device_fingerprint': 0,
+        'data.flw_ref': 0,
+        'data.id': 0,
+        'data.ip': 0,
+        'data.merchant_fee': 0,
+        'data.narration': 0,
+        'data.payment_type': 0,
+        'data.processor_response': 0,
+        'data.status': 0,
+        'data.app_fee': 0,
+        'data.auth_model': 0,
+        'data.charged_amount': 0,
+        'data.created_at': 0,
+        'data.customer.id': 0, // ask customer if they want their data seen
+        'data.customer.phone_number': 0}) // exclude these fields
+    
+    return money
+}
+
 exports.createCreatorFolder = async (req, reply) => {
     // check if they already have a folder id
     // fetch ID of creator, get folder_id

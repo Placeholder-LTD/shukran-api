@@ -139,6 +139,7 @@ exports.followTheMoney = async (req, reply) => { // TODO: https://developer.flut
     try {
         const money = new Money(req.body)
 
+        money.save()
         const smtpTransport = nodemailer.createTransport({
             host: 'smtp.zoho.com',
             port: 465,
@@ -163,8 +164,6 @@ exports.followTheMoney = async (req, reply) => { // TODO: https://developer.flut
             smtpTransport.close();
         });
         
-        money.save()
-         
     } catch (err) {
       throw boom.boomify(err)
     }
