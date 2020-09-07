@@ -28,8 +28,10 @@ exports.createTransaction = async (req, reply) => {
                        to: email,
                        subject: "You just got tipped " + req.body.username.capitalize(),
                        generateTextFromHTML: true,
-                       html: "<h2>Hi <b>"+ req.body.username.capitalize() + ",</b></h2>"
-                       + req.body.supporter_nickname + " just tipped you!" + "<br>"
+                       html: "<h2>Hi <b>"+ req.body.username.capitalize() + ",</b></h2>" +
+                       (req.body.tx_ref.includes('shukraning-') ? 
+                       "You just got a new shuklan, " + req.body.supporter_nickname :
+                       + req.body.supporter_nickname + " just tipped you!") + "<br>"
                        + "<a href='https://useshukran.com/accounts'>Login to find out how much.</a>"
                        };
 

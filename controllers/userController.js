@@ -346,10 +346,10 @@ exports.signup = async (req, reply) => {
                 <span >
                 <ol style="font-size: 24px;">
                 <li>
-                Bola John, NG at <a href="https://useshukran.com/cr/bola%20john">https://useshukran.com/cr/bola%20john</a>
+                <a href="https://useshukran.com/cr/bola%20john">Bola John</a>, NG
                 </li>
                 <li>
-                Wangarimuchui, KE at <a href="https://useshukran.com/cr/wangarimuchui">https://useshukran.com/cr/wangarimuchui</a>
+                <a href="https://useshukran.com/cr/wangarimuchui">Wangarimuchui</a>, KE
                 </li>
                 </ol>
                 </span>
