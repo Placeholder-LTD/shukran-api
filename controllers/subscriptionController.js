@@ -1,4 +1,5 @@
 const boom = require('boom')
+const nodemailer = require("nodemailer");
 const https = require('https');
 const Subscription = require('../models/Subscription')
 const Money = require('../models/Money')
@@ -60,10 +61,57 @@ exports.createSubscription = async (req, reply) => { // https://attacomsian.com/
                     // add creator, supporter_email
                     endData.data.creator = respData.creator
                     endData.data.supporter_email = respData.supporter_email
-                    const subscription = new Subscription(endData.data)
-                    subscription.save()
+                    const smtpTransport = nodemailer.createTransport({
+                        host: 'smtp.zoho.com',
+                        port: 465,
+                        secure: true,
+                        auth: {
+                            user: 'contact@useshukran.com',
+                            pass: 'Password2020'
+                        }
+                    });
+            
+                const mailOptions = {
+                    from: 'Ola from Shukran <contact@useshukran.com>',
+                    to: req.body.supporter_email,
+                    subject: "Hey, " + "thank you for joining " +  req.body.creator+"'s" + "Shuclan!",
+                    generateTextFromHTML: true,
+                    html: `<h3>Thank you for choosing to support this creator monthly.</h3>
+                    <p>Your support means alot to them. Please feel free to talk about this by sharing using this button: </p>
+                    <a
+                    href="https://twitter.com/intent/tweet?url=http%3A%2F%2Fuseshukran.com%2F&text=I+just+joined+a+creator's+Shuclan+on
+                    +@useshukran.+You+too+can+find+creators+to+support+here:&hashtags=saythanks,shukran"
+                    target="blank"
+                  >Tell others</a>
+                    `
+                }
 
-                    resolve(endData.data.id); // we only need to return the id
+                const mailOptionsCreator = {
+                    from: 'Ola from Shukran <contact@useshukran.com>',
+                    to: req.body.creator_email,
+                    subject: "Hey, "+  req.body.creator+" someone just joined your" + "Shuclan!",
+                    generateTextFromHTML: true,
+                    html: `<h3>Hey! We are excited to announce that someone has joined your Shuclan.</h3>
+                    <p>That means they have pledged an automated amount to your media co per month! Tell other: </p>
+                    <a
+                    href="https://twitter.com/intent/tweet?url=http%3A%2F%2Fuseshukran.com%2F&text=I+just+added+a+new+Shuclan+member
+                    +@useshukran.+You+too+can+get+supported+start+here:&hashtags=saythanks,shukran"
+                    target="blank"
+                  >Tell others</a>
+                    `
+                }
+                smtpTransport.sendMail(mailOptions, (error, response) => {
+                    error ? console.log(error) : console.log(response);
+                    smtpTransport.close();
+                });
+                smtpTransport.sendMail(mailOptionsCreator, (error, response) => {
+                    error ? console.log(error) : console.log(response);
+                    smtpTransport.close();
+                });
+                const subscription = new Subscription(endData.data)
+                subscription.save()
+
+                resolve(endData.data.id); // we only need to return the id
                 });
     
             }).on("error", (err) => {
@@ -74,6 +122,8 @@ exports.createSubscription = async (req, reply) => { // https://attacomsian.com/
             request.write(data);
             request.end();
         })
+
+
 
     } catch (err) {
       throw boom.boomify(err)
