@@ -11,6 +11,7 @@ String.prototype.capitalize = function () {
 }
 
 // Add a new user
+// add shukran spot light link
 exports.signup = async (req, reply) => {
     try {
         var check = User.find({
