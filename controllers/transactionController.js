@@ -28,7 +28,7 @@ exports.createTransaction = async (req, reply) => {
                        to: email,
                        subject: "You just got tipped " + req.body.username.capitalize(),
                        generateTextFromHTML: true,
-                       html: "<h2>Hi <b>" + req.body.username.capitalize() + "</h2>,</b>"
+                       html: "<h3>Hi, <b>" + req.body.username.capitalize() + "</h3></b> "
                        + req.body.supporter_nickname + " just tipped you!" + "<br>"
                        + "<a href='https://useshukran.com/accounts'>Login to find out how much.</a>"
                        };
