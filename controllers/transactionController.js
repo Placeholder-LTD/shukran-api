@@ -62,7 +62,7 @@ exports.requestPayout = async (req, reply) => {
                        subject: "Payout request by " + req.body.username.capitalize(),
                        generateTextFromHTML: true,
                        html: "<h2>Hey, <b>"+ req.body.username.capitalize() + "<"+email+"> just requested a payout of ₦"+req.body.amount+"</b></h2>"
-                       + "So just pay ₦"+req.body.amount+" .Please attend to it! Thanks"
+                       + "So just pay ₦"+req.body.amount+". Please attend to it! Thanks."
                        };
 
                     smtpTransport.sendMail(mailOptions, (error, response) => {
