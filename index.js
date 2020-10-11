@@ -5,7 +5,7 @@ const fastify = require('fastify')({
 })
 const cors = require('cors')
 
-let db = process.env.MONGODB_URL
+let db = process.env.ATLAS_CONNECTION_STRING
 const ggle = require('./helpers/uploadgdrive');
 fastify.register(require('fastify-multipart'))
 // use it before all route definitions
