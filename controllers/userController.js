@@ -18,7 +18,7 @@ exports.signup = async (req, reply) => {
             $or: [{ 'email': req.body.email, 'username': req.body.username }]
         })
         if ((await check).length === 0) {
-            const user = new User(req.body)
+            // set up email
             const smtpTransport = nodemailer.createTransport({
                 host: 'smtp.zoho.com',
                 port: 465,
@@ -28,6 +28,7 @@ exports.signup = async (req, reply) => {
                     pass: 'Password2020'
                 }
             });
+            // email content
             const mailOptions = {
                 from: "Ola from Shukran <contact@useshukran.com>",
                 to: req.body.email,
@@ -545,10 +546,24 @@ exports.signup = async (req, reply) => {
                 </body>
                 </html>`
             };
+            // send email
             smtpTransport.sendMail(mailOptions, (error, response) => {
                 error ? console.log(error) : console.log(response);
                 smtpTransport.close();
             });
+            // create a folder for them in ..."our space"
+            let g = await ggle.drive.files.create({
+                resource: {
+                    'name': req.body.username,
+                    'mimeType': 'application/vnd.google-apps.folder',
+                    parents: ['1J6ALbTDRqytQKRE7G1MD0JgS9MW3ib31'] // create in folder shukran-contents
+                },
+                fields: 'id, parents'
+            });
+            // un-neccessary todo... confirm that we have the right parent folders
+            req.body.folder_id = g.data.id
+            // then...
+            const user = new User(req.body)
             return user.save()
         } else {
             return { "message": "User's email exist" }
@@ -570,12 +585,41 @@ exports.login = async (req, reply) => {
     try {
         var username = req.body.username
         var password = req.body.password
-        const users = User.find({
+        const user = User.find({
             $and: [
                 { 'username': username, 'password': password }
             ]
         })
-        return users
+        let a = await user.exec();
+        console.log('what is a', a);
+        // check if they have a folder_id
+        // if not, create for them
+        if (!a[0].folder_id) {
+            console.log('\ncreating folder\n');
+            // create a folder for them in ..."our space"
+            let file = await ggle.drive.files.create({
+                resource: {
+                    'name': a[0].username, // folder_is field always comes last, so username would have been set
+                    'mimeType': 'application/vnd.google-apps.folder',
+                    parents: ['1J6ALbTDRqytQKRE7G1MD0JgS9MW3ib31'] // create in folder shukran-contents
+                },
+                fields: 'id, parents'
+            });
+
+            if (file.data.id) {
+                console.log('\ncreated Folder Id: ', file.data.id, file.data.parents);
+                // un-neccessary todo... confirm that we have the right parent folders
+                // updateData.folder_id = file.data.id
+
+                // we also need to update the User object in the DB
+                let updateUser = await User.findByIdAndUpdate(a[0]._id, { folder_id: file.data.id }, { new: true })
+                console.log('user update', updateUser) // is single obj
+                a = [updateUser] // replace a, updated version
+            }
+        }
+
+        return a
+        
     } catch (err) {
         throw boom.boomify(err)
     }
@@ -615,12 +659,94 @@ exports.deleteUser = async (req, reply) => {
         throw boom.boomify(error)
     }
 }
+
+exports.createContent = async (req, reply) => {
+    try {
+        if (req.isMultipart()) {
+            const mp = req.multipart(handler, onEnd) // mp = multipart
+            let updateData = {};
+
+            mp.on('field', async function (key, value) {
+                console.log('form-data', key, value)
+                updateData[key] = value;
+            })
+
+            async function onEnd(err, o, what) { // comes here after filestream.on('end', ...) synchoronously
+                // should we update the shukclans of new content??
+                console.log(o, what);
+            }
+
+            async function handler(fieldname, filestream, filename, transferEncoding, mimetype) {
+
+                filestream.on('data', function (data) {
+                    console.log('File [' + fieldname + '] got ' + data.length + ' bytes');
+                });
+
+                filestream.on('limit', () => console.log('File size limit reached'));
+
+                filestream.on('end', function () {
+                    console.log('File [' + fieldname + '] Finished. Got ' + 'bytes');
+                });
+                
+                
+                try {
+                    // const acceptedfiles = ['image/gif', 'image/jpeg', 'image/png', 'image/tiff', 'image/vnd.wap.wbmp', 'image/x-icon', 'image/x-jng', 'image/x-ms-bmp', 'image/svg+xml', 'image/webp'];
+
+                    // if we listend for 'file', even if there's no file, we still come here
+                    // so we're checking if it's empty before doing anything.
+
+                    // this is not a good method
+                    /**One thing you might be able to try is to read 0 bytes from the stream first and see if you get the appropriate 'end' event or not (perhaps on the next tick) */
+                    if (filename != '' /* && acceptedfiles.includes(mimetype) */) { // filename: 1848-1844-1-PB.pdf, encoding: 7bit, mimetype: application/pdf
+                        
+                        let fileMetadata = {
+                            'name': filename, // Date.now() + '.jpg',
+                            parents: [updateData.folder_id] // upload to creator's folder
+                        };
+                        console.log(fileMetadata.parents)
+                        let media = {
+                            mimeType: mimetype,
+                            body: filestream
+                        };
+
+                        let g = await ggle.drive.files.create({
+                            resource: fileMetadata,
+                            media: media,
+                            fields: 'id, webViewLink',
+                        });
+
+                        if (g.data.id) {
+                            // the saved content
+                            let up = {
+                                filename: filename,
+                                file_type: mimetype,
+                                file_id: g.data.id,
+                                web_view_link: g.data.webViewLink
+                            }
+                            update = await User.findByIdAndUpdate(updateData['creator_id'], { $push: { content: up } }, { new: true })
+                            console.info('g.data.webViewLink', g.data.webViewLink)
+                            console.info('update is:', update)
+                            reply.code(200).send(update) // TODO: we should generate a shukran link for them to share
+                        }
+                    }
+
+                } catch (error) {
+                    console.error('upload error !!', error);
+                    reply.code(500).send(error)
+                }
+
+            }
+        }
+    } catch (error) {
+        throw boom.boomify(error)
+    }
+}
+
 exports.updateUser = async (req, reply) => {
     try {
 
         if (req.isMultipart()) {
-            console.log('\n\nmultipart')
-            const mp = req.multipart(handler, onEnd)
+            const mp = req.multipart(handler, onEnd) // mp = multipart
             let updateData = {};
 
             mp.on('field', function (key, value) {
@@ -639,7 +765,6 @@ exports.updateUser = async (req, reply) => {
 
                 filestream.on('end', function () {
                     console.log('File [' + fieldname + '] Finished. Got ' + 'bytes');
-
                 });
                 try {
                     const acceptedfiles = ['image/gif', 'image/jpeg', 'image/png', 'image/tiff', 'image/vnd.wap.wbmp', 'image/x-icon', 'image/x-jng', 'image/x-ms-bmp', 'image/svg+xml', 'image/webp'];

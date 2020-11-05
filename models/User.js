@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema({
     },
     folder_id: { // google folder id
         type: String,
-        default: undefined
+        default: null
     },
     content: [{
         filename: String,
@@ -34,9 +34,10 @@ const userSchema = new mongoose.Schema({
             type: Date,
             default: Date.now
         },
+        web_view_link: String,
         file_id: String,
     }],
-    subscribers: [{
+    /* subscribers: [{
         email: String,
         amount: Number,
         due_time: String,
@@ -45,7 +46,7 @@ const userSchema = new mongoose.Schema({
             id: String, // actually numbers as string
             file: String // the file id
         }],
-    }]
+    }] */
 })
 
 module.exports = mongoose.model('User', userSchema, 'users')

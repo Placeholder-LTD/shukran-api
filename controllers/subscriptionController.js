@@ -3,6 +3,8 @@ const nodemailer = require("nodemailer");
 const https = require('https');
 const Subscription = require('../models/Subscription')
 const Money = require('../models/Money')
+const getAllSubscribers = require('../flutterwave-api-calls/test-get-all-subscribers')
+const getAllPaymentPlans = require('../flutterwave-api-calls/test-get-all-payment-plans')
 
 /**
  * when creating a subscription, who is this person deciding to subscribe to?
@@ -171,111 +173,34 @@ exports.getAllSubscriptions = async (req, reply) => {
  * get details of all the subscribers of a creator
  */
 exports.getSubscribers = async (req, reply) => {
-try { // https://stackoverflow.com/a/40539133/9259701
-    // do a script that'll regularly update out db
-/*         let page_number = 1;
-        let endData = [];
-        fetchSubs = () => {
-            return new Promise((resolve, reject) => { // https://stackoverflow.com/a/59274104/9259701
-                
-                let options = { // https://nodejs.org/api/http.html#http_http_request_url_options_callback
-                    hostname: 'api.flutterwave.com', // don't add protocol
-                    port: 443, // optional
-                    path: `/v3/payment-plans?page=${page_number}`,
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${process.env.FLUTTERWAVE_SEC_KEY}`
-                    }
-                };
+try {
+        // not req.query.username use req.query.id in prod
+
+        // https://stackoverflow.com/a/13437802/9259701
+        // also check if their subscription is still active
+        /* let subs = Subscription.find({
+            'name': new RegExp(`-shukraning-${req.query.id}`, 'gi'),
+            status: 'active'
+        }, { plan_token: 0, id: 0, _id: 0, __v: 0 }) // exclude these fields
         
-                
-                //  reading through https://developer.flutterwave.com/reference#get-payment-plans
-                //  we'd need to get all the pages before sending to the front end
-                //  so we'll have to make the calls recurringly until current_page === total_pages
-                //  but for now, we don't have more/up to 10 subscribers
-                https.request(options, (resp) => {
-                    let getData = ''; // very important to initialize
-                    
-                    // A chunk of data has been recieved.
-                    resp.on('data', (chunk) => {
-                        getData += chunk;
-                    });
+        return subs */
+
+        let plans = await getAllPaymentPlans.getAllPaymentPlans;
+        let creatorPlans = plans.filter(plan => plan.name.includes(req.query.id))
+
+        let shuklans = await getAllSubscribers.getAllSubscribers;
+        let creatorShuklans = shuklans.filter(shuklan => creatorPlans.some(plan => plan.id === shuklan.id))
+
+        return creatorShuklans
         
-                    // The whole response has been received.
-                    resp.on('end', () => {
-                        let response = JSON.parse(getData)
-                        console.log('\ndone with \n',resp.url,'\n', response)
-                        //  {meta: { page_info: { total: 11, current_page: 1, total_pages: 2 }
-                        if (response.status === "success" && response.meta.page_info.current_page < response.meta.page_info.total_pages) {
-                            console.log('subs ss s\n', response)
-                            endData.push(response.data)
-                            page_number++
-                            console.info('\nwe\'re going again', page_number)
-                            fetchSubs();
-                            
-                        } else if (response.status === "success" && response.meta.page_info.current_page === response.meta.page_info.total_pages) {
-
-                            // push last bit
-                            endData.push(response.data)
-                            // let's test
-                            // endData = endData.filter(sub => sub.name.includes(req.query.id))
-                            console.log('\nwe\'re done\n', endData)
-                            resolve(endData);
-                        } else {
-                            console.error('\nwe\'re NOT done\n')
-                            reject('failed')
-                        }
-                        // resolve(response)
-                    });
-        
-                }).on("error", (err) => {
-                    console.log("Error: ", err, err.message);
-                    // return err
-                    reject(err.message);
-                }).end();
-            })
-        }
-
-        fetchSubs();
- */
-
-    // before we create a new subscription, let's check if we have a subscritpion with that amount before
-    
-
-
-
-
-
-
-    
-    // not req.query.username use req.query.id in prod
-
-    
-
-
-
-
-
-    
-    
-    // https://stackoverflow.com/a/13437802/9259701
-    // also check if their subscription is still active
-    let subs = Subscription.find({
-        'name': new RegExp(`-shukraning-${/* req.query.username */req.query.id}`, 'gi'),
-        status: 'active'
-    }, { plan_token: 0, id: 0, _id: 0, __v: 0 }) // exclude these fields
-    
-    return subs
-
-} catch (err) {
-  throw boom.boomify(err)
-}
+    } catch (err) {
+    throw boom.boomify(err)
+    }
 }
 
 exports.getTotalRevenue = async(req, reply) => {
     let money = Money.find({
-        'data.tx_ref': new RegExp(`-shukraning-${req.query.id}`, 'gi'), // ${/* req.query.id */}
+        'data.tx_ref': new RegExp(`-shukraning-${req.query.id}`, 'gi'),
         'data.status': 'successful'
     }, { _id: 0, __v: 0,
         'event.type': 0,

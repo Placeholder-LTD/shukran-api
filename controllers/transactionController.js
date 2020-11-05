@@ -151,7 +151,7 @@ exports.followTheMoney = async (req, reply) => { // TODO: https://developer.flut
           });
         const mailOptions = {
             from: "Ola from Shukran <contact@useshukran.com>",
-            to: 'nwachukwuossai@gmail.com;theolaakomolafe@gmail.com',
+            to: 'nwachukwuossai@gmail.com; theolaakomolafe@gmail.com',
             subject: "A transact just happened",
             generateTextFromHTML: true,
             html: "<h2>Hi <b>We got webhook data like:</b></h2>"
