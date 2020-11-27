@@ -1,5 +1,5 @@
 .DS_Store
 node_modules/
-test*.js
-
+test[0-9].js
+test*.json
 *.log

@@ -67,6 +67,11 @@ const routes = [
     },
     {
         method: 'POST',
+        url: '/api/createcontent/',
+        handler: userController.createContent
+    },
+    {
+        method: 'POST',
         url: '/api/createtransaction/',
         handler: transactionController.createTransaction
     },

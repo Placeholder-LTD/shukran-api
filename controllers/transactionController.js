@@ -28,10 +28,8 @@ exports.createTransaction = async (req, reply) => {
                        to: email,
                        subject: "You just got tipped " + req.body.username.capitalize(),
                        generateTextFromHTML: true,
-                       html: "<h2>Hi <b>"+ req.body.username.capitalize() + ",</b></h2>" +
-                       (req.body.tx_ref.includes('shukraning-') ? 
-                       "You just got a new shuclan, " + req.body.supporter_nickname :
-                       + req.body.supporter_nickname + " just tipped you!") + "<br>"
+                       html: "<h3>Hi, <b>" + req.body.username.capitalize() + "</h3></b> "
+                       + req.body.supporter_nickname + " just tipped you!" + "<br>"
                        + "<a href='https://useshukran.com/accounts'>Login to find out how much.</a>"
                        };
 
@@ -64,7 +62,7 @@ exports.requestPayout = async (req, reply) => {
                        subject: "Payout request by " + req.body.username.capitalize(),
                        generateTextFromHTML: true,
                        html: "<h2>Hey, <b>"+ req.body.username.capitalize() + "<"+email+"> just requested a payout of ₦"+req.body.amount+"</b></h2>"
-                       + "So just pay ₦"+req.body.amount+" .Please attend to it! Thanks"
+                       + "So just pay ₦"+req.body.amount+". Please attend to it! Thanks."
                        };
 
                     smtpTransport.sendMail(mailOptions, (error, response) => {
@@ -153,7 +151,7 @@ exports.followTheMoney = async (req, reply) => { // TODO: https://developer.flut
           });
         const mailOptions = {
             from: "Ola from Shukran <contact@useshukran.com>",
-            to: 'nwachukwuossai@gmail.com;theolaakomolafe@gmail.com',
+            to: 'nwachukwuossai@gmail.com; theolaakomolafe@gmail.com',
             subject: "A transact just happened",
             generateTextFromHTML: true,
             html: "<h2>Hi <b>We got webhook data like:</b></h2>"
