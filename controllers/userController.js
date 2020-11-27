@@ -688,7 +688,6 @@ exports.createContent = async (req, reply) => {
                     console.log('File [' + fieldname + '] Finished. Got ' + 'bytes');
                 });
                 
-                
                 try {
                     // const acceptedfiles = ['image/gif', 'image/jpeg', 'image/png', 'image/tiff', 'image/vnd.wap.wbmp', 'image/x-icon', 'image/x-jng', 'image/x-ms-bmp', 'image/svg+xml', 'image/webp'];
 
@@ -712,7 +711,7 @@ exports.createContent = async (req, reply) => {
                         let g = await ggle.drive.files.create({
                             resource: fileMetadata,
                             media: media,
-                            fields: 'id, webViewLink',
+                            fields: 'id, webViewLink, thumbnailLink',
                         });
 
                         if (g.data.id) {
@@ -726,6 +725,7 @@ exports.createContent = async (req, reply) => {
                             update = await User.findByIdAndUpdate(updateData['creator_id'], { $push: { content: up } }, { new: true })
                             console.info('g.data.webViewLink', g.data.webViewLink)
                             console.info('update is:', update)
+                            console.info('g.data.thumbnailLink', g.data.thumbnailLink)
                             reply.code(200).send(update) // TODO: we should generate a shukran link for them to share
                         }
                     }
@@ -789,7 +789,7 @@ exports.updateUser = async (req, reply) => {
                         let g = await ggle.drive.files.create({
                             resource: fileMetadata,
                             media: media,
-                            fields: 'id',
+                            fields: 'id, thumbnailLink',
                         });
                         if (g.data.id) {
                             updateData['picture_id'] = g.data.id
