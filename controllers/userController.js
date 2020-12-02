@@ -10,6 +10,25 @@ String.prototype.capitalize = function () {
     return this.charAt(0).toUpperCase() + this.slice(1);
 }
 
+function handleErrors(err) {
+    console.error('handleErrors output', err.message, err.code);
+
+    let error = {} // error feedback object
+    if (err.message.includes('user validation failed')) {
+        Object.values(err.errors).forEach(({properties}) => {
+            // console.log(properties);
+            error[properties.path] = properties
+        })
+    }
+
+    // if a duplicate tried to be inserted
+    if (err.code === 11000) { // needs work! what if it's the username that was a duplicate
+        error.email = 'That email already exists'
+    }
+
+    return error
+}
+
 // Add a new user
 // add shukran spot light link
 exports.signup = async (req, reply) => {
@@ -563,12 +582,12 @@ exports.signup = async (req, reply) => {
             // un-neccessary todo... confirm that we have the right parent folders
             req.body.folder_id = g.data.id
             // then...
-            const user = new User(req.body)
             return user.save()
         } else {
             return { "message": "User's email exist" }
         }
     } catch (err) {
+        handleErrors(err)
         throw boom.boomify(err)
     }
 }
@@ -594,7 +613,7 @@ exports.login = async (req, reply) => {
         console.log('what is a', a);
         // check if they have a folder_id
         // if not, create for them
-        if (!a[0].folder_id) {
+        if (a[0] && !a[0].folder_id) {
             console.log('\ncreating folder\n');
             // create a folder for them in ..."our space"
             let file = await ggle.drive.files.create({

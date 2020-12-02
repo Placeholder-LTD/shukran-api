@@ -1,10 +1,17 @@
 const mongoose = require('mongoose')
+const { isEmail } = require('validator')
 
 const userSchema = new mongoose.Schema({
-    username: String,
+    username: {
+        type: String,
+        required: [true, 'Please provide a username'],
+        unique: [true, 'Seems username already exists'],
+    },
     email: {
         type: String,
-        required: [true, 'Please provide an email']
+        required: [true, 'Please provide an email'],
+        unique: [true, 'Seems email already exists'],
+        validate: [isEmail, 'Please provide a valid email']
     },
     password: String,
     fullname: String,
