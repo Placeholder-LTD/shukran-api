@@ -46,6 +46,7 @@ const userSchema = new mongoose.Schema({
         },
         web_view_link: String,
         file_id: String,
+        description: String, // some text by the creator to make the product enticing to their audience.
     }],
     /* subscribers: [{
         email: String,

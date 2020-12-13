@@ -600,6 +600,7 @@ exports.getAll = async (req, reply) => {
         throw boom.boomify(error)
     }
 }
+
 exports.login = async (req, reply) => {
     try {
         var username = req.body.username
@@ -761,6 +762,35 @@ exports.createContent = async (req, reply) => {
     }
 }
 
+/**
+ * 
+ * @param {*} req 
+ * @param {*} reply 
+ * 
+ * TODO: Creators can update file content
+ */
+exports.updateContentDescription = async (req, reply) => {
+    try {
+        const id = req.body.id
+        const users = req.body
+        const { updateData } = users
+        console.log('\n\n\n', updateData);
+
+        const update = await User.updateOne(
+            {_id: id, "content._id": users.content_id}, 
+            {
+                $set: {
+                    "content.$.description": updateData.description
+                }
+            },
+            { new: true }
+        )
+        return update
+    } catch (err) {
+        throw boom.boomify(err) // should we be throwing errors?
+    }
+}
+
 exports.updateUser = async (req, reply) => {
     try {
 
@@ -830,7 +860,7 @@ exports.updateUser = async (req, reply) => {
             const users = req.body
             const { ...updateData } = users
 
-            const update = await User.findByIdAndUpdate(id, updateData, { new: true })
+            const update = await User.content.findByIdAndUpdate(id, updateData, { new: true })
             return update
         }
     } catch (err) {
