@@ -33,10 +33,10 @@ function handleErrors(err) {
 // add shukran spot light link
 exports.signup = async (req, reply) => {
     try {
-        var check = User.find({
+        let user = User.find({
             $or: [{ 'email': req.body.email, 'username': req.body.username }]
         })
-        if ((await check).length === 0) {
+        if ((await user).length === 0) {
             // set up email
             const smtpTransport = nodemailer.createTransport({
                 host: 'smtp.zoho.com',
@@ -542,7 +542,7 @@ exports.signup = async (req, reply) => {
                 <div style="color:#000000;font-family:Lato, Tahoma, Verdana, Segoe, sans-serif;line-height:1.5;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
                 <div style="font-family: Lato, Tahoma, Verdana, Segoe, sans-serif; font-size: 12px; line-height: 1.5; color: #000000; mso-line-height-alt: 18px;">
                 <p style="font-size: 14px; line-height: 1.5; text-align: center; word-break: break-word; font-family: Lato, Tahoma, Verdana, Segoe, sans-serif; mso-line-height-alt: 21px; margin: 0;"><span style="font-size: 14px;"><strong>Shukran</strong> is a product of Placeholder LTD</span></p>
-                <p style="font-size: 12px; line-height: 1.5; text-align: center; word-break: break-word; font-family: Lato, Tahoma, Verdana, Segoe, sans-serif; mso-line-height-alt: 18px; margin: 0;"><span style="font-size: 12px;"> © 2020 Shukran. | Magodo, Phase 1, Lagos Nigeria</span></p>
+                <p style="font-size: 12px; line-height: 1.5; text-align: center; word-break: break-word; font-family: Lato, Tahoma, Verdana, Segoe, sans-serif; mso-line-height-alt: 18px; margin: 0;"><span style="font-size: 12px;"> © ${new Date().getFullYear()} Shukran. | Magodo, Phase 1, Lagos Nigeria</span></p>
                 </div>
                 </div>
                 <!--[if mso]></td></tr></table><![endif]-->
@@ -594,7 +594,7 @@ exports.signup = async (req, reply) => {
 
 exports.getAll = async (req, reply) => {
     try {
-        var users = User.find()
+        let users = User.find()
         return users
     } catch (error) {
         throw boom.boomify(error)
@@ -603,8 +603,8 @@ exports.getAll = async (req, reply) => {
 
 exports.login = async (req, reply) => {
     try {
-        var username = req.body.username
-        var password = req.body.password
+        let username = req.body.username
+        let password = req.body.password
         const user = User.find({
             $and: [
                 { 'username': username, 'password': password }
@@ -652,8 +652,8 @@ exports.login = async (req, reply) => {
 
 exports.resetPassword = async (req, reply) => {
     try {
-        var username = req.body.username
-        var email = req.body.email
+        let username = req.body.username
+        let email = req.body.email
         const users = User.find({
             $and: [
                 { 'username': username, 'email': email }
@@ -667,8 +667,8 @@ exports.resetPassword = async (req, reply) => {
 
 exports.findMyProfile = async (req, reply) => {
     try {
-        var username = req.body.username
-        var user = User.find({ 'username': username })
+        let username = req.body.username
+        let user = User.find({ 'username': username })
         return user
     } catch (error) {
         throw boom.boomify(error)
@@ -677,8 +677,8 @@ exports.findMyProfile = async (req, reply) => {
 
 exports.deleteUser = async (req, reply) => {
     try {
-        var id = req.body.id
-        var user = User.findByIdAndDelete(id)
+        let id = req.body.id
+        let user = User.findByIdAndDelete(id)
         return user
     } catch (error) {
         throw boom.boomify(error)
@@ -786,6 +786,25 @@ exports.updateContentDescription = async (req, reply) => {
             {
                 $set: {
                     "content.$.description": updateData.description
+                }
+            },
+            { new: true }
+        )
+        return update
+    } catch (err) {
+        throw boom.boomify(err) // should we be throwing errors?
+    }
+}
+
+exports.deleteContent = async (req, reply) => {
+    try {
+        console.log('\n\n\n', req.body);
+
+        const update = await User.updateOne(
+            {_id: req.body.id},
+            {
+                $pull: {
+                    "content": {"_id": req.body.content_id}
                 }
             },
             { new: true }

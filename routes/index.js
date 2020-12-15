@@ -77,6 +77,11 @@ const routes = [
     },
     {
         method: 'POST',
+        url: '/api/deletecontent/',
+        handler: userController.deleteContent
+    },
+    {
+        method: 'POST',
         url: '/api/createtransaction/',
         handler: transactionController.createTransaction
     },
