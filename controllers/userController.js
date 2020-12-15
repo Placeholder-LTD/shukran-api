@@ -637,7 +637,12 @@ exports.login = async (req, reply) => {
                 a = [updateUser] // replace a, updated version
             }
         }
-
+        // sort content from backend because we don't have energy in frontend
+        if (a[0].content.length > 1) {
+            a[0].content.sort(function compareDates(d1, d2) {
+                return d2.created_at < d1.created_at ? -1 : 1
+            })
+        }
         return a
         
     } catch (err) {
