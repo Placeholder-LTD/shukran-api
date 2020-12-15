@@ -4,6 +4,7 @@ const nodemailer = require("nodemailer");
 const User = require('../models/User')
 
 const ggle = require('../helpers/uploadgdrive');
+const { update } = require('../models/User');
 
 // Capitalize function
 String.prototype.capitalize = function () {
@@ -33,10 +34,10 @@ function handleErrors(err) {
 // add shukran spot light link
 exports.signup = async (req, reply) => {
     try {
-        let user = User.find({
+        let check = User.find({
             $or: [{ 'email': req.body.email, 'username': req.body.username }]
         })
-        if ((await user).length === 0) {
+        if ((await check).length === 0) {
             // set up email
             const smtpTransport = nodemailer.createTransport({
                 host: 'smtp.zoho.com',
@@ -582,6 +583,7 @@ exports.signup = async (req, reply) => {
             // un-neccessary todo... confirm that we have the right parent folders
             req.body.folder_id = g.data.id
             // then...
+            const user = new User(req.body)
             return user.save()
         } else {
             return { "message": "User's email exist" }
@@ -747,10 +749,16 @@ exports.createContent = async (req, reply) => {
                                 file_id: g.data.id,
                                 web_view_link: g.data.webViewLink
                             }
-                            update = await User.findByIdAndUpdate(updateData['creator_id'], { $push: { content: up } }, { new: true })
+                            let update = await User.findByIdAndUpdate(updateData['creator_id'], { $push: { content: up } }, { new: true })
                             console.info('g.data.webViewLink', g.data.webViewLink)
                             console.info('update is:', update)
                             console.info('g.data.thumbnailLink', g.data.thumbnailLink)
+
+                            if (update.content.length > 1) {
+                                update.content.sort(function compareDates(d1, d2) {
+                                    return d2.created_at < d1.created_at ? -1 : 1
+                                })
+                            }
                             reply.code(200).send(update) // TODO: we should generate a shukran link for them to share
                         }
                     }
@@ -884,7 +892,7 @@ exports.updateUser = async (req, reply) => {
             const users = req.body
             const { ...updateData } = users
 
-            const update = await User.content.findByIdAndUpdate(id, updateData, { new: true })
+            const update = await User.findByIdAndUpdate(id, updateData, { new: true })
             return update
         }
     } catch (err) {
