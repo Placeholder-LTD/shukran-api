@@ -818,6 +818,7 @@ exports.deleteContent = async (req, reply) => {
             { new: true }
         )
         return update
+        // delete from Google Drive too?
     } catch (err) {
         throw boom.boomify(err) // should we be throwing errors?
     }
