@@ -738,7 +738,7 @@ exports.createContent = async (req, reply) => {
                         let g = await ggle.drive.files.create({
                             resource: fileMetadata,
                             media: media,
-                            fields: 'id, webViewLink, thumbnailLink',
+                            fields: 'id, webViewLink, thumbnailLink, webContentLink', // https://stackoverflow.com/q/37860901
                         });
 
                         if (g.data.id) {
@@ -747,7 +747,8 @@ exports.createContent = async (req, reply) => {
                                 filename: filename,
                                 file_type: mimetype,
                                 file_id: g.data.id,
-                                web_view_link: g.data.webViewLink
+                                web_view_link: g.data.webViewLink,
+                                web_content_link: g.data.webContentLink
                             }
                             let update = await User.findByIdAndUpdate(updateData['creator_id'], { $push: { content: up } }, { new: true })
                             console.info('g.data.webViewLink', g.data.webViewLink)

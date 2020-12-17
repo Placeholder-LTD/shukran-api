@@ -44,7 +44,14 @@ const userSchema = new mongoose.Schema({
             type: Date,
             default: Date.now
         },
-        web_view_link: String,
+        web_view_link: {
+            type: String,
+            default: null
+        },
+        web_content_link: {
+            type: String,
+            default: null
+        },
         file_id: String,
         description: String, // some text by the creator to make the product enticing to their audience.
     }],
