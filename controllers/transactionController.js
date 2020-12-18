@@ -38,8 +38,9 @@ exports.createTransaction = async (req, reply) => {
                         smtpTransport.close();
                     });
                     /**
-                     * check if they have a cookie named 'shukran-subs',
-                     * if they do, it's an array, add the id of the creator they subscribed to.
+                     * cookie should be an object names _shukran
+                     * we should have an array in the _shukran object named shukran-subs
+                     * add the id of the creator they subscribed to in the array.
                      * if they don't, create an array with the id of the creator in it.
                      */
                     if (req.body.tx_ref.includes('-shukraning-')) { // important bit
@@ -47,15 +48,21 @@ exports.createTransaction = async (req, reply) => {
                             req.body.tx_ref.lastIndexOf("-") + 1, 
                             req.body.tx_ref.indexOf(" ")
                         );
-                        if (req.cookies['shukran-subs']) { // add to pre-existing array
-                            reply.setCookie('shukran-subs', JSON.parse(req.cookies['shukran-subs']).push(crID), {
+                        if (req.cookies['_shukran']) { // add to pre-existing array
+                            let ck = JSON.parse(req.cookies['_shukran']) // get our cookie, which is an object
+                            ck['shukran-subs'].push(crID)
+                            reply.setCookie('shukran-subs', JSON.parse(ck), {
                                 // path: '/cr',
                                 // httpOnly: true, // if running live
                                 // secure: true, // should we ?
                                 signed: true
                             })
                         } else { // create new array
-                            reply.setCookie('shukran-subs', JSON.stringify([crID]), {
+                            let newCk = {
+                                supporter_email: req.body.supporter_email,
+                                "shukran-subs": [crID]
+                            }
+                            reply.setCookie('_shukran', JSON.stringify(newCk), {
                                 // path: '/cr',
                                 // httpOnly: true, // if running live
                                 // secure: true, // should we ?
