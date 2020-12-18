@@ -37,7 +37,33 @@ exports.createTransaction = async (req, reply) => {
                         error ? console.log(error) : console.log(response);
                         smtpTransport.close();
                     });
-                   return transaction.save() // TODO https://developer.flutterwave.com/docs/transaction-verification
+                    /**
+                     * check if they have a cookie named 'shukran-subs',
+                     * if they do, it's an array, add the id of the creator they subscribed to.
+                     * if they don't, create an array with the id of the creator in it.
+                     */
+                    if (req.body.tx_ref.includes('-shukraning-')) { // important bit
+                        let crID = req.body.tx_ref.substring( // extract creator ID
+                            req.body.tx_ref.lastIndexOf("-") + 1, 
+                            req.body.tx_ref.indexOf(" ")
+                        );
+                        if (req.cookies['shukran-subs']) { // add to pre-existing array
+                            reply.setCookie('shukran-subs', JSON.parse(req.cookies['shukran-subs']).push(crID), {
+                                // path: '/cr',
+                                // httpOnly: true, // if running live
+                                // secure: true, // should we ?
+                                signed: true
+                            })
+                        } else { // create new array
+                            reply.setCookie('shukran-subs', JSON.stringify([crID]), {
+                                // path: '/cr',
+                                // httpOnly: true, // if running live
+                                // secure: true, // should we ?
+                                signed: true
+                            })
+                        }
+                    }
+                   reply.send(transaction.save())// return transaction.save() // TODO https://developer.flutterwave.com/docs/transaction-verification
          
     } catch (err) {
       throw boom.boomify(err)

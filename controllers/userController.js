@@ -645,7 +645,7 @@ exports.login = async (req, reply) => {
                 return d2.created_at < d1.created_at ? -1 : 1
             })
         }
-        return a
+        reply.send(a) // return a
         
     } catch (err) {
         throw boom.boomify(err)

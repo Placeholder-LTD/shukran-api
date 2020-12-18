@@ -3,6 +3,10 @@ require('dotenv').config()
 const fastify = require('fastify')({
     logger: true
 })
+fastify.register(require('fastify-cookie'), {
+  secret: process.env.SECRET_KEY, // for cookies signature
+  parseOptions: {}     // options for parsing cookies
+})
 const cors = require('cors')
 
 let db = process.env.ATLAS_CONNECTION_STRING
