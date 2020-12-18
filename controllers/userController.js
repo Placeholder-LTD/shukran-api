@@ -667,11 +667,29 @@ exports.resetPassword = async (req, reply) => {
     }
 }
 
+/**
+ * 
+ * @param {object} req 
+ * @param {object} reply 
+ * 
+ * used to fetch creator data for support page (/cr/creatorname)
+ * here's the logic we use to determine what content we show for the supporter.
+ * we check the cookie and also the money threshold
+ */
 exports.findMyProfile = async (req, reply) => {
     try {
         let username = req.body.username
-        let user = User.find({ 'username': username })
-        return user
+        User.find({ 'username': username }, (err, user) => { // user is an array
+            if (err) {
+                reply.send(null) // should change...
+            } else if (user.length === 1) {
+                console.log('\n\n', user);
+                // we strip the contents based on what the user should see
+                reply.send(user)
+            } else if (user.length === 0) {
+                reply.send(null) // user doesn't exist
+            }
+        })
     } catch (error) {
         throw boom.boomify(error)
     }
@@ -794,7 +812,9 @@ exports.updateContentDescription = async (req, reply) => {
             {_id: id, "content._id": users.content_id}, 
             {
                 $set: {
-                    "content.$.description": updateData.description
+                    "content.$.description": updateData.description,
+                    "content.$.threshold.amount": updateData.price,
+                    "content.$.threshold.currency": updateData.currency
                 }
             },
             { new: true }

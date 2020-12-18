@@ -52,6 +52,10 @@ const userSchema = new mongoose.Schema({
             type: String,
             default: null
         },
+        threshold: {
+            amount: Number,
+            currency: String
+        },
         file_id: String,
         description: String, // some text by the creator to make the product enticing to their audience.
     }],
