@@ -37,6 +37,21 @@ exports.createTransaction = async (req, reply) => {
                         error ? console.log(error) : console.log(response);
                         smtpTransport.close();
                     });
+                    // save a cookie with the supporter_email
+                    if (req.cookies['_shukran']) {
+                        // maybe do nothing here, or check if the email here is the same email that paid before, if not, add it... hmm
+
+                    } else { // save cookie, so we always have this with every request.
+                        let _ck = {
+                            supporter_email: req.body.supporter_email,
+                        }
+                        reply.setCookie('_shukran', JSON.parse(_ck), {
+                            // path: '/cr',
+                            // httpOnly: true, // if running live
+                            // secure: true, // should we ?
+                            signed: true
+                        })
+                    }
                     /**
                      * cookie should be an object names _shukran
                      * we should have an array in the _shukran object named shukran-subs
@@ -51,7 +66,7 @@ exports.createTransaction = async (req, reply) => {
                         if (req.cookies['_shukran']) { // add to pre-existing array
                             let ck = JSON.parse(req.cookies['_shukran']) // get our cookie, which is an object
                             ck['shukran-subs'].push(crID)
-                            reply.setCookie('shukran-subs', JSON.parse(ck), {
+                            reply.setCookie('_shukran', JSON.parse(ck), {
                                 // path: '/cr',
                                 // httpOnly: true, // if running live
                                 // secure: true, // should we ?

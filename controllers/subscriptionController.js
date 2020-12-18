@@ -3,8 +3,8 @@ const nodemailer = require("nodemailer");
 const https = require('https');
 const Subscription = require('../models/Subscription')
 const Money = require('../models/Money')
-const getAllSubscribers = require('../flutterwave-api-calls/test-get-all-subscribers')
-const getAllPaymentPlans = require('../flutterwave-api-calls/test-get-all-payment-plans')
+const getAllSubscribers = require('../flutterwave-api-calls/get-all-subscribers')
+const getAllPaymentPlans = require('../flutterwave-api-calls/get-all-payment-plans')
 
 /**
  * when creating a subscription, who is this person deciding to subscribe to?

@@ -684,7 +684,12 @@ exports.findMyProfile = async (req, reply) => {
                 reply.send(null) // should change...
             } else if (user.length === 1) {
                 console.log('\n\n', user);
-                // we strip the contents based on what the user should see
+                // we strip the contents based on what the user should see, how they've subscribed.
+                if (req.cookies['_shukran']) { // check this...
+                    
+                }
+                // OR,
+                // get subscribers for this user.
                 reply.send(user)
             } else if (user.length === 0) {
                 reply.send(null) // user doesn't exist
