@@ -1,7 +1,7 @@
 {
   "name": "shukran-api",
   "version": "1.0.0",
-  "description": "The backend for creators.",
+  "description": "The backend for creators to earn.",
   "main": "index.js",
   "engines": {
     "node": "12.x"
@@ -9,7 +9,12 @@
   "scripts": {
     "start": "nodemon index.js"
   },
-  "keywords": [],
+  "keywords": [
+    "creators",
+    "earn",
+    "audience",
+    "Africans"
+  ],
   "author": "@wachukxs, @theakomolafe, Obakam Tom-George",
   "license": "ISC",
   "dependencies": {

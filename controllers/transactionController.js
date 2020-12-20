@@ -44,6 +44,7 @@ exports.createTransaction = async (req, reply) => {
                     } else { // save cookie, so we always have this with every request.
                         let _ck = {
                             supporter_email: req.body.supporter_email,
+                            'shukran-subs': []
                         }
                         reply.setCookie('_shukran', JSON.parse(_ck), {
                             // path: '/cr',

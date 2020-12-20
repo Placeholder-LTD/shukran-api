@@ -6,6 +6,12 @@ const User = require('../models/User')
 const ggle = require('../helpers/uploadgdrive');
 const { update } = require('../models/User');
 
+
+// maybe do a script/cronjob that'll regularly update our db
+const getAllSubscribers = require('../flutterwave-api-calls/get-all-subscribers')
+const getAllPaymentPlans = require('../flutterwave-api-calls/get-all-payment-plans');
+const { resolveContent } = require('nodemailer/lib/shared');
+
 // Capitalize function
 String.prototype.capitalize = function () {
     return this.charAt(0).toUpperCase() + this.slice(1);
@@ -675,24 +681,53 @@ exports.resetPassword = async (req, reply) => {
  * used to fetch creator data for support page (/cr/creatorname)
  * here's the logic we use to determine what content we show for the supporter.
  * we check the cookie and also the money threshold
+ * 
+ * WHAT IF THEY CLEAR THEIR COOKIES... WE SHOULD BE USING DATABASE
  */
 exports.findMyProfile = async (req, reply) => {
     try {
         let username = req.body.username
         User.find({ 'username': username }, (err, user) => { // user is an array
             if (err) {
-                reply.send(null) // should change...
+                reply.send(null) // should change... shouldn't be just null
             } else if (user.length === 1) {
                 console.log('\n\n', user);
                 // we strip the contents based on what the user should see, how they've subscribed.
-                if (req.cookies['_shukran']) { // check this...
+                if (req.cookies['_shukran'] && JSON.parse(req.cookies['_shukran'])['shukran-subs'].length > 0) { // check this...
                     
+                    // if they're subscribed to the creator
+                    let _subs = JSON.parse(req.cookies['_shukran'])['shukran-subs'];
+                    if (pets.includes('cat')) {
+                        
+                    } else {
+                        
+                    }
+                    Promise.all([ // get subscribers for this user.
+                            getAllPaymentPlans.getAllPaymentPlans,
+                            getAllSubscribers.getAllSubscribers
+                        ])
+                        .then(([plans, shuclans]) => {
+                            // console.log('got shuclans', shuclans.length);
+                            // console.log('got plans', plans.length);
+                            let creatorPlans = plans.filter(plan => plan.name.includes(creator_id))
+                            console.log('No. of creatorPlans', creatorPlans.length)
+                            
+                            let creatorShuclans = shuclans.filter(shuklan => creatorPlans.some(plan => plan.id === shuklan.id))
+                            console.log('No. of creatorShuclans', creatorShuclans.length)
+                            
+                            // we filter out the contents based on the supporter's money
+
+                            // resolve(creatorShuclans)
+                            resolve();
+                    }).catch((error) => {
+                        reject(error)
+                    });
+                } else { // OR, send user without content
+                    delete user[0].content
+                    reply.send(user)
                 }
-                // OR,
-                // get subscribers for this user.
-                reply.send(user)
             } else if (user.length === 0) {
-                reply.send(null) // user doesn't exist
+                reply.send(null) // user doesn't exist, should change too...
             }
         })
     } catch (error) {
