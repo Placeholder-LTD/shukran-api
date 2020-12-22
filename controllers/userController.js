@@ -683,6 +683,7 @@ exports.resetPassword = async (req, reply) => {
  * we check the cookie and also the money threshold
  * 
  * WHAT IF THEY CLEAR THEIR COOKIES... WE SHOULD BE USING DATABASE
+ * we don't save in database because when supporters unsubscribe, we can't know in real time... so we might need to be running a cron job to regularly update our db if we go with that route.
  */
 exports.findMyProfile = async (req, reply) => {
     try {
@@ -691,18 +692,19 @@ exports.findMyProfile = async (req, reply) => {
             if (err) {
                 reply.send(null) // should change... shouldn't be just null
             } else if (user.length === 1) {
-                console.log('\n\n', user);
                 // we strip the contents based on what the user should see, how they've subscribed.
                 if (req.cookies['_shukran'] && JSON.parse(req.cookies['_shukran'])['shukran-subs'].length > 0) { // check this...
                     
                     // if they're subscribed to the creator
+                    // another thing we could do is save the device_id we get from flutterwave,
+                    // if they don't have _shukran cookie, ... we could make use of the device id... but we'd need our own, and not flutterwave or we could just use what ever flutterwave uses for consistency, so we can track the user device even if they use a different browser on that device ...but we'd need to have their device id saved somewhere... to verify : AND THERE'S NO WAY TO DO THAT NOW.
                     let _subs = JSON.parse(req.cookies['_shukran'])['shukran-subs'];
-                    if (pets.includes('cat')) {
-                        
-                    } else {
-                        
-                    }
-                    Promise.all([ // get subscribers for this user.
+                    let _supporter_email = JSON.parse(req.cookies['_shukran'])['supporter_email']
+                    if (_subs.includes(user[0]._id)) { // they're subsribed to this user.
+                        // filter out all the contents that's above what the supporter is paying.
+
+                        // or should we store as a cookie too? the price they subscribed?
+                        Promise.all([ // get subscribers for this user.
                             getAllPaymentPlans.getAllPaymentPlans,
                             getAllSubscribers.getAllSubscribers
                         ])
@@ -714,16 +716,30 @@ exports.findMyProfile = async (req, reply) => {
                             
                             let creatorShuclans = shuclans.filter(shuklan => creatorPlans.some(plan => plan.id === shuklan.id))
                             console.log('No. of creatorShuclans', creatorShuclans.length)
+
+                            // so how much are they (the supporter) paying?
+                            let _schln = creatorShuclans.find(shcln => shcln.customer.customer_email === _supporter_email)
                             
                             // we filter out the contents based on the supporter's money
+                            // so what if a clever dev just copies the download link, and shares the link... we need to block access to content unless it's us accessing it. And unless the refeerer of the download request is coming from useshukran.com[/cr/creatorname]
+                            user[0].content = user[0].content.filter(cntnt => cntnt.threshold.amount <= _schln.amount) // <= ?? or >= ??
 
                             // resolve(creatorShuclans)
-                            resolve();
+                            // resolve(); // should we call this?
+                            console.log('\n\n', user);
+                            reply.send(user)
                     }).catch((error) => {
                         reject(error)
                     });
+
+                    } else { // what if it's free ? the amount is just 0.00
+                        // delete some of user[0].content
+                        user[0].content = user[0].content.filter(cntnt => cntnt.threshold.amount == 0)
+                        reply.send(user)
+                    }
                 } else { // OR, send user without content
-                    delete user[0].content
+                    user[0].content = [] // delete user[0].content
+                    console.log(':here? \n', user);
                     reply.send(user)
                 }
             } else if (user.length === 0) {
@@ -841,14 +857,14 @@ exports.createContent = async (req, reply) => {
  * 
  * TODO: Creators can update file content
  */
-exports.updateContentDescription = async (req, reply) => {
+exports.updateContentMetaData = async (req, reply) => {
     try {
         const id = req.body.id
         const users = req.body
         const { updateData } = users
         console.log('\n\n\n', updateData);
 
-        const update = await User.updateOne(
+        const update = await User.findOneAndUpdate( // updateOne() doesn't return the document from the db
             {_id: id, "content._id": users.content_id}, 
             {
                 $set: {
@@ -860,6 +876,29 @@ exports.updateContentDescription = async (req, reply) => {
             { new: true }
         )
         return update
+    } catch (err) {
+        throw boom.boomify(err) // should we be throwing errors?
+    }
+}
+
+exports.updateContentPrice = async (req, reply) => {
+    try {
+        const id = req.body.id
+        const users = req.body
+        const { updateData } = users
+        console.log('\n\n\n', updateData);
+
+        const update = await User.findOneAndUpdate( // updateOne() doesn't return the document from the db
+            {_id: id, "content._id": users.content_id}, 
+            {
+                $set: {
+                    "content.$.threshold.amount": updateData.price,
+                    "content.$.threshold.currency": updateData.currency
+                }
+            },
+            { new: true }
+        )
+        reply.send(update) // return update
     } catch (err) {
         throw boom.boomify(err) // should we be throwing errors?
     }

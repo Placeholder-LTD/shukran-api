@@ -53,7 +53,10 @@ const userSchema = new mongoose.Schema({
             default: null
         },
         threshold: {
-            amount: Number,
+            amount: {
+                type: Number,
+                default: 0.00 // 0.00 means it's free
+            },
             currency: String
         },
         file_id: String,

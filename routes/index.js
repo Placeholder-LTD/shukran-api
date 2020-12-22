@@ -72,8 +72,13 @@ const routes = [
     },
     {
         method: 'POST',
-        url: '/api/updatecontentdescription/',
-        handler: userController.updateContentDescription
+        url: '/api/updatecontentmetadata/',
+        handler: userController.updateContentMetaData
+    },
+    {
+        method: 'POST',
+        url: '/api/updatecontentprice/',
+        handler: userController.updateContentPrice
     },
     {
         method: 'POST',

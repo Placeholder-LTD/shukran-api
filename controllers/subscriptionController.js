@@ -8,6 +8,8 @@ const getAllPaymentPlans = require('../flutterwave-api-calls/get-all-payment-pla
 
 /**
  * when creating a subscription, who is this person deciding to subscribe to?
+ * 
+ * TODO: we should only send the email message after the first subscription payment
  */
 exports.createSubscription = async (req, reply) => { // https://attacomsian.com/blog/node-make-http-requests
     try { // https://stackoverflow.com/a/40539133/9259701
@@ -76,12 +78,12 @@ exports.createSubscription = async (req, reply) => { // https://attacomsian.com/
                 const mailOptions = {
                     from: 'Ola from Shukran <contact@useshukran.com>',
                     to: req.body.supporter_email,
-                    subject: "Hey, " + "thank you for joining " +  req.body.creator+"'s" + " Shuclan!",
+                    subject: "Hey, thank you for joining " +  req.body.creator+"'s" + " Shuclan!",
                     generateTextFromHTML: true,
-                    html: `<h3>Thank you for choosing to support this creator monthly.</h3>
-                    <p>Your support means alot to them. Please feel free to talk about this by sharing using this button: </p>
+                    html: `<h3>Thank you for choosing to support ${req.body.creator} monthly.</h3>
+                    <p>Your support means alot to them. Please feel free to talk about this by tweeting using this link: </p>
                     <a href="https://twitter.com/intent/tweet?url=http%3A%2F%2Fuseshukran.com%2F&text=I+just+joined+a+creator's+Shuclan+on
-                    +@useshukran.+You+too+can+find+creators+to+support+here:&hashtags=saythanks,shukran"
+                    +@useshukran.+You+can+support+your+favorite+creator+too+here:&hashtags=saythanks,shukran"
                     target="blank">Tell others</a>
                     `
                 }
@@ -89,7 +91,7 @@ exports.createSubscription = async (req, reply) => { // https://attacomsian.com/
                 const mailOptionsCreator = {
                     from: 'Ola from Shukran <contact@useshukran.com>',
                     to: req.body.creator_email,
-                    subject: "Hey, "+  req.body.creator+" someone just joined your " + "Shuclan!",
+                    subject: "Hey, " + req.body.creator + " someone just joined your Shuclan!",
                     generateTextFromHTML: true,
                     // tell them to log in to find out how much, & that means we'll be showing newest shuclan members in vue end
                     html: `<h3>Hey! We are excited to announce that someone has joined your Shuclan.</h3>
@@ -128,6 +130,7 @@ exports.createSubscription = async (req, reply) => { // https://attacomsian.com/
       throw boom.boomify(err)
     }
 }
+
 exports.getAllSubscriptions = async (req, reply) => {
     try {
         return new Promise((resolve, reject) => { // https://stackoverflow.com/a/59274104/9259701
@@ -191,7 +194,7 @@ try {
         let shuklans = await getAllSubscribers.getAllSubscribers;
         let creatorShuklans = shuklans.filter(shuklan => creatorPlans.some(plan => plan.id === shuklan.id))
 
-        return creatorShuklans
+        reply.send(creatorShuklans) // return creatorShuklans
         
     } catch (err) {
     throw boom.boomify(err)

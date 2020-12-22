@@ -1,7 +1,7 @@
 require('dotenv').config()
 // Require the framework and instantiate it
 const fastify = require('fastify')({
-    logger: true
+  logger: true
 })
 fastify.register(require('fastify-cookie'), {
   secret: process.env.SECRET_KEY, // for cookies signature
