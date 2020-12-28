@@ -622,7 +622,7 @@ exports.login = async (req, reply) => {
         console.log('what is a', a);
         // check if they have a folder_id
         // if not, create for them
-        if (a[0] && !a[0].folder_id) {
+        if (a.length >= 1 && !a[0].folder_id) {
             console.log('\ncreating folder\n');
             // create a folder for them in ..."our space"
             let file = await ggle.drive.files.create({
@@ -644,12 +644,13 @@ exports.login = async (req, reply) => {
                 console.log('user update', updateUser) // is single obj
                 a = [updateUser] // replace a, updated version
             }
-        }
-        // sort content from backend because we don't have energy in frontend
-        if (a[0].content.length > 1) {
-            a[0].content.sort(function compareDates(d1, d2) {
-                return d2.created_at < d1.created_at ? -1 : 1
-            })
+
+            // sort content from backend because we don't have energy in frontend
+            if (a[0].content.length > 1) {
+                a[0].content.sort(function compareDates(d1, d2) {
+                    return d2.created_at < d1.created_at ? -1 : 1
+                })
+            }
         }
         reply.send(a) // return a
         
