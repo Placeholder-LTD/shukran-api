@@ -13,7 +13,7 @@ module.exports.send2020Highlights = async () => {
 
     const mailOptions = {
         from: `Shukran Team <contact@useshukran.com>`,
-        to: 'obakamtomgeorge@gmail.com ',
+        to: ['Obakam Tom-George <obakamtomgeorge@gmail.com>', 'Chuks <nwachukwuossai@gmail.com>'],
         subject: 'Your 2020 Highlight',
         generateTextFromHTML: true,
         html: `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -224,7 +224,7 @@ module.exports.send2020Highlights = async () => {
         <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:30px; padding-bottom:25px; padding-right: 0px; padding-left: 0px;">
         <!--<![endif]-->
         <div align="center" class="img-container center fixedwidth" style="padding-right: 0px;padding-left: 0px;">
-        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr style="line-height:0px"><td style="padding-right: 0px;padding-left: 0px;" align="center"><![endif]--><img align="center" alt="Your Logo" border="0" class="center fixedwidth" src="https://drive.google.com/uc?export=view&amp;id=1GfeklRxs6fyzI7Kz1qYGKaskU_oHfrLq" style="text-decoration: none; -ms-interpolation-mode: bicubic; height: auto; border: 0; width: 100%; max-width: 136px; display: block;" title="Your Logo" width="136"/>
+        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr style="line-height:0px"><td style="padding-right: 0px;padding-left: 0px;" align="center"><![endif]--><img align="center" alt="Shukran" border="0" class="center fixedwidth" src="https://drive.google.com/uc?export=view&amp;id=1GfeklRxs6fyzI7Kz1qYGKaskU_oHfrLq" style="text-decoration: none; -ms-interpolation-mode: bicubic; height: auto; border: 0; width: 100%; max-width: 136px; display: block;" title="Your Logo" width="136"/>
         <!--[if mso]></td></tr></table><![endif]-->
         </div>
         <table border="0" cellpadding="0" cellspacing="0" class="divider" role="presentation" style="table-layout: fixed; vertical-align: top; border-spacing: 0; border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; min-width: 100%; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;" valign="top" width="100%">
@@ -329,7 +329,7 @@ module.exports.send2020Highlights = async () => {
         <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Arial, sans-serif"><![endif]-->
         <div style="color:#f7ce3e;font-family:'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;line-height:1.5;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
         <div style="line-height: 1.5; font-size: 12px; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #f7ce3e; mso-line-height-alt: 18px;">
-        <p style="font-size: 16px; line-height: 1.5; word-break: break-word; text-align: center; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; mso-line-height-alt: 24px; margin: 0;"><span style="font-size: 16px;">Thank you so much for being a part of our 2020.</span><br/><span style="font-size: 16px;">We've really come to love the community that is you.</span><br/><span style="font-size: 16px;">And we look forward to what you would be achieving in 2021.</span><br/><span style="font-size: 16px;">We hope you have plans as much as we do.</span><br/><span style="font-size: 16px;">Let's create together, and better.</span></p>
+        <p style="font-size: 16px; line-height: 1.5; word-break: break-word; text-align: center; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; mso-line-height-alt: 24px; margin: 0;"><span style="font-size: 16px;">Thank you so much for being a part of our 2020.</span><br/><span style="font-size: 16px;">We've really come to love the community that is you.</span><br/><span style="font-size: 16px;">And we look forward to doing this again in 2021.</span><br/><span style="font-size: 16px;">We hope you have plans as much as we do.</span><br/><span style="font-size: 16px;">Let's create together, and better.</span></p>
         </div>
         </div>
         <!--[if mso]></td></tr></table><![endif]-->
@@ -420,7 +420,7 @@ module.exports.send2020Highlights = async () => {
         <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:10px; padding-bottom:10px; padding-right: 10px; padding-left: 10px;">
         <!--<![endif]-->
         <div align="left" class="img-container left autowidth" style="padding-right: 0px;padding-left: 0px;">
-        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr style="line-height:0px"><td style="padding-right: 0px;padding-left: 0px;" align="left"><![endif]--><img alt="Person Illustration" border="0" class="left autowidth" src="https://drive.google.com/uc?export=view&amp;id=1H5puAyjWeTYbYtSLw49TjMzTlY15Iqxs" style="text-decoration: none; -ms-interpolation-mode: bicubic; height: auto; border: 0; width: 100%; max-width: 206px; display: block;" title="Person Illustration" width="206"/>
+        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr style="line-height:0px"><td style="padding-right: 0px;padding-left: 0px;" align="left"><![endif]--><img alt="Tips Illustration" border="0" class="left autowidth" src="https://drive.google.com/uc?export=view&amp;id=1H5puAyjWeTYbYtSLw49TjMzTlY15Iqxs" style="text-decoration: none; -ms-interpolation-mode: bicubic; height: auto; border: 0; width: 100%; max-width: 206px; display: block;" title="Person Illustration" width="206"/>
         <!--[if mso]></td></tr></table><![endif]-->
         </div>
         <!--[if (!mso)&(!IE)]><!-->
@@ -540,7 +540,7 @@ module.exports.send2020Highlights = async () => {
         <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:10px; padding-bottom:10px; padding-right: 10px; padding-left: 10px;">
         <!--<![endif]-->
         <div align="right" class="img-container right autowidth" style="padding-right: 0px;padding-left: 0px;">
-        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr style="line-height:0px"><td style="padding-right: 0px;padding-left: 0px;" align="right"><![endif]--><img align="right" alt="Post Illustration" border="0" class="right autowidth" src="https://drive.google.com/uc?export=view&amp;id=1zqeuItcvrpnv5rsuOqJw93haGwkfgDcU" style="text-decoration: none; -ms-interpolation-mode: bicubic; height: auto; border: 0; width: 100%; max-width: 206px; float: none; display: block;" title="Post Illustration" width="206"/>
+        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr style="line-height:0px"><td style="padding-right: 0px;padding-left: 0px;" align="right"><![endif]--><img align="right" alt="Supporters Illustration" border="0" class="right autowidth" src="https://drive.google.com/uc?export=view&amp;id=1zqeuItcvrpnv5rsuOqJw93haGwkfgDcU" style="text-decoration: none; -ms-interpolation-mode: bicubic; height: auto; border: 0; width: 100%; max-width: 206px; float: none; display: block;" title="Post Illustration" width="206"/>
         <!--[if mso]></td></tr></table><![endif]-->
         </div>
         <!--[if (!mso)&(!IE)]><!-->
@@ -660,7 +660,7 @@ module.exports.send2020Highlights = async () => {
         <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:10px; padding-bottom:10px; padding-right: 10px; padding-left: 10px;">
         <!--<![endif]-->
         <div align="left" class="img-container left autowidth" style="padding-right: 0px;padding-left: 0px;">
-        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr style="line-height:0px"><td style="padding-right: 0px;padding-left: 0px;" align="left"><![endif]--><img alt="Message Illustration" border="0" class="left autowidth" src="https://drive.google.com/uc?export=view&amp;id=1KzRMM1pBSpByvYdp2YiIc8mRnCMyEf-r" style="text-decoration: none; -ms-interpolation-mode: bicubic; height: auto; border: 0; width: 100%; max-width: 206px; display: block;" title="Message Illustration" width="206"/>
+        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr style="line-height:0px"><td style="padding-right: 0px;padding-left: 0px;" align="left"><![endif]--><img alt="Recurring Tips Illustration" border="0" class="left autowidth" src="https://drive.google.com/uc?export=view&amp;id=1KzRMM1pBSpByvYdp2YiIc8mRnCMyEf-r" style="text-decoration: none; -ms-interpolation-mode: bicubic; height: auto; border: 0; width: 100%; max-width: 206px; display: block;" title="Message Illustration" width="206"/>
         <!--[if mso]></td></tr></table><![endif]-->
         </div>
         <!--[if (!mso)&(!IE)]><!-->
@@ -685,7 +685,7 @@ module.exports.send2020Highlights = async () => {
         <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Arial, sans-serif"><![endif]-->
         <div style="color:#f7ce3e;font-family:'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;line-height:1.5;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
         <div style="line-height: 1.5; font-size: 12px; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #f7ce3e; mso-line-height-alt: 18px;">
-        <p style="font-size: 30px; line-height: 1.5; word-break: break-word; text-align: left; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; mso-line-height-alt: 45px; margin: 0;"><span style="color: #f7ce3e; font-size: 30px;">SHUCLANS</span></p>
+        <p style="font-size: 30px; line-height: 1.5; word-break: break-word; text-align: left; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; mso-line-height-alt: 45px; margin: 0;"><span style="color: #f7ce3e; font-size: 30px;">RECURRING TIPS</span></p>
         </div>
         </div>
         <!--[if mso]></td></tr></table><![endif]-->
@@ -780,7 +780,7 @@ module.exports.send2020Highlights = async () => {
         <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:10px; padding-bottom:10px; padding-right: 10px; padding-left: 10px;">
         <!--<![endif]-->
         <div align="right" class="img-container right autowidth" style="padding-right: 0px;padding-left: 0px;">
-        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr style="line-height:0px"><td style="padding-right: 0px;padding-left: 0px;" align="right"><![endif]--><img align="right" alt="Share Illustration" border="0" class="right autowidth" src="https://drive.google.com/uc?export=view&amp;id=1egtbdcqBTrKHKIhWfzF94ZJC7WBOxpOj" style="text-decoration: none; -ms-interpolation-mode: bicubic; height: auto; border: 0; width: 100%; max-width: 206px; float: none; display: block;" title="Share Illustration" width="206"/>
+        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr style="line-height:0px"><td style="padding-right: 0px;padding-left: 0px;" align="right"><![endif]--><img align="right" alt="Withdrawn Illustration" border="0" class="right autowidth" src="https://drive.google.com/uc?export=view&amp;id=1egtbdcqBTrKHKIhWfzF94ZJC7WBOxpOj" style="text-decoration: none; -ms-interpolation-mode: bicubic; height: auto; border: 0; width: 100%; max-width: 206px; float: none; display: block;" title="Share Illustration" width="206"/>
         <!--[if mso]></td></tr></table><![endif]-->
         </div>
         <!--[if (!mso)&(!IE)]><!-->
@@ -928,7 +928,7 @@ module.exports.send2020Highlights = async () => {
         <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Arial, sans-serif"><![endif]-->
         <div style="color:#f7ce3e;font-family:'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;line-height:1.5;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
         <div style="line-height: 1.5; font-size: 12px; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #f7ce3e; mso-line-height-alt: 18px;">
-        <p style="font-size: 16px; line-height: 1.5; word-break: break-word; text-align: center; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; mso-line-height-alt: 24px; margin: 0;"><span style="color: #f7ce3e; font-size: 16px;">With 2020 being 2020, staying alive is the biggest flex. Reply 'hi' so we you still ride with us!</span></p>
+        <p style="font-size: 16px; line-height: 1.5; word-break: break-word; text-align: center; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; mso-line-height-alt: 24px; margin: 0;"><span style="color: #f7ce3e; font-size: 16px;">With 2020 being a heck of a year, staying alive was the biggest flex. Reply 'hi' so we you still ride with us!</span></p>
         </div>
         </div>
         <!--[if mso]></td></tr></table><![endif]-->
@@ -1056,7 +1056,7 @@ module.exports.send2020Highlights = async () => {
         <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Arial, sans-serif"><![endif]-->
         <div style="color:#ffffff;font-family:Open Sans, Helvetica Neue, Helvetica, Arial, sans-serif;line-height:1.2;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
         <div style="line-height: 1.2; font-size: 12px; font-family: Open Sans, Helvetica Neue, Helvetica, Arial, sans-serif; color: #ffffff; mso-line-height-alt: 14px;">
-        <p style="font-size: 18px; line-height: 1.2; text-align: left; word-break: break-word; font-family: Open Sans, Helvetica Neue, Helvetica, Arial, sans-serif; mso-line-height-alt: 22px; margin: 0;"><span style="color: #ffffff;"><strong><span style="">Where to find us</span></strong></span></p>
+        <p style="font-size: 18px; line-height: 1.2; text-align: left; word-break: break-word; font-family: Open Sans, Helvetica Neue, Helvetica, Arial, sans-serif; mso-line-height-alt: 22px; margin: 0;"><span style="color: #ffffff;"><strong><span style="">Reach out to us</span></strong></span></p>
         </div>
         </div>
         <!--[if mso]></td></tr></table><![endif]-->
@@ -1065,7 +1065,6 @@ module.exports.send2020Highlights = async () => {
         <div style="line-height: 1.2; font-size: 12px; font-family: Open Sans, Helvetica Neue, Helvetica, Arial, sans-serif; color: #ffffff; mso-line-height-alt: 14px;">
         <p style="font-size: 14px; line-height: 1.2; text-align: left; word-break: break-word; font-family: Open Sans, Helvetica Neue, Helvetica, Arial, sans-serif; mso-line-height-alt: 17px; margin: 0;"><span style="color: #ffffff;">contact@useshukran.com</span></p>
         <p style="font-size: 14px; line-height: 1.2; text-align: left; word-break: break-word; font-family: Open Sans, Helvetica Neue, Helvetica, Arial, sans-serif; mso-line-height-alt: 17px; margin: 0;"> </p>
-        <p style="font-size: 14px; line-height: 1.2; text-align: left; word-break: break-word; font-family: Open Sans, Helvetica Neue, Helvetica, Arial, sans-serif; mso-line-height-alt: 17px; margin: 0;"><span style="color: #ffffff;">+234 813 882 2098</span></p>
         </div>
         </div>
         <!--[if mso]></td></tr></table><![endif]-->
@@ -1082,25 +1081,7 @@ module.exports.send2020Highlights = async () => {
         <div style="background-color:transparent;">
         <div class="block-grid two-up no-stack" style="min-width: 320px; max-width: 680px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; Margin: 0 auto; background-color: transparent;">
         <div style="border-collapse: collapse;display: table;width: 100%;background-color:transparent;">
-        <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:transparent;"><tr><td align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:680px"><tr class="layout-full-width" style="background-color:transparent"><![endif]-->
-        <!--[if (mso)|(IE)]><td align="center" width="340" style="background-color:transparent;width:340px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top:10px; padding-bottom:10px;"><![endif]-->
-        <div class="col num6" style="display: table-cell; vertical-align: top; max-width: 320px; min-width: 336px; width: 340px;">
-        <div class="col_cont" style="width:100% !important;">
-        <!--[if (!mso)&(!IE)]><!-->
-        <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:10px; padding-bottom:10px; padding-right: 0px; padding-left: 0px;">
-        <!--<![endif]-->
-        <div align="right" class="img-container right fixedwidth" style="padding-right: 5px;padding-left: 0px;">
-        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr style="line-height:0px"><td style="padding-right: 5px;padding-left: 0px;" align="right"><![endif]--><a href="https://designedwithbee.com/" style="outline:none" tabindex="-1" target="_blank"> <img align="right" alt="Use Shukran today, or tell your creator friend" border="0" class="right fixedwidth" src="https://drive.google.com/uc?export=view&amp;id=1GfeklRxs6fyzI7Kz1qYGKaskU_oHfrLq" style="text-decoration: none; -ms-interpolation-mode: bicubic; height: 20px; border: 0; width: 100%; width: 20px; float: none; display: block;" title="Shukran" width="50"/></a>
-        <!--[if mso]></td></tr></table><![endif]-->
-        </div>
-        <!--[if (!mso)&(!IE)]><!-->
-        </div>
-        <!--<![endif]-->
-        </div>
-        </div>
-        <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
-        <!--[if (mso)|(IE)]></td><td align="center" width="340" style="background-color:transparent;width:340px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top:10px; padding-bottom:10px;"><![endif]-->
-        <div class="col num6" style="display: table-cell; vertical-align: top; max-width: 320px; min-width: 336px; width: 340px;">
+        <div class="col " style="display: table-cell; vertical-align: top; max-width: 320px; min-width: 336px; width: 340px;">
         <div class="col_cont" style="width:100% !important;">
         <!--[if (!mso)&(!IE)]><!-->
         <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:10px; padding-bottom:10px; padding-right: 0px; padding-left: 0px;">
@@ -1108,7 +1089,7 @@ module.exports.send2020Highlights = async () => {
         <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 4px; padding-left: 4px; padding-top: 4px; padding-bottom: 4px; font-family: Tahoma, Verdana, sans-serif"><![endif]-->
         <div style="color:#9d9d9d;font-family:'Lato', Tahoma, Verdana, Segoe, sans-serif;line-height:1.2;padding-top:4px;padding-right:4px;padding-bottom:4px;padding-left:4px;">
         <div style="line-height: 1.2; font-size: 12px; font-family: 'Lato', Tahoma, Verdana, Segoe, sans-serif; color: #9d9d9d; mso-line-height-alt: 14px;">
-        <p style="font-size: 14px; line-height: 1.2; word-break: break-word; font-family: Lato, Tahoma, Verdana, Segoe, sans-serif; mso-line-height-alt: 17px; margin: 0;"><a href="https://useshukran.com/" rel="noopener" style="text-decoration: none; color: #9d9d9d;" target="_blank" title="Shukran is a product of PLACEHOLDER LTD"><span style="font-size: 12px;">&copy; 2020 <strong>PLACEHOLDER LTD</strong></span></a></p>
+        <p style="font-size: 14px; line-height: 1.2; word-break: break-word; font-family: Lato, Tahoma, Verdana, Segoe, sans-serif; mso-line-height-alt: 17px; margin: 0; text-align: center;"><a href="https://useshukran.com/" rel="noopener" style="text-decoration: none; color: #9d9d9d;" target="_blank" title="Shukran is a product of PLACEHOLDER LTD"><span style="font-size: 12px;">&copy; 2020 <strong>PLACEHOLDER LTD</strong></span></a></p>
         </div>
         </div>
         <!--[if mso]></td></tr></table><![endif]-->
