@@ -1,6 +1,19 @@
 const nodemailer = require("nodemailer");
+const fs = require('fs');
+const { error } = require("console");
 
-module.exports.send2020Highlights = async () => {
+/**
+ * 
+ * @param {string} username - the creator's username
+ * @param {string} email - the creator's email
+ * @param {string} fullname - fullname of the creator
+ * @param {string} currency - the currency symbol of transactions
+ * @param {Number} totalTips - total tips they've made so far
+ * @param {Number} totalSupporters - how many unique supporters they have
+ * @param {Number} totalRecurringTips - how much all their shuclans are paying
+ * @param {Number} totalWithdrawn - how much they've withdrawn so far (in year 2020)
+ */
+module.exports.send2020Highlights = async (username, email, fullname, currency, totalTips, totalSupporters, totalRecurringTips, totalWithdrawn) => {
     const smtpTransport = nodemailer.createTransport({
         host: 'smtp.zoho.com',
         port: 465,
@@ -13,7 +26,7 @@ module.exports.send2020Highlights = async () => {
 
     const mailOptions = {
         from: `Shukran Team <contact@useshukran.com>`,
-        to: ['Obakam Tom-George <obakamtomgeorge@gmail.com>', 'Chuks <nwachukwuossai@gmail.com>'],
+        to: `${fullname.trim()} <${email.trim()}>`,
         subject: 'Your 2020 Highlight',
         generateTextFromHTML: true,
         html: `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -307,7 +320,7 @@ module.exports.send2020Highlights = async () => {
         <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Arial, sans-serif"><![endif]-->
         <div style="color:#f7ce3e;font-family:'Oswald', Arial, 'Helvetica Neue', Helvetica, sans-serif;line-height:1.2;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
         <div style="line-height: 1.2; font-family: 'Oswald', Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 12px; color: #f7ce3e; mso-line-height-alt: 14px;">
-        <p style="font-size: 64px; line-height: 1.2; word-break: break-word; text-align: center; font-family: Oswald, Arial, 'Helvetica Neue', Helvetica, sans-serif; mso-line-height-alt: 77px; margin: 0;"><span style="color: #ffffff; font-size: 64px;">2020 HIGHLIGHTS</span></p>
+        <p style="font-size: 64px; line-height: 1.2; word-break: break-word; text-align: center; font-family: Oswald, Arial, 'Helvetica Neue', Helvetica, sans-serif; mso-line-height-alt: 77px; margin: 0;"><span style="color: #ffffff; font-size: 40px;">2020 HIGHLIGHTS</span></p>
         </div>
         </div>
         <!--[if mso]></td></tr></table><![endif]-->
@@ -329,7 +342,15 @@ module.exports.send2020Highlights = async () => {
         <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Arial, sans-serif"><![endif]-->
         <div style="color:#f7ce3e;font-family:'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;line-height:1.5;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
         <div style="line-height: 1.5; font-size: 12px; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #f7ce3e; mso-line-height-alt: 18px;">
-        <p style="font-size: 16px; line-height: 1.5; word-break: break-word; text-align: center; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; mso-line-height-alt: 24px; margin: 0;"><span style="font-size: 16px;">Thank you so much for being a part of our 2020.</span><br/><span style="font-size: 16px;">We've really come to love the community that is you.</span><br/><span style="font-size: 16px;">And we look forward to doing this again in 2021.</span><br/><span style="font-size: 16px;">We hope you have plans as much as we do.</span><br/><span style="font-size: 16px;">Let's create together, and better.</span></p>
+        <p style="font-size: 16px; line-height: 1.5; word-break: break-word; text-align: center; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; mso-line-height-alt: 20px; margin: 0;">
+        Thank you so much ${username} for being a part of our 2020.
+        We've really come to love the community that is you.
+        We look forward to doing this again in 2021.
+        
+        We hope you have plans as much as we do.
+        
+        Let's create together, and better.
+        </p>
         </div>
         </div>
         <!--[if mso]></td></tr></table><![endif]-->
@@ -438,14 +459,14 @@ module.exports.send2020Highlights = async () => {
         <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Arial, sans-serif"><![endif]-->
         <div style="color:#f7ce3e;font-family:'Oswald', Arial, 'Helvetica Neue', Helvetica, sans-serif;line-height:1.2;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
         <div style="line-height: 1.2; font-family: 'Oswald', Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 12px; color: #f7ce3e; mso-line-height-alt: 14px;">
-        <p style="font-size: 96px; line-height: 1.2; word-break: break-word; text-align: left; font-family: Oswald, Arial, 'Helvetica Neue', Helvetica, sans-serif; mso-line-height-alt: 115px; margin: 0;"><span style="color: #ffffff; font-size: 96px;">₦568</span></p>
+        <p style="font-size: 96px; line-height: 1.2; word-break: break-word; text-align: left; font-family: Oswald, Arial, 'Helvetica Neue', Helvetica, sans-serif; mso-line-height-alt: 115px; margin: 0;"><span style="color: #ffffff; font-size: 78px;">${currency}${totalTips}</span></p>
         </div>
         </div>
         <!--[if mso]></td></tr></table><![endif]-->
         <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Arial, sans-serif"><![endif]-->
         <div style="color:#f7ce3e;font-family:'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;line-height:1.5;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
         <div style="line-height: 1.5; font-size: 12px; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #f7ce3e; mso-line-height-alt: 18px;">
-        <p style="font-size: 30px; line-height: 1.5; word-break: break-word; text-align: left; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; mso-line-height-alt: 45px; margin: 0;"><span style="color: #f7ce3e; font-size: 30px;">IN TIPS</span></p>
+        <p style="font-size: 30px; line-height: 1.5; word-break: break-word; text-align: left; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; mso-line-height-alt: 45px; margin: 0;"><span style="color: #f7ce3e; font-size: 20px;">IN TIPS ${totalTips == 0 ? ', ☹️' : ''}</span></p>
         </div>
         </div>
         <!--[if mso]></td></tr></table><![endif]-->
@@ -558,14 +579,14 @@ module.exports.send2020Highlights = async () => {
         <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Arial, sans-serif"><![endif]-->
         <div style="color:#f7ce3e;font-family:'Oswald', Arial, 'Helvetica Neue', Helvetica, sans-serif;line-height:1.2;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
         <div style="line-height: 1.2; font-family: 'Oswald', Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 12px; color: #f7ce3e; mso-line-height-alt: 14px;">
-        <p style="font-size: 96px; line-height: 1.2; word-break: break-word; text-align: right; font-family: Oswald, Arial, 'Helvetica Neue', Helvetica, sans-serif; mso-line-height-alt: 115px; margin: 0;"><span style="color: #5c4c99; font-size: 96px;">237</span></p>
+        <p style="font-size: 96px; line-height: 1.2; word-break: break-word; text-align: right; font-family: Oswald, Arial, 'Helvetica Neue', Helvetica, sans-serif; mso-line-height-alt: 115px; margin: 0;"><span style="color: #5c4c99; font-size: 78px;">${totalSupporters}</span></p>
         </div>
         </div>
         <!--[if mso]></td></tr></table><![endif]-->
         <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 5px; padding-left: 5px; padding-top: 5px; padding-bottom: 5px; font-family: Arial, sans-serif"><![endif]-->
         <div style="color:#f7ce3e;font-family:'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;line-height:1.5;padding-top:5px;padding-right:5px;padding-bottom:5px;padding-left:5px;">
         <div style="line-height: 1.5; font-size: 12px; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #f7ce3e; mso-line-height-alt: 18px;">
-        <p style="font-size: 30px; line-height: 1.5; word-break: break-word; text-align: right; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; mso-line-height-alt: 45px; margin: 0;"><span style="color: #ffffff; font-size: 30px;">SUPPORTERS</span></p>
+        <p style="font-size: 30px; line-height: 1.5; word-break: break-word; text-align: right; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; mso-line-height-alt: 45px; margin: 0;"><span style="color: #ffffff; font-size: 20px;">SUPPORTERS ${totalSupporters == 0 ? ', ☹️' : ''}</span></p>
         </div>
         </div>
         <!--[if mso]></td></tr></table><![endif]-->
@@ -678,14 +699,14 @@ module.exports.send2020Highlights = async () => {
         <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Arial, sans-serif"><![endif]-->
         <div style="color:#f7ce3e;font-family:'Oswald', Arial, 'Helvetica Neue', Helvetica, sans-serif;line-height:1.2;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
         <div style="line-height: 1.2; font-family: 'Oswald', Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 12px; color: #f7ce3e; mso-line-height-alt: 14px;">
-        <p style="font-size: 96px; line-height: 1.2; word-break: break-word; text-align: left; font-family: Oswald, Arial, 'Helvetica Neue', Helvetica, sans-serif; mso-line-height-alt: 115px; margin: 0;"><span style="color: #ffffff; font-size: 96px;">627</span></p>
+        <p style="font-size: 96px; line-height: 1.2; word-break: break-word; text-align: left; font-family: Oswald, Arial, 'Helvetica Neue', Helvetica, sans-serif; mso-line-height-alt: 115px; margin: 0;"><span style="color: #ffffff; font-size: 78px;">${currency}${totalRecurringTips}</span></p>
         </div>
         </div>
         <!--[if mso]></td></tr></table><![endif]-->
         <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Arial, sans-serif"><![endif]-->
         <div style="color:#f7ce3e;font-family:'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;line-height:1.5;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
         <div style="line-height: 1.5; font-size: 12px; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #f7ce3e; mso-line-height-alt: 18px;">
-        <p style="font-size: 30px; line-height: 1.5; word-break: break-word; text-align: left; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; mso-line-height-alt: 45px; margin: 0;"><span style="color: #f7ce3e; font-size: 30px;">RECURRING TIPS</span></p>
+        <p style="font-size: 30px; line-height: 1.5; word-break: break-word; text-align: left; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; mso-line-height-alt: 45px; margin: 0;"><span style="color: #f7ce3e; font-size: 20px;">RECURRING TIPS ${totalRecurringTips == 0 ? ', ☹️' : ''}</span></p>
         </div>
         </div>
         <!--[if mso]></td></tr></table><![endif]-->
@@ -798,14 +819,14 @@ module.exports.send2020Highlights = async () => {
         <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Arial, sans-serif"><![endif]-->
         <div style="color:#f7ce3e;font-family:'Oswald', Arial, 'Helvetica Neue', Helvetica, sans-serif;line-height:1.2;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
         <div style="line-height: 1.2; font-family: 'Oswald', Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 12px; color: #f7ce3e; mso-line-height-alt: 14px;">
-        <p style="font-size: 96px; line-height: 1.2; word-break: break-word; text-align: right; font-family: Oswald, Arial, 'Helvetica Neue', Helvetica, sans-serif; mso-line-height-alt: 115px; margin: 0;"><span style="color: #5c4c99; font-size: 96px;">₦435</span></p>
+        <p style="font-size: 96px; line-height: 1.2; word-break: break-word; text-align: right; font-family: Oswald, Arial, 'Helvetica Neue', Helvetica, sans-serif; mso-line-height-alt: 115px; margin: 0;"><span style="color: #5c4c99; font-size: 78px;">${currency}${totalWithdrawn}</span></p>
         </div>
         </div>
         <!--[if mso]></td></tr></table><![endif]-->
         <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Arial, sans-serif"><![endif]-->
         <div style="color:#f7ce3e;font-family:'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;line-height:1.5;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
         <div style="line-height: 1.5; font-size: 12px; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #f7ce3e; mso-line-height-alt: 18px;">
-        <p style="font-size: 30px; line-height: 1.5; word-break: break-word; text-align: right; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; mso-line-height-alt: 45px; margin: 0;"><span style="color: #ffffff; font-size: 30px;">WITHDRAWN</span></p>
+        <p style="font-size: 30px; line-height: 1.5; word-break: break-word; text-align: right; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; mso-line-height-alt: 45px; margin: 0;"><span style="color: #ffffff; font-size: 20px;">WITHDRAWN ${totalWithdrawn == 0 ? ', ☹️' : ''}</span></p>
         </div>
         </div>
         <!--[if mso]></td></tr></table><![endif]-->
@@ -928,7 +949,7 @@ module.exports.send2020Highlights = async () => {
         <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Arial, sans-serif"><![endif]-->
         <div style="color:#f7ce3e;font-family:'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;line-height:1.5;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
         <div style="line-height: 1.5; font-size: 12px; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #f7ce3e; mso-line-height-alt: 18px;">
-        <p style="font-size: 16px; line-height: 1.5; word-break: break-word; text-align: center; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; mso-line-height-alt: 24px; margin: 0;"><span style="color: #f7ce3e; font-size: 16px;">With 2020 being a heck of a year, staying alive was the biggest flex. Reply 'hi' so we you still ride with us!</span></p>
+        <p style="font-size: 16px; line-height: 1.5; word-break: break-word; text-align: center; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; mso-line-height-alt: 24px; margin: 0;"><span style="color: #f7ce3e; font-size: 16px;">With 2020 being a heck of a year, staying alive was the biggest flex. Reply 'Hi' so we you still ride with us!</span></p>
         </div>
         </div>
         <!--[if mso]></td></tr></table><![endif]-->
@@ -1089,7 +1110,7 @@ module.exports.send2020Highlights = async () => {
         <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 4px; padding-left: 4px; padding-top: 4px; padding-bottom: 4px; font-family: Tahoma, Verdana, sans-serif"><![endif]-->
         <div style="color:#9d9d9d;font-family:'Lato', Tahoma, Verdana, Segoe, sans-serif;line-height:1.2;padding-top:4px;padding-right:4px;padding-bottom:4px;padding-left:4px;">
         <div style="line-height: 1.2; font-size: 12px; font-family: 'Lato', Tahoma, Verdana, Segoe, sans-serif; color: #9d9d9d; mso-line-height-alt: 14px;">
-        <p style="font-size: 14px; line-height: 1.2; word-break: break-word; font-family: Lato, Tahoma, Verdana, Segoe, sans-serif; mso-line-height-alt: 17px; margin: 0; text-align: center;"><a href="https://useshukran.com/" rel="noopener" style="text-decoration: none; color: #9d9d9d;" target="_blank" title="Shukran is a product of PLACEHOLDER LTD"><span style="font-size: 12px;">&copy; 2020 <strong>PLACEHOLDER LTD</strong></span></a></p>
+        <p style="font-size: 14px; line-height: 1.2; word-break: break-word; font-family: Lato, Tahoma, Verdana, Segoe, sans-serif; mso-line-height-alt: 17px; margin: 0; text-align: center;"><a href="https://useshukran.com/" rel="noopener" style="text-decoration: none; color: #9d9d9d;" target="_blank" title="Shukran is a product of Placeholder"><span style="font-size: 12px;">&copy; 2020 <strong>Shukran by Placeholder</strong></span></a></p>
         </div>
         </div>
         <!--[if mso]></td></tr></table><![endif]-->
@@ -1113,14 +1134,14 @@ module.exports.send2020Highlights = async () => {
         </html>`
     };
 
-    smtpTransport.sendMail(mailOptions, (error, response) => {
-        smtpTransport.close();
-        if (error) {
-            console.error('send msg err', error)
-            reject({ status: 'did not send' })
-        } else {
-            console.log('send msg info', response)
-            resolve({ status: 'successfully sent' })
-        }
-    });
+    let sent = await smtpTransport.sendMail(mailOptions);
+    smtpTransport.close();
+
+    // reporting
+    let writeStream = fs.createWriteStream('./test-2020-email-report.json');
+    writeStream.write(JSON.stringify(sent, null, 4), (err) => console.error(err))
+    writeStream.close();
+
+    console.log('send msg info', sent)
+
 }

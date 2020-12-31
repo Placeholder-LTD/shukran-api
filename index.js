@@ -5,11 +5,11 @@ const fastify = require('fastify')({
 })
 fastify.register(require('fastify-cookie'), {
   secret: process.env.SECRET_KEY, // for cookies signature
-  parseOptions: {}     // options for parsing cookies
+  parseOptions: {} // options for parsing cookies
 })
 const cors = require('cors')
 
-let db = process.env.ATLAS_CONNECTION_STRING
+const db = process.env.ATLAS_CONNECTION_STRING
 const ggle = require('./helpers/uploadgdrive');
 fastify.register(require('fastify-multipart'))
 // use it before all route definitions

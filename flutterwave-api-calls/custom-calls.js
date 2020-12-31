@@ -19,9 +19,8 @@ async function getCreatorShuclans(creator_id) {
             let creatorShuclans = shuclans.filter(shuklan => creatorPlans.some(plan => plan.id === shuklan.id))
             console.log('No. of creatorShuclans', creatorShuclans.length)
 
-            resolve(creatorShuclans)
     }).catch((error) => {
-        reject(error)
+        console.error(error)
     });
 
 }
