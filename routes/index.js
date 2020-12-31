@@ -4,6 +4,7 @@ const feedbackController = require('../controllers/FeedbackController')
 const productController = require('../controllers/ProductsController')
 const subscriptionController = require('../controllers/subscriptionController')
 
+// we need to track creators tipping link clicks from external sources
 const routes = [
     {
         method: 'POST',
