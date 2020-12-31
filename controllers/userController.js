@@ -619,7 +619,7 @@ exports.login = async (req, reply) => {
             ]
         })
         let a = await user.exec();
-        console.log('what is a', a);
+        // console.log('what is a', a);
         // check if they have a folder_id
         // if not, create for them
         if (a.length >= 1 && !a[0].folder_id) {
