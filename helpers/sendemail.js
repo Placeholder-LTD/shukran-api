@@ -1,6 +1,5 @@
 const nodemailer = require("nodemailer");
 const fs = require('fs');
-const { error } = require("console");
 
 /**
  * 
@@ -1134,14 +1133,26 @@ module.exports.send2020Highlights = async (username, email, fullname, currency, 
         </html>`
     };
 
-    let sent = await smtpTransport.sendMail(mailOptions);
+    let sent = await smtpTransport.sendMail(mailOptions)
+                .catch((err) => {
+                    console.error('send mail error', err);
+                    // reporting
+                    let writeStream = fs.createWriteStream('./test-error-2020-email-report.json', { flags: 'a' });
+                    writeStream.write(JSON.stringify(email, null, 4) + ',\n', (err) => {
+                        if (err) console.error('reporting bad email send err', err)
+                    })
+                    writeStream.end();
+                });
     smtpTransport.close();
+    
 
     // reporting
-    let writeStream = fs.createWriteStream('./test-2020-email-report.json');
-    writeStream.write(JSON.stringify(sent, null, 4), (err) => console.error(err))
-    writeStream.close();
+    let writeStream = fs.createWriteStream('./test-2020-email-report.json', { flags: 'a' });
+    writeStream.write(JSON.stringify(sent, null, 4) + ',\n', (err) => {
+        if (err) console.error('reporting good email send err', err)
+    })
+    writeStream.end();
 
-    console.log('send msg info', sent)
+    // console.log('send msg info', sent)
 
 }

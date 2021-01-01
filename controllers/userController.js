@@ -691,6 +691,7 @@ exports.findMyProfile = async (req, reply) => {
         let username = req.body.username
         User.find({ 'username': username }, (err, user) => { // user is an array
             if (err) {
+                console.log('errr\n', err);
                 reply.send(null) // should change... shouldn't be just null
             } else if (user.length === 1) {
                 // we strip the contents based on what the user should see, how they've subscribed.
@@ -744,7 +745,7 @@ exports.findMyProfile = async (req, reply) => {
                     reply.send(user)
                 }
             } else if (user.length === 0) {
-                reply.send(null) // user doesn't exist, should change too...
+                reply.send([]) // user doesn't exist, should change too...
             }
         })
     } catch (error) {
