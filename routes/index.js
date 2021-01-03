@@ -13,6 +13,11 @@ const routes = [
     },
     {
         method: 'GET',
+        url: '/api/randomcreators/:number/',
+        handler: userController.randomCreators
+    },
+    {
+        method: 'GET',
         url: '/api/allusers/',
         handler: userController.getAll
     },

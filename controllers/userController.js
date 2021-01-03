@@ -4,13 +4,10 @@ const nodemailer = require("nodemailer");
 const User = require('../models/User')
 
 const ggle = require('../helpers/uploadgdrive');
-const { update } = require('../models/User');
-
 
 // maybe do a script/cronjob that'll regularly update our db
 const getAllSubscribers = require('../flutterwave-api-calls/get-all-subscribers')
 const getAllPaymentPlans = require('../flutterwave-api-calls/get-all-payment-plans');
-const { resolveContent } = require('nodemailer/lib/shared');
 
 // Capitalize function
 String.prototype.capitalize = function () {
@@ -34,6 +31,85 @@ function handleErrors(err) {
     }
 
     return error
+}
+
+exports.randomCreators = async (req, reply) => {
+    try {
+        User.aggregate([
+            {
+                $match: {
+                    username: { $exists: true }, // can't be too sure, right? lool... well, just because we can!
+                    craft_type: { $exists: true },
+                    summary: { $exists: true },
+                    picture_id: { $exists: true, $not: { $in : ['1aMDqEuCDesg0cTpHJj0IHehEDUEk3l_F', '1l6Yn2_89KDaDZhH67Ge4Z6T8x7C0Q91J'] } }
+                }
+            },
+            {
+                $sample: { size: parseInt(req.params.number, 10) } // must be +integer
+            },
+            {
+                $unset: [ '_id', 'fullname', 'email', 'password', 'create_date', 'phone', 'content', 'subscribers', '__v', 'account_name', 'account_number', 'bank', 'audience_size', 'primary_link', 'redirect', 'folder_id' ]
+            }
+        ], (err, creators) => {
+            if (err) { // hopefully never
+                reply.send([
+                    {
+                        picture_id: '1f8mYQVHIygKZoSSM7uy1C9oBpeHTVj0t',
+                        username: 'markkaranja',
+                        craft_type: 'Film / Music video producer/Director,Actor,Youtube content creator ,Multitalented chef.',
+                        summary: 'I am grateful and delighted that you loved viewing my content and as you keep on tiping me, may your bank accounts too grow hefty'
+                    },
+                    {
+                        picture_id: '1JwqESzajQElex8NSVpaK6ZnY4fVyjGaX',
+                        username: 'bola john',
+                        phone: '09063154719',
+                        craft_type: 'Podcaster, Blogger, Photographer, Writer and Medical Doctor',
+                        summary: '"When we create something, we think, "Will our customers thank us for this?" This medium is a way to thank me if I have blessed you with my content. '
+                    },
+                    {
+                        picture_id: '1NqqlsaNesslrXQFk2quCqwaSrRQSmjeR',
+                        username: 'gani.art_k',
+                        craft_type: 'Mobile videographer, Blogger, Content creator',
+                        summary: "Thank you so much for supporting my content. You're making such a positive impact in my life and helping me create more.",
+                        phone: '09033065175'
+                    },
+                    {
+                        picture_id: '18SjIiCk2Tg4QqaAUq221Wt4i2AD7mMPD',
+                        username: 'sassie_p',
+                        craft_type: 'Makeup artist/content creator',
+                        summary: 'There are thousands of people in my field, but your love and support matters a lot to me. Thank you so much ',
+                        phone: '+2347067991500'
+                    },
+                    {
+                        picture_id: '1qU20Np264F0Y0QZ095AG6i06jisUklHP',
+                        username: 'womenhomestead',
+                        phone: '08187448399',
+                        craft_type: 'Writer, content creator and podcaster',
+                        summary: 'To everyone that support by listening, sharing or any other way you can. I love you!'
+                    },
+                    {
+                        picture_id: '1FNKSFjaiVRn0amQA4r7Wkp1sf-IHWhtb',
+                        username: 'gospel',
+                        phone: '08118280774',
+                        craft_type: 'Digital Marketing and Videography coach',
+                        summary: 'Feel free to hit me up if you want to learn New ways to start earning money online in just one week.'
+                    },
+                    {
+                        username: 'chitothelagoshustler',
+                        phone: '09069097635',
+                        craft_type: 'Creative Director, Video Editor, Food Explorer, Photo Editor, Apps Guru and Social Media Savvy',
+                        summary: 'Thank You, i appreciate you. You are the best vibe squad. Your Tip means you enjoy my content.❤️',
+                        picture_id: '1AsUj1bfvXosbepKC4Qy87xfDGlWVgqed'
+                    }
+    
+                ])
+            } else {
+                reply.send(creators)
+            }
+        })
+    } catch (error) {
+        throw boom.boomify(error) // ?
+    }
 }
 
 // Add a new user
