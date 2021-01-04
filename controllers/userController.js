@@ -40,7 +40,7 @@ exports.randomCreators = async (req, reply) => {
                 $match: {
                     username: { $exists: true }, // can't be too sure, right? lool... well, just because we can!
                     craft_type: { $exists: true },
-                    summary: { $exists: true },
+                    summary: { $exists: true, $not: { $in: ['', ' '] } },
                     picture_id: { $exists: true, $not: { $in : ['1aMDqEuCDesg0cTpHJj0IHehEDUEk3l_F', '1l6Yn2_89KDaDZhH67Ge4Z6T8x7C0Q91J'] } }
                 }
             },

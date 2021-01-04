@@ -20,7 +20,7 @@ const hoss = require('hoss');
 hoss("development-5hDQ8UQHeP29JrBTtZT16T2ef45sQwuL7UFR1FnpfoPt");
 let fs = require('fs');
 const mongoose = require('mongoose')
-mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
+mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
 .then(function afterConn(db) {
   console.log('MongoDB connected...')
 

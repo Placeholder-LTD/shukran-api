@@ -2,7 +2,9 @@ const boom = require('boom')
 // const fx = require('money');
 const Trans =  require('../models/Transactions')
 const Money = require('../models/Money')
-const nodemailer = require("nodemailer");
+const nodemailer = require("nodemailer"); // would soon not need to import
+
+const sendemail = require('../helpers/sendemail')
 
 // Capitalize function
 String.prototype.capitalize = function() {
@@ -13,81 +15,64 @@ exports.createTransaction = async (req, reply) => {
     try {
         const transaction = new Trans(req.body)
         console.log('new transaction data\n\n\t', req.body)
-                    let email = req.body.email
-                    const smtpTransport = nodemailer.createTransport({
-                        host: 'smtp.zoho.com',
-                        port: 465,
-                        secure: true,
-                        auth: {
-                            user: 'contact@useshukran.com',
-                            pass: 'Password2020'
-                        }
-                      });
-                   const mailOptions = {
-                       from: "Ola from Shukran <contact@useshukran.com>",
-                       to: email,
-                       subject: "You just got tipped " + req.body.username.capitalize(),
-                       generateTextFromHTML: true,
-                       html: "<h3>Hi, <b>" + req.body.username.capitalize() + "</h3></b> "
-                       + req.body.supporter_nickname + " just tipped you!" + "<br>"
-                       + "<a href='https://useshukran.com/accounts'>Login to find out how much.</a>"
-                       };
+        if (req.body.tx_ref.includes('-shukraning-')) {
+            sendemail.sendCreatorAddedShuclan(req.body).catch(err => console.error(err))
+            sendemail.sendShuclanThankYou(req.body).catch(err => console.error(err))
+        } else { // just send that they were tipped
+            /* await */ sendemail.sendTipEmail(req.body)
+        }
+        
+        // save a cookie with the supporter_email
+        if (req.cookies['_shukran']) {
+            // maybe do nothing here, or check if the email here is the same email that paid before, if not, add it... hmm
 
-                    smtpTransport.sendMail(mailOptions, (error, response) => {
-                        error ? console.log(error) : console.log(response);
-                        smtpTransport.close();
-                    });
-                    // save a cookie with the supporter_email
-                    if (req.cookies['_shukran']) {
-                        // maybe do nothing here, or check if the email here is the same email that paid before, if not, add it... hmm
+        } else { // save cookie, so we always have this with every request.
+            let _ck = {
+                supporter_email: req.body.supporter_email,
+                'shukran-subs': []
+            }
+            reply.setCookie('_shukran', JSON.stringify(_ck), {
+                // path: '/cr',
+                httpOnly: true, // front end js can't access
+                // secure: true, // if running live
+                signed: true
+            })
+        }
+        /**
+         * cookie should be an object names _shukran
+         * we should have an array in the _shukran object named shukran-subs
+         * add the id of the creator they subscribed to in the array.
+         * if they don't, create an array with the id of the creator in it.
+         */
+        if (req.body.tx_ref.includes('-shukraning-')) { // important bit
+            let crID = req.body.tx_ref.substring( // extract creator ID
+                req.body.tx_ref.lastIndexOf("-") + 1, 
+                req.body.tx_ref.indexOf(" ")
+            );
+            if (req.cookies['_shukran']) { // add to pre-existing array
+                let ck = JSON.parse(req.cookies['_shukran']) // get our cookie, which is an object
+                ck['shukran-subs'].push(crID)
+                reply.setCookie('_shukran', JSON.stringify(ck), {
+                    // path: '/cr',
+                    httpOnly: true, //
+                    // secure: true, // if running live
+                    signed: true
+                })
+            } else { // create new array
+                let newCk = {
+                    supporter_email: req.body.supporter_email,
+                    "shukran-subs": [crID]
+                }
+                reply.setCookie('_shukran', JSON.stringify(newCk), {
+                    // path: '/cr',
+                    httpOnly: true, //
+                    // secure: true, // if running live
+                    signed: true
+                })
+            }
+        }
+        reply.send(transaction.save())// return transaction.save() // TODO https://developer.flutterwave.com/docs/transaction-verification
 
-                    } else { // save cookie, so we always have this with every request.
-                        let _ck = {
-                            supporter_email: req.body.supporter_email,
-                            'shukran-subs': []
-                        }
-                        reply.setCookie('_shukran', JSON.parse(_ck), {
-                            // path: '/cr',
-                            // httpOnly: true, // if running live
-                            // secure: true, // should we ?
-                            signed: true
-                        })
-                    }
-                    /**
-                     * cookie should be an object names _shukran
-                     * we should have an array in the _shukran object named shukran-subs
-                     * add the id of the creator they subscribed to in the array.
-                     * if they don't, create an array with the id of the creator in it.
-                     */
-                    if (req.body.tx_ref.includes('-shukraning-')) { // important bit
-                        let crID = req.body.tx_ref.substring( // extract creator ID
-                            req.body.tx_ref.lastIndexOf("-") + 1, 
-                            req.body.tx_ref.indexOf(" ")
-                        );
-                        if (req.cookies['_shukran']) { // add to pre-existing array
-                            let ck = JSON.parse(req.cookies['_shukran']) // get our cookie, which is an object
-                            ck['shukran-subs'].push(crID)
-                            reply.setCookie('_shukran', JSON.parse(ck), {
-                                // path: '/cr',
-                                // httpOnly: true, // if running live
-                                // secure: true, // should we ?
-                                signed: true
-                            })
-                        } else { // create new array
-                            let newCk = {
-                                supporter_email: req.body.supporter_email,
-                                "shukran-subs": [crID]
-                            }
-                            reply.setCookie('_shukran', JSON.stringify(newCk), {
-                                // path: '/cr',
-                                // httpOnly: true, // if running live
-                                // secure: true, // should we ?
-                                signed: true
-                            })
-                        }
-                    }
-                   reply.send(transaction.save())// return transaction.save() // TODO https://developer.flutterwave.com/docs/transaction-verification
-         
     } catch (err) {
       throw boom.boomify(err)
     }

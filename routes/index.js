@@ -33,6 +33,11 @@ const routes = [
     },
     {
         method: 'GET',
+        url: '/api/getsubscriptions/:creator_id/',
+        handler: subscriptionController.getCreatorSubscrptions
+    },
+    {
+        method: 'GET',
         url: '/api/getsubscribers/',
         handler: subscriptionController.getSubscribers
     },

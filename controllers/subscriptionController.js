@@ -1,5 +1,4 @@
 const boom = require('boom')
-const nodemailer = require("nodemailer");
 const https = require('https');
 const Subscription = require('../models/Subscription')
 const Money = require('../models/Money')
@@ -25,7 +24,7 @@ exports.createSubscription = async (req, reply) => { // https://attacomsian.com/
                 supporter_email: this.email,
                 creator: this.username,
                 creator_id: this.userinfos[0]._id,
-                "name": `${this.supporter_email}-shukraning-NGN${this.userinfos[0]._id}`
+                "name": `shukraning-NGN${this.userinfos[0]._id}`
                 },
              */
             let requestData = req.body
@@ -45,7 +44,7 @@ exports.createSubscription = async (req, reply) => { // https://attacomsian.com/
                 "amount": parseInt(requestData.amount),
                 "name": requestData.name,
                 "interval": "monthly", // daily
-                "duration": 12
+                // "duration": 12 // removing because we don't it to stop so we don't keep creating them, instead we ask supporters how long do they want to keep supporting...
             });
 
             // make use of the subscirption creation date to know when the person started paying, and most importantly who they're paying to!
@@ -62,57 +61,15 @@ exports.createSubscription = async (req, reply) => { // https://attacomsian.com/
                 resp.on('end', () => {
                     let endData = JSON.parse(respData)
                     // console.log(endData);
-                    // add creator, supporter_email
-                    endData.data.creator = respData.creator
-                    endData.data.supporter_email = respData.supporter_email
-                    const smtpTransport = nodemailer.createTransport({
-                        host: 'smtp.zoho.com',
-                        port: 465,
-                        secure: true,
-                        auth: {
-                            user: 'contact@useshukran.com',
-                            pass: 'Password2020'
-                        }
-                    });
-            
-                const mailOptions = {
-                    from: 'Ola from Shukran <contact@useshukran.com>',
-                    to: req.body.supporter_email,
-                    subject: "Hey, thank you for joining " +  req.body.creator+"'s" + " Shuclan!",
-                    generateTextFromHTML: true,
-                    html: `<h3>Thank you for choosing to support ${req.body.creator} monthly.</h3>
-                    <p>Your support means alot to them. Please feel free to talk about this by tweeting using this link: </p>
-                    <a href="https://twitter.com/intent/tweet?url=http%3A%2F%2Fuseshukran.com%2F&text=I+just+joined+a+creator's+Shuclan+on
-                    +@useshukran.+You+can+support+your+favorite+creator+too+here:&hashtags=saythanks,shukran"
-                    target="blank">Tell others</a>
-                    `
-                }
+                    // add creator_username, supporter_email
+                    // endData.data.creator_username = respData.creator_username // we aren't saving this for now, it isn't in our Subscrition model. no need for now.
+                    // endData.data.supporter_email = respData.supporter_email
+                    // they aren't even saving for some reason... make endData.data is readonly or sth, we can do without them for now, we probably even should
+                        
+                    const subscription = new Subscription(endData.data)
+                    subscription.save()
 
-                const mailOptionsCreator = {
-                    from: 'Ola from Shukran <contact@useshukran.com>',
-                    to: req.body.creator_email,
-                    subject: "Hey, " + req.body.creator + " someone just joined your Shuclan!",
-                    generateTextFromHTML: true,
-                    // tell them to log in to find out how much, & that means we'll be showing newest shuclan members in vue end
-                    html: `<h3>Hey! We are excited to announce that someone has joined your Shuclan.</h3>
-                    <p>That means they have pledged an automated amount to your media co per month! Tell others: </p>
-                    <a href="https://twitter.com/intent/tweet?url=http%3A%2F%2Fuseshukran.com%2F&text=I+just+added+a+new+Shuclan+member
-                    +@useshukran.+You+too+can+get+supported,+start+here:&hashtags=saythanks,shukran"
-                    target="blank">Tell others</a>
-                    `
-                }
-                smtpTransport.sendMail(mailOptions, (error, response) => {
-                    error ? console.log(error) : console.log(response);
-                    smtpTransport.close();
-                });
-                smtpTransport.sendMail(mailOptionsCreator, (error, response) => {
-                    error ? console.log(error) : console.log(response);
-                    smtpTransport.close();
-                });
-                const subscription = new Subscription(endData.data)
-                subscription.save()
-
-                resolve(endData.data.id); // we only need to return the id
+                    resolve(endData.data.id); // we only need to return the id of the payment/subscription plan
                 });
     
             }).on("error", (err) => {
@@ -124,51 +81,46 @@ exports.createSubscription = async (req, reply) => { // https://attacomsian.com/
             request.end();
         })
 
-
-
     } catch (err) {
       throw boom.boomify(err)
     }
 }
 
+/**
+ * 
+ * @param {object} req request object
+ * @param {object} reply response object
+ * @deprecated use ./flutterwave-api-calls/get-all-payment-plans
+ * 
+ */
 exports.getAllSubscriptions = async (req, reply) => {
     try {
-        return new Promise((resolve, reject) => { // https://stackoverflow.com/a/59274104/9259701
+        let plans = await getAllPaymentPlans.getAllPaymentPlans;
 
-            let options = {
-                hostname: 'api.flutterwave.com', // don't add protocol
-                port: 443, // optional
-                path: '/v3/payment-plans',
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${process.env.FLUTTERWAVE_SEC_KEY}`
-                }
-            };
-    
-            https.request(options, (resp) => {
-                let getData = ''; // very important to initialize
-    
-                // A chunk of data has been recieved.
-                resp.on('data', (chunk) => {
-                    getData += chunk;
-                });
-    
-                // The whole response has been received.
-                resp.on('end', () => {
-                    resolve(JSON.parse(getData));
-                });
-    
-            }).on("error", (err) => {
-                console.log("Error: ", err.message);
-                // return err
-                reject(err.message);
-            }).end();
-        })
+        reply.send(plans) // return creatorShuklans
     } catch (err) {
         throw boom.boomify(err)
     }
 }
+
+exports.getCreatorSubscrptions = async (req, reply) => {
+    // req.params.creator
+    try {
+        Subscription.find({ 
+            name: new RegExp(req.params.creator_id) // search with creator is
+        }, {plan_token: 0, _id: 0, __v:0, status:0}, function (err, subs) {
+            // console.log(subs);
+            if (err) {
+                reply.send([]) // send empty array
+            } else {
+                reply.send(subs)
+            }
+        })
+    } catch (error) {
+        throw boom.boomify(error)
+    }
+}
+
 /**
  * 
  * @param {*} req 
@@ -176,8 +128,7 @@ exports.getAllSubscriptions = async (req, reply) => {
  * get details of all the subscribers of a creator
  */
 exports.getSubscribers = async (req, reply) => {
-try {
-        // not req.query.username use req.query.id in prod
+    try {
 
         // https://stackoverflow.com/a/13437802/9259701
         // also check if their subscription is still active
@@ -197,7 +148,7 @@ try {
         reply.send(creatorShuklans) // return creatorShuklans
         
     } catch (err) {
-    throw boom.boomify(err)
+        throw boom.boomify(err)
     }
 }
 
