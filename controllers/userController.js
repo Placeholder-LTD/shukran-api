@@ -854,8 +854,37 @@ exports.signup = async (req, reply) => {
 
 exports.getAll = async (req, reply) => {
     try {
-        let users = User.find()
-        return users
+        console.log('do we have cookies?\n\n', req.cookies);
+        User.find({}, function (err, creators) {
+            if (err) {
+                reply.send([])
+            } else {
+                let _ck = {
+                    littel: 'lower than angels',
+                    'we-see-not': [
+                        {
+                            'what': 'is the glory',
+                            and: 'honor?'
+                        }
+                    ]
+                }
+                reply
+                /* .setCookie('xxx', JSON.stringify(_ck), {
+                    maxAge: 3 * 1000,
+                    domain: 'localhost:8080',
+                    path: '/',
+                    httpOnly: true, // front end js can't access
+                    secure: false, // true, // if running live
+                    signed: false // true
+                }) */
+                .setCookie('foo', 'foo', {
+                    maxAge: 1000 * 60 * 6, 
+                    path: "/",
+                    httpOnly: true, 
+                })
+                .send(creators)
+            }
+        })
     } catch (error) {
         throw boom.boomify(error)
     }

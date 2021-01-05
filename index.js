@@ -26,7 +26,7 @@ mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true, useFindA
 
   setInterval(() => {
     let writeStream = fs.createWriteStream('./db-backup.json');
-  let all = {}, count = 0;
+    let all = {}, count = 0;
 
     db.modelNames().forEach((modelVal, i, arr) => {
       db.model(modelVal).find({}).then(valu => {
