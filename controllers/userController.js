@@ -869,14 +869,14 @@ exports.getAll = async (req, reply) => {
                     ]
                 }
                 reply
-                /* .setCookie('xxx', JSON.stringify(_ck), {
+                .setCookie('xxx', JSON.stringify(_ck), {
                     maxAge: 3 * 1000,
                     domain: 'localhost:8080',
                     path: '/',
                     httpOnly: true, // front end js can't access
                     secure: false, // true, // if running live
                     signed: false // true
-                }) */
+                })
                 .setCookie('foo', 'foo', {
                     maxAge: 1000 * 60 * 6, 
                     path: "/",
