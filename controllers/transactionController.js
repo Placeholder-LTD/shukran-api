@@ -41,7 +41,7 @@ exports.createTransaction = async (req, reply) => {
         /**
          * cookie should be an object names _shukran
          * we should have an array in the _shukran object named shukran-subs
-         * add the id of the creator they subscribed to in the array.
+         * add the id of the creator they subscribed to in the array. and how much they subscirbed with and in what currency
          * if they don't, create an array with the id of the creator in it.
          */
         if (req.body.tx_ref.includes('-shukraning-')) { // important bit
@@ -51,7 +51,11 @@ exports.createTransaction = async (req, reply) => {
             );
             if (req.cookies['_shukran']) { // add to pre-existing array
                 let ck = JSON.parse(req.cookies['_shukran']) // get our cookie, which is an object
-                ck['shukran-subs'].push(crID)
+                ck['shukran-subs'].push({
+                    creator_id: crID,
+                    amount: req.body.amount,
+                    currency: req.body.currency
+                })
                 reply.setCookie('_shukran', JSON.stringify(ck), {
                     // path: '/cr',
                     httpOnly: true, //
@@ -61,7 +65,11 @@ exports.createTransaction = async (req, reply) => {
             } else { // create new array
                 let newCk = {
                     supporter_email: req.body.supporter_email,
-                    "shukran-subs": [crID]
+                    "shukran-subs": [{
+                        creator_id: crID,
+                        amount: req.body.amount,
+                        currency: req.body.currency
+                    }]
                 }
                 reply.setCookie('_shukran', JSON.stringify(newCk), {
                     // path: '/cr',
