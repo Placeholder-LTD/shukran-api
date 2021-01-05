@@ -131,19 +131,11 @@ exports.getSubscribers = async (req, reply) => {
     try {
 
         // https://stackoverflow.com/a/13437802/9259701
-        // also check if their subscription is still active
-        /* let subs = Subscription.find({
-            'name': new RegExp(`-shukraning-${req.query.id}`, 'gi'),
-            status: 'active'
-        }, { plan_token: 0, id: 0, _id: 0, __v: 0 }) // exclude these fields
-        
-        return subs */
 
         let plans = await getAllPaymentPlans.getAllPaymentPlans;
         let creatorPlans = plans.filter(plan => plan.name.includes(req.query.id))
-
         let shuklans = await getAllSubscribers.getAllSubscribers;
-        let creatorShuklans = shuklans.filter(shuklan => creatorPlans.some(plan => plan.id === shuklan.id))
+        let creatorShuklans = shuklans.filter(shuklan => creatorPlans.some(plan => plan.id === shuklan.plan))
 
         reply.send(creatorShuklans) // return creatorShuklans
         
