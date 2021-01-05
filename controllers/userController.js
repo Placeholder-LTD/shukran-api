@@ -1,6 +1,6 @@
 const boom = require('boom')
 const nodemailer = require("nodemailer");
-
+const jwt = require('jsonwebtoken')
 const User = require('../models/User')
 
 const ggle = require('../helpers/uploadgdrive');
@@ -227,7 +227,7 @@ exports.randomCreators = async (req, reply) => {
                 $unset: [ '_id', 'fullname', 'email', 'password', 'create_date', 'phone', 'content', 'subscribers', '__v', 'account_name', 'account_number', 'bank', 'audience_size', 'primary_link', 'redirect', 'folder_id' ]
             }
         ], (err, creators) => {
-            if (err) { // hopefully never
+            if (err) { // hopefully never, or we just perform a searh with User model
                 reply.send([
                     {
                         picture_id: '1f8mYQVHIygKZoSSM7uy1C9oBpeHTVj0t',
@@ -874,7 +874,7 @@ exports.getAll = async (req, reply) => {
                     // domain: 'localhost:8080',
                     path: '/',
                     httpOnly: true, // front end js can't access
-                    secure: false, // true, // if running live
+                    secure: true, // true, // if running live
                     signed: false // true
                 })
                 .setCookie('foo', 'foo', {
