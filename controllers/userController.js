@@ -852,7 +852,12 @@ exports.signup = async (req, reply) => {
     }
 }
 
-exports.getAll = async (req, reply) => {
+/**
+ * https://github.com/fastify/fastify/blob/master/docs/Routes.md#promise-resolution
+ * @param {object} req request object
+ * @param {object} reply response object
+ */
+exports.getAll = (req, reply) => {
     try {
         console.log('do we have cookies?\n\n', req.cookies);
         User.find({}, function (err, creators) {
@@ -869,14 +874,15 @@ exports.getAll = async (req, reply) => {
                     ]
                 }
                 reply
-                .setCookie('xxx', JSON.stringify(_ck), {
+                .code(200)
+                /* .setCookie('xxx', JSON.stringify(_ck), {
                     maxAge: 3 * 1000,
                     // domain: 'localhost:8080',
                     path: '/',
                     httpOnly: true, // front end js can't access
                     secure: true, // true, // if running live
                     signed: false // true
-                })
+                }) */
                 .setCookie('foo', 'foo', {
                     maxAge: 1000 * 60 * 6, 
                     path: "/",
