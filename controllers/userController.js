@@ -896,10 +896,11 @@ exports.getAll = (req, reply) => {
                 })
                 .setCookie('foo', 'foo', {
                     path: '/',
+                    maxAge: 3 * 1000,
                     httpOnly: true, // front end js can't access
                     secure: cookieSecure, // if running live
                     signed: true,
-                    sameSite: 'strict',
+                    sameSite: 'lax',
                     domain: cookieDomain
                 })
                 .code(200)
