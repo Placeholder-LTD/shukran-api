@@ -891,7 +891,7 @@ exports.getAll = (req, reply) => {
                     httpOnly: true, // front end js can't access
                     secure: cookieSecure, // if running live
                     signed: true,
-                    sameSite: 'strict',
+                    sameSite: 'lax',
                     domain: cookieDomain
                 })
                 .setCookie('foo', 'foo', {
