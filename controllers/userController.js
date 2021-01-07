@@ -860,10 +860,10 @@ exports.signup = async (req, reply) => {
 exports.getAll = (req, reply) => {
     try {
         let cookieDomain = 'useshukran.com', cookieSecure = true;
-        if (request.hostname.match(/localhost:[0-9]{4,}/g)) { // if localhost
+        if (req.hostname.match(/localhost:[0-9]{4,}/g)) { // if localhost
             cookieSecure = false
             cookieDomain = 'localhost'
-        } else if (request.hostname.match(/shukranstaging.netlify.(com|app)/g)) {
+        } else if (req.hostname.match(/shukranstaging.netlify.(com|app)/g)) {
             cookieDomain = 'shukranstaging.netlify.app' // .app because that's what netify defaults redirect to from .com
         }
 
