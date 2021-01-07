@@ -868,6 +868,8 @@ exports.getAll = (req, reply) => {
             cookieDomain = 'shukranstaging.netlify.app' //
         }
 
+        console.log('setting cookie for', cookieDomain);
+
         console.log('do we have cookies?\n\n', req.cookies);
         User.find({}, function (err, creators) {
             if (err) {
