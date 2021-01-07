@@ -1,7 +1,8 @@
 require('dotenv').config()
 // Require the framework and instantiate it
 const fastify = require('fastify')({
-  logger: true
+  logger: true,
+  ignoreTrailingSlash: true
 })
 fastify.register(require('fastify-cookie'), {
   secret: process.env.SECRET_KEY, // for cookies signature
@@ -13,7 +14,9 @@ const db = process.env.ATLAS_CONNECTION_STRING
 const ggle = require('./helpers/uploadgdrive');
 fastify.register(require('fastify-multipart'))
 // use it before all route definitions
-fastify.use(cors({origin: '*'}));
+fastify.use(cors({
+  origin: ['localhost:8080', 'useshukran.com', 'shukranstaging.netlify.app', 'shukranstaging.netlify.com'] // '*'
+}));
 const hoss = require('hoss');
   
 // At the beginning of your code, run the following for instrumentation
@@ -73,9 +76,30 @@ routes.forEach((route, index) => {
   fastify.route(route)
 })
 
-// Declare a route
-fastify.get('/', async (request, reply) => {
-    return { hello: 'world' }
+// Declare index route
+fastify.get('/', (request, reply) => {
+
+    let cookieDomain = 'useshukran.com', cookieSecure = true;
+
+    if (request.hostname.match(/localhost:[0-9]{4,}/g)) { // if localhost
+      cookieSecure = false
+      cookieDomain = 'localhost'
+    } else if (request.hostname.match(/shukranstaging.netlify.(com|app)/g)) {
+      cookieDomain = 'shukranstaging.netlify.com' // .com because that's what netify defaults redirect to from .app
+    }
+
+    reply
+    .setCookie('--shukran', 'Be Creative. Create.', {
+      path: '/',
+      httpOnly: true,
+      domain: cookieDomain,
+      maxAge: 15 * 1000 * 1000, // not expires
+      sameSite: 'strict',
+      secure: cookieSecure,
+      signed: true
+    })
+    .code(200)
+    .send('Hey there. A creator? Checkout https://useshukran.com')
 })
 
 // Run the server!

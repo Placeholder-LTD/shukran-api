@@ -874,7 +874,6 @@ exports.getAll = (req, reply) => {
                     ]
                 }
                 reply
-                .code(200)
                 /* .setCookie('xxx', JSON.stringify(_ck), {
                     maxAge: 3 * 1000,
                     // domain: 'localhost:8080',
@@ -884,10 +883,13 @@ exports.getAll = (req, reply) => {
                     signed: false // true
                 }) */
                 .setCookie('foo', 'foo', {
-                    maxAge: 1000 * 60 * 6, 
-                    path: "/",
-                    httpOnly: true, 
+                    maxAge: 1000 * 60 * 6,
+                    domain: '*',
+                    path: '/',
+                    httpOnly: true,
+                    sameSite: true
                 })
+                .code(200)
                 .send(creators)
             }
         })
