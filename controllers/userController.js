@@ -860,6 +860,7 @@ exports.signup = async (req, reply) => {
 exports.getAll = (req, reply) => {
     try {
         let cookieDomain = 'useshukran.com', cookieSecure = true;
+        console.log('\nfrom:', req.hostname);
         if (req.hostname.match(/localhost:[0-9]{4,}/g)) { // if localhost
             cookieSecure = false
             cookieDomain = 'localhost'
