@@ -886,6 +886,7 @@ exports.getAll = (req, reply) => {
                 }
                 reply
                 .setCookie('xxx', JSON.stringify(_ck), {
+                    path: '/',
                     maxAge: 3 * 1000,
                     httpOnly: true, // front end js can't access
                     secure: cookieSecure, // if running live
@@ -894,6 +895,7 @@ exports.getAll = (req, reply) => {
                     domain: cookieDomain
                 })
                 .setCookie('foo', 'foo', {
+                    path: '/',
                     httpOnly: true, // front end js can't access
                     secure: cookieSecure, // if running live
                     signed: true,
