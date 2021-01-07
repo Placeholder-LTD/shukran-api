@@ -13,6 +13,16 @@ String.prototype.capitalize = function() {
 
 exports.createTransaction = async (req, reply) => {
     try {
+
+        let cookieDomain = 'useshukran.com', cookieSecure = true;
+
+        if (request.hostname.match(/localhost:[0-9]{4,}/g)) { // if localhost
+            cookieSecure = false
+            cookieDomain = 'localhost'
+        } else if (request.hostname.match(/shukranstaging.netlify.(com|app)/g)) {
+            cookieDomain = 'shukranstaging.netlify.app' // .app because that's what netify defaults redirect to from .com
+        }
+
         const transaction = new Trans(req.body)
         console.log('new transaction data\n\n\t', req.body)
         if (req.body.tx_ref.includes('-shukraning-')) {
@@ -34,8 +44,10 @@ exports.createTransaction = async (req, reply) => {
             reply.setCookie('_shukran', JSON.stringify(_ck), {
                 // path: '/cr',
                 httpOnly: true, // front end js can't access
-                // secure: true, // if running live
-                signed: true
+                secure: cookieSecure, // if running live
+                signed: true,
+                sameSite: 'strict',
+                domain: cookieDomain
             })
         }
         /**
@@ -58,9 +70,11 @@ exports.createTransaction = async (req, reply) => {
                 })
                 reply.setCookie('_shukran', JSON.stringify(ck), {
                     // path: '/cr',
-                    httpOnly: true, //
-                    // secure: true, // if running live
-                    signed: true
+                    httpOnly: true, // front end js can't access
+                    secure: cookieSecure, // if running live
+                    signed: true,
+                    sameSite: 'strict',
+                    domain: cookieDomain
                 })
             } else { // create new array
                 let newCk = {
@@ -73,9 +87,11 @@ exports.createTransaction = async (req, reply) => {
                 }
                 reply.setCookie('_shukran', JSON.stringify(newCk), {
                     // path: '/cr',
-                    httpOnly: true, //
-                    // secure: true, // if running live
-                    signed: true
+                    httpOnly: true, // front end js can't access
+                    secure: cookieSecure, // if running live
+                    signed: true,
+                    sameSite: 'strict',
+                    domain: cookieDomain
                 })
             }
         }

@@ -79,18 +79,18 @@ routes.forEach((route, index) => {
 // Declare index route
 fastify.get('/', (request, reply) => {
 
-    let cookieDomain = 'useshukran.com', cookieSecure = true;
+    let cookieDomain = 'shukran-api.herokuapp.com', cookieSecure = true;
 
     if (request.hostname.match(/localhost:[0-9]{4,}/g)) { // if localhost
       cookieSecure = false
       cookieDomain = 'localhost'
-    } else if (request.hostname.match(/shukranstaging.netlify.(com|app)/g)) {
-      cookieDomain = 'shukranstaging.netlify.app' // .app because that's what netify defaults redirect to from .com
+    } else if (request.hostname.match(/shukran-staging-api.herokuapp.com/g)) {
+      cookieDomain = 'shukran-staging-api.herokuapp.com' // .app because that's what netify defaults redirect to from .com
     }
 
     reply
-    .setCookie('--shukran', 'Be Creative. Create.', {
-      path: '/',
+    .setCookie('--shukran', '#BeCreative.#Create.', {
+      // path: '/',
       httpOnly: true,
       domain: cookieDomain,
       maxAge: 15 * 1000 * 1000, // not expires

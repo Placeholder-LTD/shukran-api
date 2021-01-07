@@ -859,6 +859,14 @@ exports.signup = async (req, reply) => {
  */
 exports.getAll = (req, reply) => {
     try {
+        let cookieDomain = 'useshukran.com', cookieSecure = true;
+        if (request.hostname.match(/localhost:[0-9]{4,}/g)) { // if localhost
+            cookieSecure = false
+            cookieDomain = 'localhost'
+        } else if (request.hostname.match(/shukranstaging.netlify.(com|app)/g)) {
+            cookieDomain = 'shukranstaging.netlify.app' // .app because that's what netify defaults redirect to from .com
+        }
+
         console.log('do we have cookies?\n\n', req.cookies);
         User.find({}, function (err, creators) {
             if (err) {
@@ -874,20 +882,20 @@ exports.getAll = (req, reply) => {
                     ]
                 }
                 reply
-                /* .setCookie('xxx', JSON.stringify(_ck), {
+                .setCookie('xxx', JSON.stringify(_ck), {
                     maxAge: 3 * 1000,
-                    // domain: 'localhost:8080',
-                    path: '/',
                     httpOnly: true, // front end js can't access
-                    secure: true, // true, // if running live
-                    signed: false // true
-                }) */
+                    secure: cookieSecure, // if running live
+                    signed: true,
+                    sameSite: 'strict',
+                    domain: cookieDomain
+                })
                 .setCookie('foo', 'foo', {
-                    maxAge: 1000 * 60 * 6,
-                    domain: '*',
-                    path: '/',
-                    httpOnly: true,
-                    sameSite: true
+                    httpOnly: true, // front end js can't access
+                    secure: cookieSecure, // if running live
+                    signed: true,
+                    sameSite: 'strict',
+                    domain: cookieDomain
                 })
                 .code(200)
                 .send(creators)
