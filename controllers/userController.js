@@ -864,8 +864,8 @@ exports.getAll = (req, reply) => {
         if (req.hostname.match(/localhost:[0-9]{4,}/g)) { // if localhost
             cookieSecure = false
             cookieDomain = 'localhost'
-        } else if (req.hostname.match(/shukranstaging.netlify.(com|app)/g)) {
-            cookieDomain = 'shukranstaging.netlify.app' // .app because that's what netify defaults redirect to from .com
+        } else if (req.hostname.match(/shukran-staging-api.herokuapp.com/g)) { // /shukranstaging.netlify.(com|app)/g
+            cookieDomain = 'shukranstaging.netlify.app' //
         }
 
         console.log('do we have cookies?\n\n', req.cookies);
