@@ -85,7 +85,7 @@ fastify.get('/', (request, reply) => {
       cookieSecure = false
       cookieDomain = 'localhost'
     } else if (request.hostname.match(/shukranstaging.netlify.(com|app)/g)) {
-      cookieDomain = 'shukranstaging.netlify.com' // .com because that's what netify defaults redirect to from .app
+      cookieDomain = 'shukranstaging.netlify.app' // .app because that's what netify defaults redirect to from .com
     }
 
     reply
