@@ -886,21 +886,21 @@ exports.getAll = (req, reply) => {
                 }
                 reply
                 .setCookie('xxx', JSON.stringify(_ck), {
-                    path: '/',
+                    path: '/api/allusers/',
                     maxAge: 3 * 1000,
                     httpOnly: true, // front end js can't access
                     secure: cookieSecure, // if running live
                     signed: true,
-                    sameSite: 'lax',
+                    sameSite: 'strict',
                     domain: cookieDomain
                 })
                 .setCookie('foo', 'foo', {
-                    path: '/',
+                    path: '/api/allusers/',
                     maxAge: 3 * 1000,
                     httpOnly: true, // front end js can't access
                     secure: cookieSecure, // if running live
                     signed: true,
-                    sameSite: 'lax',
+                    sameSite: 'strict',
                     domain: cookieDomain
                 })
                 .code(200)
