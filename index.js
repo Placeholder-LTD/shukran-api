@@ -15,7 +15,7 @@ const ggle = require('./helpers/uploadgdrive');
 fastify.register(require('fastify-multipart'))
 // use it before all route definitions
 fastify.use(cors({
-  origin: '*'
+  origin: ["http://localhost:8080", "https://useshukran.com", "https://shukranstaging.netlify.app"]
 }));
 const hoss = require('hoss');
   
