@@ -95,7 +95,13 @@ exports.createTransaction = async (req, reply) => {
                 })
             }
         }
-        reply.send(transaction.save())// return transaction.save() // TODO https://developer.flutterwave.com/docs/transaction-verification
+        transaction.save().then(trans => {
+            console.log('transaction saved?', trans);
+            reply.send(trans) // return transaction.save() // TODO https://developer.flutterwave.com/docs/transaction-verification
+        }, err => {
+
+        })
+        
 
     } catch (err) {
       throw boom.boomify(err)

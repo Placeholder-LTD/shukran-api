@@ -1,7 +1,8 @@
 const mongoose = require('mongoose')
 
 const TransSchema = mongoose.Schema({
-    username: String,
+    username: String, // creator_username
+    creator_id: String,
     supporter_nickname: String,
     amount: String,
     message: String,
