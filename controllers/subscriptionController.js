@@ -93,17 +93,23 @@ exports.createSubscription = async (req, reply) => { // https://attacomsian.com/
  * @deprecated use ./flutterwave-api-calls/get-all-payment-plans
  * 
  */
-exports.getAllSubscriptions = async (req, reply) => {
+exports.getAllSubscriptions = (req, reply) => {
     try {
-        let plans = await getAllPaymentPlans.getAllPaymentPlans;
+        getAllPaymentPlans.getAllPaymentPlans.then((plans) => {
+            reply.send(plans) // return creatorShuklans
+        }, (err) => {
 
-        reply.send(plans) // return creatorShuklans
+        }).catch((why) => {
+
+        });
+
+        
     } catch (err) {
         throw boom.boomify(err)
     }
 }
 
-exports.getCreatorSubscrptions = async (req, reply) => {
+exports.getCreatorSubscrptions = (req, reply) => {
     // req.params.creator
     try {
         Subscription.find({ 
@@ -127,24 +133,30 @@ exports.getCreatorSubscrptions = async (req, reply) => {
  * @param {*} reply 
  * get details of all the subscribers of a creator
  */
-exports.getSubscribers = async (req, reply) => {
+exports.getSubscribers = (req, reply) => {
     try {
 
         // https://stackoverflow.com/a/13437802/9259701
 
-        let plans = await getAllPaymentPlans.getAllPaymentPlans;
-        let creatorPlans = plans.filter(plan => plan.name.includes(req.query.id))
-        let shuklans = await getAllSubscribers.getAllSubscribers;
-        let creatorShuklans = shuklans.filter(shuklan => creatorPlans.some(plan => plan.id === shuklan.plan))
+        getAllPaymentPlans.getAllPaymentPlans.then((plans) => {
+            let creatorPlans = plans.filter(plan => plan.name.includes(req.query.id))
+            getAllSubscribers.getAllSubscribers.then((shuklans) => {
+                let creatorShuklans = shuklans.filter(shuklan => creatorPlans.some(plan => plan.id === shuklan.plan))
+                reply.send(creatorShuklans) // return creatorShuklans
+            }, (err) => {
 
-        reply.send(creatorShuklans) // return creatorShuklans
+            })
+        }, (err) => {
+
+        });
+        
         
     } catch (err) {
         throw boom.boomify(err)
     }
 }
 
-exports.getTotalRevenue = async(req, reply) => {
+exports.getTotalRevenue = async (req, reply) => {
     let money = Money.find({
         'data.tx_ref': new RegExp(`-shukraning-${req.query.id}`, 'gi'),
         'data.status': 'successful'

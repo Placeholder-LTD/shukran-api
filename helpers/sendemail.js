@@ -1183,7 +1183,7 @@ module.exports.sendTipEmail = async (reqbody) => {
         };
 
         smtpTransport.sendMail(mailOptions, (error, response) => {
-            error ? console.log(error) : console.log(response);
+            error ? console.error(error) : console.log(response);
             smtpTransport.close();
         });
 }
@@ -1229,7 +1229,7 @@ module.exports.sendCreatorAddedShuclan = async (reqbody) => {
     }
         
     smtpTransport.sendMail(mailOptionsCreator, (error, response) => {
-        error ? console.log(error) : console.log(response);
+        error ? console.error(error) : console.log(response);
         smtpTransport.close();
     });
 }

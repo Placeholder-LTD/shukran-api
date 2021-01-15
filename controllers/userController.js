@@ -989,7 +989,7 @@ exports.resetPassword = async (req, reply) => {
  * WHAT IF THEY CLEAR THEIR COOKIES... WE SHOULD BE USING DATABASE
  * we don't save in database because when supporters unsubscribe, we can't know in real time... so we might need to be running a cron job to regularly update our db if we go with that route.
  */
-exports.findMyProfile = async (req, reply) => {
+exports.findMyProfile = (req, reply) => {
     try {
         let username = req.body.username
         User.find({ 'username': username }, (err, user) => { // user is an array

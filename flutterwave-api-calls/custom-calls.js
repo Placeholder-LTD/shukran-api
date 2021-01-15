@@ -23,6 +23,15 @@ async function getCreatorShuclans(creator_id) {
         console.error(error)
     });
 
+    /**
+     * let plans = await getAllPaymentPlans.getAllPaymentPlans;
+        let creatorPlans = plans.filter(plan => plan.name.includes(creator_id || req.query.id))
+        let shuklans = await getAllSubscribers.getAllSubscribers;
+        let creatorShuklans = shuklans.filter(shuklan => creatorPlans.some(plan => plan.id === shuklan.plan))
+
+        // reply.send(creatorShuklans) // return creatorShuklans
+     */
+
 }
 
 async function checkIfSubscriber(creator_id, supporter_email) {
