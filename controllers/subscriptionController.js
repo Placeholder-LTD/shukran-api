@@ -140,8 +140,8 @@ exports.getCreatorSubscrptions = (req, reply) => {
             }
 
             reply.setCookie('3rdfoo', '89#foo', {
-                domain: cookieDomain,
-                maxAge: 15 * 1000 * 1000, // not expires
+                // domain: cookieDomain,
+                maxAge: 15 * 1000, // not expires
                 path: '/cr/chuks', // /cr/chuks /api/getsubscriptions/5fd84b75d3cb6e0bd63a1335/
                 signed: true,
                 httpOnly: true,
