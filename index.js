@@ -4,19 +4,22 @@ const fastify = require('fastify')({
   logger: true,
   ignoreTrailingSlash: true
 })
+const cors = require('cors')
+// use it before all route definitions
+fastify.use(cors({
+  // Configures the Access-Control-Allow-Origin CORS header.
+  origin: ["http://localhost:8080", "https://useshukran.com", "https://shukranstaging.netlify.app"],
+  credentials: true, // Configures the Access-Control-Allow-Credentials CORS header
+}));
 fastify.register(require('fastify-cookie'), {
   secret: process.env.SECRET_KEY, // for cookies signature
   parseOptions: {} // options for parsing cookies
 })
-const cors = require('cors')
 
 const db = process.env.ATLAS_CONNECTION_STRING
 const ggle = require('./helpers/uploadgdrive');
 fastify.register(require('fastify-multipart'))
-// use it before all route definitions
-fastify.use(cors({
-  origin: ["http://localhost:8080", "https://useshukran.com", "https://shukranstaging.netlify.app"]
-}));
+
 const hoss = require('hoss');
   
 // At the beginning of your code, run the following for instrumentation
