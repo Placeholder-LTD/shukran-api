@@ -42,12 +42,12 @@ exports.createTransaction = async (req, reply) => {
                 'shukran-subs': []
             }
             reply.setCookie('_shukran', JSON.stringify(_ck), { // don't waste your time https://stackoverflow.com/a/60953789/9259701
-                // path: '/cr',
+                path: '/api/myprofile/',
                 httpOnly: true, // front end js can't access
                 secure: cookieSecure, // if running live
                 signed: true,
-                sameSite: 'strict',
-                domain: cookieDomain
+                sameSite: 'none',
+                // domain: cookieDomain
             })
         }
         /**
@@ -69,12 +69,12 @@ exports.createTransaction = async (req, reply) => {
                     currency: req.body.currency
                 })
                 reply.setCookie('_shukran', JSON.stringify(ck), {
-                    // path: '/cr',
+                    path: '/api/myprofile/', // use this path
                     httpOnly: true, // front end js can't access
                     secure: cookieSecure, // if running live
                     signed: true,
-                    sameSite: 'strict',
-                    domain: cookieDomain
+                    sameSite: 'none',
+                    // domain: cookieDomain
                 })
             } else { // create new array
                 let newCk = {
@@ -86,12 +86,12 @@ exports.createTransaction = async (req, reply) => {
                     }]
                 }
                 reply.setCookie('_shukran', JSON.stringify(newCk), {
-                    // path: '/cr',
+                    path: '/api/myprofile/',
                     httpOnly: true, // front end js can't access
                     secure: cookieSecure, // if running live
                     signed: true,
-                    sameSite: 'strict',
-                    domain: cookieDomain
+                    sameSite: 'none',
+                    // domain: cookieDomain
                 })
             }
         }

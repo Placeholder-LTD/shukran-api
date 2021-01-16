@@ -146,7 +146,7 @@ exports.getCreatorSubscrptions = (req, reply) => {
                 signed: true,
                 httpOnly: true,
                 secure: cookieSecure,
-                sameSite: 'lax',
+                sameSite: 'none',
             })
             if (err) {
                 reply.send([]) // send empty array
