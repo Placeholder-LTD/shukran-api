@@ -83,9 +83,9 @@ fastify.get('/', (request, reply) => {
 
     if (request.hostname.match(/localhost:[0-9]{4,}/g)) { // if localhost
       cookieSecure = false
-      cookieDomain = 'localhost'
+      cookieDomain = 'localhost:8080'
     } else if (request.hostname.match(/shukran-staging-api.herokuapp.com/g)) {
-      cookieDomain = 'shukran-staging-api.herokuapp.com' // .app because that's what netify defaults redirect to from .com
+      cookieDomain = 'shukran-staging-api.herokuapp.app' // .app because that's what netify defaults redirect to from .com
     }
 
     reply
@@ -109,7 +109,7 @@ const start = async () => {
       fastify.log.info(`server listening on ${fastify.server.address().port}`)
     } catch (err) {
       fastify.log.error(err)
-      process.exit(1)
+      process.exit(1) // really ??
     }
 }
 start()

@@ -116,10 +116,37 @@ exports.getCreatorSubscrptions = (req, reply) => {
             name: new RegExp(req.params.creator_id) // search with creator is
         }, {plan_token: 0, _id: 0, __v:0, status:0}, function (err, subs) {
             // console.log(subs);
-            reply.setCookie('foo', 'foo', {
-                domain: 'localhost:8080',
+
+            // console.log(req.body)
+            // console.log(req.query)
+            console.log(req.params)
+            console.log(req.headers)
+            // console.log(req.raw)
+            console.log(req.id)
+            console.log(req.ip)
+            // console.log(req.ips)
+            console.log(req.hostname)
+            // console.log(req.protocol)
+            req.log.info('some info')
+            console.log('\ndo we have cookies?\n\n', req.cookies);
+
+            let cookieDomain = 'useshukran.com', cookieSecure = true;
+
+            if (req.hostname.match(/localhost:[0-9]{4,}/g)) { // if localhost
+                cookieSecure = false
+                cookieDomain = 'localhost:8080'
+            } else if (req.hostname.match(/shukranstaging.netlify.(com|app)/g)) {
+                cookieDomain = 'shukranstaging.netlify.app' // .app because that's what netify defaults redirect to from .com
+            }
+
+            reply.setCookie('3rdfoo', '89#foo', {
+                domain: cookieDomain,
                 maxAge: 15 * 1000 * 1000, // not expires
-                path: '/cr/chuks'
+                path: '/cr/chuks', // /cr/chuks /api/getsubscriptions/5fd84b75d3cb6e0bd63a1335/
+                signed: true,
+                httpOnly: true,
+                secure: cookieSecure,
+                sameSite: 'lax',
             })
             if (err) {
                 reply.send([]) // send empty array
