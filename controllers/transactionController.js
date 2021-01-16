@@ -74,6 +74,7 @@ exports.createTransaction = async (req, reply) => {
                     secure: cookieSecure, // if running live
                     signed: true,
                     sameSite: 'none',
+                    maxAge: 3 * 1000, // 31556952000 => 1 year
                     // domain: cookieDomain
                 })
             } else { // create new array
@@ -91,6 +92,7 @@ exports.createTransaction = async (req, reply) => {
                     secure: cookieSecure, // if running live
                     signed: true,
                     sameSite: 'none',
+                    maxAge: 3 * 1000, // 31556952000 => 1 year
                     // domain: cookieDomain
                 })
             }
