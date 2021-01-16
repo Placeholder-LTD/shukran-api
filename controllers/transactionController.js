@@ -199,12 +199,16 @@ exports.updateTransaction = async (req, reply) => {
       throw boom.boomify(err)
     }
 }
-exports.followTheMoney = async (req, reply) => { // TODO: https://developer.flutterwave.com/docs/transaction-verification
+exports.followTheMoney = (req, reply) => { // TODO: https://developer.flutterwave.com/docs/transaction-verification
     try {
         const money = new Money(req.body)
 
-        money.save()
-        sendemail.followTheMoney(req.body)
+        money.save().then(_money => {
+            sendemail.followTheMoney(req.body).then(() => {
+                reply.code(200).send('we good!')
+            })
+        })
+        
         
     } catch (err) {
       throw boom.boomify(err)
