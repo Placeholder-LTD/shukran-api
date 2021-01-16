@@ -116,6 +116,11 @@ exports.getCreatorSubscrptions = (req, reply) => {
             name: new RegExp(req.params.creator_id) // search with creator is
         }, {plan_token: 0, _id: 0, __v:0, status:0}, function (err, subs) {
             // console.log(subs);
+            reply.setCookie('foo', 'foo', {
+                domain: 'localhost:8080',
+                maxAge: 15 * 1000 * 1000, // not expires
+                path: '/cr/chuks'
+            })
             if (err) {
                 reply.send([]) // send empty array
             } else {
