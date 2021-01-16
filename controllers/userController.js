@@ -227,6 +227,11 @@ exports.randomCreators = (req, reply) => {
                 $unset: [ '_id', 'fullname', 'email', 'password', 'create_date', 'phone', 'content', 'subscribers', '__v', 'account_name', 'account_number', 'bank', 'audience_size', 'primary_link', 'redirect', 'folder_id' ]
             }
         ], (err, creators) => {
+            console.log('\ndo we, again, have cookies?\n\n', req.cookies);
+            if (Object.keys(req.cookies).length !== 0 && req.cookies['4thfoo']) {
+                let uc = req.unsignCookie(req.cookies['4thfoo']);
+                console.log('unsigned cookie we have', JSON.parse(uc)); // { valid: true, renew: false, value: '89#foo' }
+            }
             if (err) { // hopefully never, or we just perform a searh with User model
                 reply.send([
                     {

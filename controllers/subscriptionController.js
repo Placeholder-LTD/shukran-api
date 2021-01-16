@@ -128,11 +128,7 @@ exports.getCreatorSubscrptions = (req, reply) => {
             console.log(req.hostname)
             // console.log(req.protocol)
             req.log.info('some info')
-            console.log('\ndo we have cookies?\n\n', req.cookies);
-            if (Object.keys(req.cookies).length !== 0 && req.cookies['4thfoo']) {
-                let uc = req.unsignCookie(req.cookies['4thfoo']);
-                console.log('unsigned cookie we have', JSON.parse(uc)); // { valid: true, renew: false, value: '89#foo' }
-            }
+            
             let cookieDomain = 'shukran-api.herokuapp.com', cookieSecure = true;
 
             if (req.hostname.match(/localhost:[0-9]{4,}/g)) { // if localhost
