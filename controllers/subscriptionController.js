@@ -130,7 +130,7 @@ exports.getCreatorSubscrptions = (req, reply) => {
             req.log.info('some info')
             console.log('\ndo we have cookies?\n\n', req.cookies);
 
-            let cookieDomain = 'useshukran.com', cookieSecure = true;
+            let cookieDomain = 'shukran-api.herokuapp.com', cookieSecure = true;
 
             if (req.hostname.match(/localhost:[0-9]{4,}/g)) { // if localhost
                 cookieSecure = false
@@ -140,7 +140,7 @@ exports.getCreatorSubscrptions = (req, reply) => {
             }
 
             reply.setCookie('3rdfoo', '89#foo', {
-                // domain: cookieDomain,
+                // domain: cookieDomain, // shd be server domain
                 maxAge: 15 * 1000, // not expires
                 path: '/api/getsubscriptions/5fd84b75d3cb6e0bd63a1335/', // /cr/chuks /api/getsubscriptions/5fd84b75d3cb6e0bd63a1335/
                 signed: true,

@@ -10,7 +10,8 @@ fastify.use(cors({
   // Configures the Access-Control-Allow-Origin CORS header.
   origin: ["http://localhost:8080", "https://useshukran.com", "https://shukranstaging.netlify.app"],
   credentials: true, // Configures the Access-Control-Allow-Credentials CORS header
-  exposedHeaders: ['Set-Cookie']
+  exposedHeaders: ['Set-Cookie'],
+  allowedHeaders: ['Content-Type']
 }));
 fastify.register(require('fastify-cookie'), {
   secret: process.env.SECRET_KEY, // for cookies signature
