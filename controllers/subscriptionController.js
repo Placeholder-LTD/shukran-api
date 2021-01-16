@@ -129,9 +129,9 @@ exports.getCreatorSubscrptions = (req, reply) => {
             // console.log(req.protocol)
             req.log.info('some info')
             console.log('\ndo we have cookies?\n\n', req.cookies);
-            if (Object.keys(req.cookies).length !== 0) {
-                let uc = req.unsignCookie(req.cookies['3rdfoo']);
-                console.log('unsigned cookie we have', uc); // { valid: true, renew: false, value: '89#foo' }
+            if (Object.keys(req.cookies).length !== 0 && req.cookies['4thfoo']) {
+                let uc = req.unsignCookie(req.cookies['4thfoo']);
+                console.log('unsigned cookie we have', JSON.parse(uc)); // { valid: true, renew: false, value: '89#foo' }
             }
             let cookieDomain = 'shukran-api.herokuapp.com', cookieSecure = true;
 
@@ -142,10 +142,10 @@ exports.getCreatorSubscrptions = (req, reply) => {
                 cookieDomain = 'shukran-staging-api.herokuapp.com' // .app because that's what netify defaults redirect to from .com
             }
 
-            reply.setCookie('3rdfoo', '89#foo', {
+            reply.setCookie('4thfoo', JSON.stringify('["dafa", "afas"]'), {
                 // domain: cookieDomain, // shd be server domain, // https://stackoverflow.com/a/60953789/9259701 comments
                 maxAge: 15 * 1000, // not expires
-                path: '/api/getsubscriptions/5fd84b75d3cb6e0bd63a1335/', // /cr/chuks /api/getsubscriptions/5fd84b75d3cb6e0bd63a1335/
+                path: '/api/randomcreators/', // /cr/chuks /api/getsubscriptions/5fd84b75d3cb6e0bd63a1335/
                 signed: true,
                 httpOnly: true,
                 secure: cookieSecure,
