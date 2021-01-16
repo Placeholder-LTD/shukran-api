@@ -230,7 +230,9 @@ exports.randomCreators = (req, reply) => {
             console.log('\ndo we, again, have cookies?\n\n', req.cookies);
             if (Object.keys(req.cookies).length !== 0 && req.cookies['4thfoo']) {
                 let uc = req.unsignCookie(req.cookies['4thfoo']);
-                console.log('unsigned cookie we have', JSON.parse(JSON.stringify(uc))); // { valid: true, renew: false, value: '89#foo' }
+                let uc_ = JSON.parse(JSON.stringify(uc))
+                let uc__ = JSON.parse(uc_.value)
+                console.log('unsigned cookie we have', uc__); // { valid: true, renew: false, value: '89#foo' }
             }
             if (err) { // hopefully never, or we just perform a searh with User model
                 reply.send([
