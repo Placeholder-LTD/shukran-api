@@ -232,10 +232,12 @@ exports.randomCreators = (req, reply) => {
                 let uc = req.unsignCookie(req.cookies['4thfoo']);
                 let uc_ = JSON.parse(JSON.stringify(uc))
                 let uc__ = JSON.parse(uc_.value)
-                let uc___ = JSON.parse(uc__)
+                if (typeof uc__ === 'string') {
+                    uc__ = JSON.parse(uc__)
+                }
                 console.log('unsigned cookie we have', typeof uc__, uc__); // { valid: true, renew: false, value: '89#foo' }
                 
-                console.log(uc___[0]);
+                console.log(uc__[0]);
             }
             if (err) { // hopefully never, or we just perform a searh with User model
                 reply.send([
@@ -1023,10 +1025,13 @@ exports.findMyProfile = (req, reply) => {
                     let getCookie_ = JSON.parse(getCookie__.value)
                     console.log('seesing sehth?', typeof getCookie_, getCookie_);
                     // if they're subscribed to the creator
+                    if (typeof getCookie_ === 'string') {
+                        getCookie_ = JSON.parse(getCookie_)
+                    }
                     // another thing we could do is save the device_id we get from flutterwave,
                     // if they don't have _shukran cookie, ... we could make use of the device id... but we'd need our own, and not flutterwave or we could just use what ever flutterwave uses for consistency, so we can track the user device even if they use a different browser on that device ...but we'd need to have their device id saved somewhere... to verify : AND THERE'S NO WAY TO DO THAT NOW.
-                    let _subs = JSON.parse(getCookie_)['shukran-subs'];
-                    let _supporter_email = JSON.parse(getCookie_)['supporter_email']
+                    let _subs = getCookie_['shukran-subs'];
+                    let _supporter_email = getCookie_['supporter_email']
                     if (_subs.includes(user[0]._id)) { // they're subsribed to this user.
                         // filter out all the contents that's above what the supporter is paying.
 

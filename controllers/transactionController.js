@@ -64,9 +64,11 @@ exports.createTransaction = async (req, reply) => {
             if (req.cookies['_shukran'] && req.unsignCookie(req.cookies['_shukran']).valid) { // add to pre-existing array
                 let ck___ = req.unsignCookie(req.cookies['_shukran']);
                 let ck__ = JSON.parse(JSON.stringify(ck___))
-                let ck_ = JSON.parse(ck__.value)  // get our cookie, which is an object
-
-                let ck = JSON.parse(ck_)
+                let ck = JSON.parse(ck__.value)  // get our cookie, which is an object
+                if (typeof ck === 'string') {
+                    ck = JSON.parse(ck)
+                }
+                
                 ck['shukran-subs'].push({
                     creator_id: crID,
                     amount: req.body.amount,
