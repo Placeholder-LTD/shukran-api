@@ -1007,7 +1007,8 @@ exports.findMyProfile = (req, reply) => {
                 // we strip the contents based on what the user should see, how they've subscribed.
                 if (req.cookies['_shukran'] && req.unsignCookie(req.cookies['_shukran']).valid && req.cookies['_shukran']['shukran-subs'] && req.cookies['_shukran']['shukran-subs'].length > 0) { // check this...
                     
-                    let getCookie = req.unsignCookie(req.cookies['_shukran']);
+                    let getCookie_ = req.unsignCookie(req.cookies['_shukran']);
+                    let getCookie = JSON.parse(JSON.stringify(getCookie_))
                     // if they're subscribed to the creator
                     // another thing we could do is save the device_id we get from flutterwave,
                     // if they don't have _shukran cookie, ... we could make use of the device id... but we'd need our own, and not flutterwave or we could just use what ever flutterwave uses for consistency, so we can track the user device even if they use a different browser on that device ...but we'd need to have their device id saved somewhere... to verify : AND THERE'S NO WAY TO DO THAT NOW.
