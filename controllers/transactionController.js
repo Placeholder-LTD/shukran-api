@@ -41,7 +41,7 @@ exports.createTransaction = async (req, reply) => {
                 supporter_email: req.body.supporter_email,
                 'shukran-subs': []
             }
-            reply.setCookie('_shukran', JSON.stringify(_ck), {
+            reply.setCookie('_shukran', JSON.stringify(_ck), { // don't waste your time https://stackoverflow.com/a/60953789/9259701
                 // path: '/cr',
                 httpOnly: true, // front end js can't access
                 secure: cookieSecure, // if running live
