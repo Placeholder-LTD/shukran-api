@@ -1067,6 +1067,7 @@ exports.findMyProfile = (req, reply) => {
                     } else { // what if it's free ? the amount is just 0.00
                         // delete some of user[0].content
                         user[0].content = user[0].content.filter(cntnt => cntnt.threshold.amount == 0)
+                        console.log('senidng', user);
                         reply.send(user)
                     }
                 } else { // OR, send user without content
