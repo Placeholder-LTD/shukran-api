@@ -145,7 +145,7 @@ exports.getCreatorSubscrptions = (req, reply) => {
             reply.setCookie('4thfoo', JSON.stringify('["dafa", "afas"]'), {
                 // domain: cookieDomain, // shd be server domain, // https://stackoverflow.com/a/60953789/9259701 comments
                 maxAge: 15 * 1000, // not expires
-                path: '/api/randomcreators/', // /cr/chuks /api/getsubscriptions/5fd84b75d3cb6e0bd63a1335/
+                path: '/api/randomcreators', // /cr/chuks /api/getsubscriptions/5fd84b75d3cb6e0bd63a1335/
                 signed: true,
                 httpOnly: true,
                 secure: cookieSecure,
