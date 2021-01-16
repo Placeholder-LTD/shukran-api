@@ -998,7 +998,7 @@ exports.findMyProfile = (req, reply) => {
                 reply.send(null) // should change... shouldn't be just null
             } else if (user.length === 1) {
                 // we strip the contents based on what the user should see, how they've subscribed.
-                if (req.cookies['_shukran'] && req.cookies['_shukran']['shukran-subs'].length > 0) { // check this...
+                if (req.cookies['_shukran'] && req.cookies['_shukran']['shukran-subs'] && req.cookies['_shukran']['shukran-subs'].length > 0) { // check this...
                     
                     // if they're subscribed to the creator
                     // another thing we could do is save the device_id we get from flutterwave,
