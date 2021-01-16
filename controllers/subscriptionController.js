@@ -131,7 +131,7 @@ exports.getCreatorSubscrptions = (req, reply) => {
             console.log('\ndo we have cookies?\n\n', req.cookies);
             if (Object.keys(req.cookies).length !== 0) {
                 let uc = req.unsignCookie(req.cookies['3rdfoo']);
-                console.log('unsigned cookie we have', uc);
+                console.log('unsigned cookie we have', uc); // { valid: true, renew: false, value: '89#foo' }
             }
             let cookieDomain = 'shukran-api.herokuapp.com', cookieSecure = true;
 
