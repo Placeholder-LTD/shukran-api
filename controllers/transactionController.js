@@ -62,11 +62,11 @@ exports.createTransaction = async (req, reply) => {
                 req.body.tx_ref.indexOf(" ")
             );
             if (req.cookies['_shukran'] && req.unsignCookie(req.cookies['_shukran']).valid) { // add to pre-existing array
-                let ck__ = req.unsignCookie(req.cookies['_shukran']);
-                let ck_ = JSON.parse(JSON.stringify(ck__))
-                let ck = JSON.parse(ck_.value)  // get our cookie, which is an object
+                let ck___ = req.unsignCookie(req.cookies['_shukran']);
+                let ck__ = JSON.parse(JSON.stringify(ck___))
+                let ck_ = JSON.parse(ck__.value)  // get our cookie, which is an object
 
-                // let ck = JSON.parse(req.cookies['_shukran'])
+                let ck = JSON.parse(ck_)
                 ck['shukran-subs'].push({
                     creator_id: crID,
                     amount: req.body.amount,
