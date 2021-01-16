@@ -204,29 +204,7 @@ exports.followTheMoney = async (req, reply) => { // TODO: https://developer.flut
         const money = new Money(req.body)
 
         money.save()
-        const smtpTransport = nodemailer.createTransport({
-            host: 'smtp.zoho.com',
-            port: 465,
-            secure: true,
-            auth: {
-                user: 'contact@useshukran.com',
-                pass: 'Password2020'
-            }
-          });
-        const mailOptions = {
-            from: "Ola from Shukran <contact@useshukran.com>",
-            to: 'nwachukwuossai@gmail.com; theolaakomolafe@gmail.com',
-            subject: "A transact just happened",
-            generateTextFromHTML: true,
-            html: "<h2>Hi <b>We got webhook data like:</b></h2>"
-            + "Look for payment plan id & stuff!" + "<br>"
-            + JSON.stringify(req.body)
-            };
-
-        smtpTransport.sendMail(mailOptions, (error, response) => {
-            error ? console.log(error) : console.log(response);
-            smtpTransport.close();
-        });
+        sendemail.followTheMoney(req.body)
         
     } catch (err) {
       throw boom.boomify(err)

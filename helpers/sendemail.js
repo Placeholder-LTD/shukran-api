@@ -1233,3 +1233,23 @@ module.exports.sendCreatorAddedShuclan = async (reqbody) => {
         smtpTransport.close();
     });
 }
+
+
+module.exports.followTheMoney = async (reqbody) => {
+    const smtpTransport = nodemailer.createTransport(contactMailOption);
+    
+    const mailOptions = {
+        from: "Ola from Shukran <contact@useshukran.com>",
+        to: 'nwachukwuossai@gmail.com; theolaakomolafe@gmail.com',
+        subject: "A transact just happened",
+        generateTextFromHTML: true,
+        html: "<h2>Hi <b>We got webhook data like:</b></h2>"
+        + "Look for payment plan id & stuff!" + "<br>"
+        + JSON.stringify(reqbody)
+        };
+
+    smtpTransport.sendMail(mailOptions, (error, response) => {
+        error ? console.error(error) : console.log(response);
+        smtpTransport.close();
+    });
+}

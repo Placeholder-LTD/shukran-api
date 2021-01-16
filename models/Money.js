@@ -48,7 +48,7 @@ const MoneySchema = mongoose.Schema({
             last_4digits: String, // "1473",
             issuer: String, // "MASTERCARD GUARANTY TRUST BANK Mastercard Naira Debit Card",
             country: String, // "NG",
-            type: String, // "MASTERCARD",
+            type: String, // "MASTERCARD", "VERVE"
             expiry: String, // "08/21" 
         },
         payment_entity: String, // "1555852ca0687e2e4b6e5d8dccbbb869",
