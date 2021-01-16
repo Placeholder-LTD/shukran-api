@@ -998,13 +998,13 @@ exports.findMyProfile = (req, reply) => {
                 reply.send(null) // should change... shouldn't be just null
             } else if (user.length === 1) {
                 // we strip the contents based on what the user should see, how they've subscribed.
-                if (req.cookies['_shukran'] && JSON.parse(req.cookies['_shukran'])['shukran-subs'].length > 0) { // check this...
+                if (req.cookies['_shukran'] && req.cookies['_shukran']['shukran-subs'].length > 0) { // check this...
                     
                     // if they're subscribed to the creator
                     // another thing we could do is save the device_id we get from flutterwave,
                     // if they don't have _shukran cookie, ... we could make use of the device id... but we'd need our own, and not flutterwave or we could just use what ever flutterwave uses for consistency, so we can track the user device even if they use a different browser on that device ...but we'd need to have their device id saved somewhere... to verify : AND THERE'S NO WAY TO DO THAT NOW.
-                    let _subs = JSON.parse(req.cookies['_shukran'])['shukran-subs'];
-                    let _supporter_email = JSON.parse(req.cookies['_shukran'])['supporter_email']
+                    let _subs = req.cookies['_shukran']['shukran-subs'];
+                    let _supporter_email = req.cookies['_shukran']['supporter_email']
                     if (_subs.includes(user[0]._id)) { // they're subsribed to this user.
                         // filter out all the contents that's above what the supporter is paying.
 
