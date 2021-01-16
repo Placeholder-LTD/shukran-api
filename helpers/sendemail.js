@@ -1175,9 +1175,9 @@ module.exports.sendTipEmail = async (reqbody) => {
     const mailOptions = {
         from: "Ola from Shukran <contact@useshukran.com>",
         to: reqbody.creator_email,
-        subject: "You just got tipped " + reqbody.creator_username.capitalize(), // do we want to capitalize?, well unless it contains underscore
+        subject: "You just got tipped " + reqbody.username.capitalize(), // do we want to capitalize?, well unless it contains underscore
         generateTextFromHTML: true,
-        html: "<h3>Hi, <b>" + reqbody.creator_username.capitalize() + "</h3></b> "
+        html: "<h3>Hi, <b>" + reqbody.username.capitalize() + "</h3></b> "
         + reqbody.supporter_nickname + " just tipped you!" + "<br>"
         + "<a href='https://useshukran.com/accounts'>Login to find out how much.</a>"
         };
@@ -1194,9 +1194,9 @@ module.exports.sendShuclanThankYou = async (reqbody) => {
     const mailOptions = {
         from: 'Ola from Shukran <contact@useshukran.com>',
         to: reqbody.supporter_email.trim(),
-        subject: "Hey, thank you for joining " +  reqbody.creator_username.trim()+"'s" + " Shuclan!",
+        subject: "Hey, thank you for joining " +  reqbody.username.trim()+"'s" + " Shuclan!",
         generateTextFromHTML: true,
-        html: `<h3>Thank you for choosing to support ${reqbody.creator_username} monthly.</h3>
+        html: `<h3>Thank you for choosing to support ${reqbody.username} monthly.</h3>
         <p>Your support means alot to them. Please feel free to talk about this by tweeting using this link: </p>
         <a href="https://twitter.com/intent/tweet?url=http%3A%2F%2Fuseshukran.com%2F&text=I+just+joined+a+creator's+Shuclan+on
         +@useshukran.+You+can+support+your+favorite+creator+too+here:&hashtags=saythanks,shukran"
@@ -1217,7 +1217,7 @@ module.exports.sendCreatorAddedShuclan = async (reqbody) => {
     const mailOptionsCreator = {
         from: 'Ola from Shukran <contact@useshukran.com>',
         to: reqbody.creator_email.trim(),
-        subject: "Hey, " + reqbody.creator_username + " someone just joined your Shuclan!",
+        subject: "Hey, " + reqbody.username + " someone just joined your Shuclan!",
         generateTextFromHTML: true,
         // tell them to log in to find out how much, & that means we'll be showing newest shuclan members in vue end
         html: `<h3>Hey! We are excited to announce that someone has joined your Shuclan.</h3>
