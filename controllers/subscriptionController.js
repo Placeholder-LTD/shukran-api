@@ -135,7 +135,7 @@ exports.getCreatorSubscrptions = (req, reply) => {
             if (req.hostname.match(/localhost:[0-9]{4,}/g)) { // if localhost
                 cookieSecure = false
                 cookieDomain = 'localhost:8080'
-            } else if (req.hostname.match(/shukranstaging.netlify.(com|app)/g)) {
+            } else if (req.hostname.match(/shukran-staging-api.herokuapp.com/g)) {
                 cookieDomain = 'shukranstaging.netlify.app' // .app because that's what netify defaults redirect to from .com
             }
 
