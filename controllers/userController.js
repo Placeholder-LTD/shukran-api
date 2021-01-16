@@ -209,7 +209,7 @@ function handleErrors(err) {
     return error
 }
 
-exports.randomCreators = async (req, reply) => {
+exports.randomCreators = (req, reply) => {
     try {
         User.aggregate([
             {
