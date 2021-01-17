@@ -1197,14 +1197,20 @@ exports.updateContentMetaData = async (req, reply) => {
         const { updateData } = users
         console.log('\n\n\n', updateData);
 
+        let _d = { // there would always be amount
+            "content.$.threshold.amount": updateData.price
+        }
+        if (updateData.currency) {
+            _d["content.$.threshold.currency"] = updateData.currency
+        }
+        if (updateData.description) {
+            _d["content.$.description"] = updateData.description
+        }
+
         const update = await User.findOneAndUpdate( // updateOne() doesn't return the document from the db
             {_id: id, "content._id": users.content_id}, 
             {
-                $set: {
-                    "content.$.description": updateData.description,
-                    "content.$.threshold.amount": updateData.price,
-                    "content.$.threshold.currency": updateData.currency
-                }
+                $set: _d
             },
             { new: true }
         )
