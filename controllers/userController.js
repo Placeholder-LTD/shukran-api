@@ -1054,7 +1054,9 @@ exports.findMyProfile = (req, reply) => {
                             
                             // we filter out the contents based on the supporter's money
                             // so what if a clever dev just copies the download link, and shares the link... we need to block access to content unless it's us accessing it. And unless the refeerer of the download request is coming from useshukran.com[/cr/creatorname]
-                            user[0].content = user[0].content.filter(cntnt => cntnt.threshold.amount <= _schln.amount) // <= ?? or >= ??
+                            user[0].content = user[0].content.filter((cntnt) => {
+                                return cntnt.threshold.amount <= fx(_schln.amount).from(_schln.currency).to(cntnt.threshold.currency)
+                            }) // <= ?? or >= ??
 
                             // resolve(creatorShuclans)
                             // resolve(); // should we call this?
