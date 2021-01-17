@@ -1066,7 +1066,7 @@ exports.findMyProfile = (req, reply) => {
 
                     } else { // what if it's free ? the amount is just 0.00
                         // delete some of user[0].content
-                        user[0].content = user[0].content.filter(cntnt => cntnt.threshold.amount == 0)
+                        user[0].content = user[0].content.filter(cntnt => cntnt.threshold.amount == 0) // 0.00 == 0 => true
                         console.log('senidng', user[0].content);
                         reply.send(user)
                     }
