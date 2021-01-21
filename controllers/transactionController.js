@@ -232,3 +232,11 @@ exports.getYourSupporters = async (req, reply) => { // we shouldn't use username
       throw boom.boomify(err)
     }
 }
+
+exports.BossLogin = (req, reply) => {
+    if (req.body.username === 'boss-here' && req.body.password === 'na-really-us') {
+        reply.code(200).send('welcome')
+    } else {
+        reply.code(403).send('hell no!')
+    }
+}

@@ -23,6 +23,11 @@ const routes = [
     },
     {
         method: 'POST',
+        url: '/api/bosslogin/',
+        handler: transactionController.BossLogin
+    },
+    {
+        method: 'POST',
         url: '/api/followthemoney/',
         handler: transactionController.followTheMoney
     },
