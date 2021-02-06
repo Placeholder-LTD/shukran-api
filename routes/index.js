@@ -73,8 +73,8 @@ const routes = [
     },
     {
         method: 'POST',
-        url: '/api/myprofile/',
-        handler: userController.findMyProfile
+        url: '/api/creatorprofile/',
+        handler: userController.getCreatorProfile
     },
     {
         method: 'POST',

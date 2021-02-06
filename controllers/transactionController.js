@@ -3,7 +3,7 @@ const boom = require('boom')
 const Trans =  require('../models/Transactions')
 const Money = require('../models/Money')
 const nodemailer = require("nodemailer"); // would soon not need to import
-
+const User = require('../models/User')
 const sendemail = require('../helpers/sendemail')
 
 // Capitalize function
@@ -105,7 +105,25 @@ exports.createTransaction = async (req, reply) => {
         }
         transaction.save().then(trans => {
             console.log('transaction saved?', trans);
-            reply.send(trans) // return transaction.save() // TODO https://developer.flutterwave.com/docs/transaction-verification
+            if (req.body.tx_ref.includes('-shukraning-')) { // send back user profile with appropriate content
+                User.find({'username': req.body.username}, (err, user) => { // remove password!!
+                    if (err) { // shouldn't be! like, there shouldn't be an error
+                        
+                    } else {
+                        console.log('using req body ...', req.body);
+                        // we filter out the contents based on the supporter's money
+                        // so what if a clever dev just copies the download link, and shares the link... we need to block access to content unless it's us accessing it. And unless the refeerer of the download request is coming from useshukran.com[/cr/creatorname]
+                        user[0].content = user[0].content.filter((cntnt) => {
+                            return cntnt.threshold.amount <= fx(req.body.amount).from(req.body.currency).to(cntnt.threshold.currency)
+                        }) // <= ?? or >= ??
+
+                        console.log('\n\n get this...', user);
+                        reply.send(user)
+                    }
+                })
+            } else {
+                reply.send(trans) // return transaction.save() // TODO https://developer.flutterwave.com/docs/transaction-verification   
+            }
         }, err => {
 
         })
@@ -232,7 +250,6 @@ exports.getYourSupporters = async (req, reply) => { // we shouldn't use username
       throw boom.boomify(err)
     }
 }
-
 exports.BossLogin = (req, reply) => {
     if (req.body.username === 'boss-here' && req.body.password === 'na-really-us') {
         reply.code(200).send('welcome')
