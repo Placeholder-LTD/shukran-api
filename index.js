@@ -8,7 +8,7 @@ const cors = require('cors')
 // use it before all route definitions
 fastify.use(cors({
   // Configures the Access-Control-Allow-Origin CORS header.
-  origin: ["http://localhost:8080", "https://useshukran.com", "https://shukranstaging.netlify.app"],
+  origin: ["http://localhost:8080", "https://useshukran.com", "https://shukranstaging.netlify.app", "https://shukran.africa"],
   credentials: true, // Configures the Access-Control-Allow-Credentials CORS header
   exposedHeaders: ['Set-Cookie'], // 
   allowedHeaders: ['Content-Type'], // https://stackoverflow.com/a/39012388/9259701
