@@ -1009,15 +1009,18 @@ exports.getCreatorProfile = (req, reply) => {
                 console.log('errr\n', err);
                 reply.send(null) // should change... shouldn't be just null
             } else if (user.length === 1) {
+                console.log('(((()))', req.cookies);
                 // we strip the contents based on what the user should see, how they've subscribed.
                 if (
                     req.cookies['_shukran'] 
                     && 
                     req.unsignCookie(req.cookies['_shukran']).valid 
-                    /* && 
+                    /* 
+                    && 
                     req.cookies['_shukran']['shukran-subs'] 
                     && 
-                    req.cookies['_shukran']['shukran-subs'].length > 0 */
+                    req.cookies['_shukran']['shukran-subs'].length > 0
+                    */
                 ) { // check this...
                     
                     let getCookie___ = req.unsignCookie(req.cookies['_shukran']);
@@ -1060,7 +1063,7 @@ exports.getCreatorProfile = (req, reply) => {
 
                             // resolve(creatorShuclans)
                             // resolve(); // should we call this?
-                            console.log('\n\n', user);
+                            // console.log('\n\n', user);
                             reply.send(user)
                     }).catch((error) => {
                         reject(error)
@@ -1069,12 +1072,12 @@ exports.getCreatorProfile = (req, reply) => {
                     } else { // what if it's free ? the amount is just 0.00
                         // delete some of user[0].content
                         user[0].content = user[0].content.filter(cntnt => cntnt.threshold.amount == 0) // 0.00 == 0 => true
-                        console.log('senidng', user[0].content);
+                        console.log('sending', user[0].content);
                         reply.send(user)
                     }
                 } else { // OR, send user without content
                     user[0].content = [] // delete user[0].content
-                    console.log(':here? \n', user);
+                    // console.log('user without content \n', user);
                     reply.send(user)
                 }
             } else if (user.length === 0) {
