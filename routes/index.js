@@ -18,6 +18,11 @@ const routes = [
     },
     {
         method: 'GET',
+        url: '/api/test/cookies/',
+        handler: userController.testCookies
+    },
+    {
+        method: 'GET',
         url: '/api/allusers/',
         handler: userController.getAll
     },

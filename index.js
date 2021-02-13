@@ -84,6 +84,8 @@ routes.forEach((route, index) => {
 // Declare index route
 fastify.get('/', (request, reply) => {
 
+  console.log('\nhave cookies?\n\n', req.cookies);
+
     let cookieDomain = 'shukran-api.herokuapp.com', cookieSecure = true;
 
     if (request.hostname.match(/localhost:[0-9]{4,}/g)) { // if localhost
@@ -98,7 +100,7 @@ fastify.get('/', (request, reply) => {
       // path: '/',
       httpOnly: true,
       domain: cookieDomain,
-      maxAge: 15 * 1000 * 1000, // not expires
+      maxAge: 15 * 1000, // not expires
       sameSite: 'strict',
       secure: cookieSecure,
       signed: true

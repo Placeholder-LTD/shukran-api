@@ -209,6 +209,42 @@ function handleErrors(err) {
     return error
 }
 
+exports.testCookies = (req, reply) => {
+    console.log('\nplease cookies?\n\n', req.cookies);
+    let cookieDomain = 'shukran-api.herokuapp.com', cookieSecure = true;
+
+    if (req.hostname.match(/localhost:[0-9]{4,}/g)) { // if localhost
+      cookieSecure = false
+      cookieDomain = 'localhost:8080'
+    } else if (req.hostname.match(/shukran-staging-api.herokuapp.com/g)) {
+      cookieDomain = 'shukran-staging-api.herokuapp.app' // .app because that's what netify defaults redirect to from .com
+    } else if (req.hostname.match(/shukran.africa/g)) {
+        cookieDomain = 'shukran.africa'
+    }
+
+    reply
+    .setCookie('leadership-shukran', '#Create', {
+      path: '/', // '/api/randomcreators/',
+      httpOnly: true,
+      // domain: cookieDomain,
+      maxAge: 15 * 1000, // not expires
+      // sameSite: 'none',
+      secure: cookieSecure,
+      signed: true
+    })
+    .setCookie('followers-shukran', '#Create', {
+        path: '/api/randomcreators',
+        httpOnly: false,
+        // domain: cookieDomain,
+        maxAge: 15 * 1000, // not expires
+        sameSite: 'none',
+        secure: cookieSecure,
+        signed: false
+      })
+    .code(200)
+    .send('Hey there.')
+}
+
 exports.randomCreators = (req, reply) => {
     try {
         User.aggregate([
@@ -237,7 +273,7 @@ exports.randomCreators = (req, reply) => {
                 }
                 console.log('unsigned cookie we have', typeof uc__, uc__); // { valid: true, renew: false, value: '89#foo' }
                 
-                console.log(uc__[0]);
+                console.log('>>>>', uc__[0]);
             }
             if (err) { // hopefully never, or we just perform a searh with User model
                 reply.send([
