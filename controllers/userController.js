@@ -228,7 +228,7 @@ exports.testCookies = (req, reply) => {
       httpOnly: true,
       // domain: cookieDomain,
       maxAge: 15 * 1000, // not expires
-      // sameSite: 'none',
+      sameSite: 'none',
       secure: cookieSecure,
       signed: true
     })
