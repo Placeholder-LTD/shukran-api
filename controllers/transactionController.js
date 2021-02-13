@@ -195,6 +195,8 @@ exports.createTransaction = (req, reply) => {
             cookieDomain = 'localhost'
         } else if (req.hostname.match(/shukranstaging.netlify.(com|app)/g)) {
             cookieDomain = 'shukranstaging.netlify.app' // .app because that's what netify defaults redirect to from .com
+        } else if (req.hostname.match(/shukran.africa/g)) {
+            cookieDomain = 'shukran.africa'
         }
 
         const transaction = new Trans(req.body)
@@ -221,8 +223,19 @@ exports.createTransaction = (req, reply) => {
                 secure: cookieSecure, // if running live
                 signed: true,
                 sameSite: 'none',
-                // domain: cookieDomain
+                domain: cookieDomain
             })
+
+            if (!req.hostname.match(/localhost:[0-9]{4,}/g)) {
+                reply.setCookie('_shukran', JSON.stringify(_ck), { // set again for alternate domains
+                    path: '/api/creatorprofile/',
+                    httpOnly: true, // front end js can't access
+                    secure: cookieSecure, // if running live
+                    signed: true,
+                    sameSite: 'none',
+                    domain: (cookieDomain === 'useshukran.com' ? 'shukran.africa' : '' )
+                })
+            }
         }
         /**
          * cookie should be an object names _shukran
@@ -255,8 +268,18 @@ exports.createTransaction = (req, reply) => {
                     signed: true,
                     sameSite: 'none',
                     maxAge: 11556952000, // 31556952000 => 1 year
-                    // domain: cookieDomain
+                    domain: cookieDomain
                 })
+                if (!req.hostname.match(/localhost:[0-9]{4,}/g)) {
+                    reply.setCookie('_shukran', JSON.stringify(_ck), { // set again for alternate domains
+                        path: '/api/creatorprofile/',
+                        httpOnly: true, // front end js can't access
+                        secure: cookieSecure, // if running live
+                        signed: true,
+                        sameSite: 'none',
+                        domain: (cookieDomain === 'useshukran.com' ? 'shukran.africa' : '' )
+                    })
+                }
             } else { // create new array
                 let newCk = {
                     supporter_email: req.body.supporter_email,
@@ -273,8 +296,18 @@ exports.createTransaction = (req, reply) => {
                     signed: true,
                     sameSite: 'none',
                     maxAge: 11556952000, // 31556952000 => 1 year
-                    // domain: cookieDomain
+                    domain: cookieDomain
                 })
+                if (!req.hostname.match(/localhost:[0-9]{4,}/g)) {
+                    reply.setCookie('_shukran', JSON.stringify(_ck), { // set again for alternate domains
+                        path: '/api/creatorprofile/',
+                        httpOnly: true, // front end js can't access
+                        secure: cookieSecure, // if running live
+                        signed: true,
+                        sameSite: 'none',
+                        domain: (cookieDomain === 'useshukran.com' ? 'shukran.africa' : '' )
+                    })
+                }
             }
         }
         transaction.save().then(trans => {
