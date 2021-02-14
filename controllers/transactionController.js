@@ -434,7 +434,7 @@ exports.updateTransaction = async (req, reply) => {
 }
 exports.followTheMoney = (req, reply) => { // TODO: https://developer.flutterwave.com/docs/transaction-verification
     try {
-        const money = new Money(req.body)
+        const money = new Money(JSON.parse(JSON.stringify(req.body)))
         console.log('the money', req.body);
         money.save().then(_money => {
             sendemail.followTheMoney(req.body).then(() => {

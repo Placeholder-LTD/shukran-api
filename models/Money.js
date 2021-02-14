@@ -63,13 +63,13 @@ const MoneySchema = mongoose.Schema({
 })
 MoneySchema.pre('validate', function(next) {
     // this. refers to the object being saved. 
-    console.log('prevalidate', this);
+    console.log('pre validate', this);
     JSON.parse(JSON.stringify(this))
     next();
 });
 MoneySchema.pre('save', function(next) {
     // this. refers to the object being saved. 
-    console.log(this);
+    console.log('pre save', this);
     JSON.parse(JSON.stringify(this))
     next();
 });
