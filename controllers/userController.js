@@ -1100,11 +1100,15 @@ exports.getCreatorProfile = (req, reply) => {
                             // so how much are they (the supporter) paying?
                             let _schln = creatorShuclans.find(shcln => shcln.customer.customer_email === _supporter_email)
                             
-                            // we filter out the contents based on the supporter's money
-                            // so what if a clever dev just copies the download link, and shares the link... we need to block access to content unless it's us accessing it. And unless the refeerer of the download request is coming from useshukran.com[/cr/creatorname]
-                            user[0].content = user[0].content.filter((cntnt) => {
-                                return cntnt.threshold.amount <= fx(_schln.amount).from(_schln.currency).to(cntnt.threshold.currency)
-                            }) // <= ?? or >= ??
+                            if (_schln) { // if they're still subscribed
+                                // we filter out the contents based on the supporter's money
+                                // so what if a clever dev just copies the download link, and shares the link... we need to block access to content unless it's us accessing it. And unless the refeerer of the download request is coming from useshukran.com[/cr/creatorname]
+                                user[0].content = user[0].content.filter((cntnt) => {
+                                    return cntnt.threshold.amount <= fx(_schln.amount).from(_schln.currency).to(cntnt.threshold.currency)
+                                }) // <= ?? or >= ??
+                            } else { // TODO unset the cookie, since they've unsubscribed
+                                user[0].content = [] // delete user[0].content
+                            }
 
                             // resolve(creatorShuclans)
                             // resolve(); // should we call this?
