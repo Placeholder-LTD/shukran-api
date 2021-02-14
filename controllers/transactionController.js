@@ -271,7 +271,7 @@ exports.createTransaction = (req, reply) => {
                     domain: cookieDomain
                 })
                 if (!req.hostname.match(/localhost:[0-9]{4,}/g)) {
-                    reply.setCookie('_shukran', JSON.stringify(_ck), { // set again for alternate domains
+                    reply.setCookie('_shukran', JSON.stringify(ck), { // set again for alternate domains
                         path: '/api/creatorprofile/',
                         httpOnly: true, // front end js can't access
                         secure: cookieSecure, // if running live
@@ -299,7 +299,7 @@ exports.createTransaction = (req, reply) => {
                     domain: cookieDomain
                 })
                 if (!req.hostname.match(/localhost:[0-9]{4,}/g)) {
-                    reply.setCookie('_shukran', JSON.stringify(_ck), { // set again for alternate domains
+                    reply.setCookie('_shukran', JSON.stringify(newCk), { // set again for alternate domains
                         path: '/api/creatorprofile/',
                         httpOnly: true, // front end js can't access
                         secure: cookieSecure, // if running live

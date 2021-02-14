@@ -43,7 +43,7 @@ const MoneySchema = mongoose.Schema({
             deletedAt: String, // null,
             AccountId: Number, // 27468
         },
-        card: { 
+        card: { // comes as a string not object, need to parse it.
             first_6digits: String, // "539983",
             last_4digits: String, // "1473",
             issuer: String, // "MASTERCARD GUARANTY TRUST BANK Mastercard Naira Debit Card",
@@ -60,5 +60,11 @@ const MoneySchema = mongoose.Schema({
     // should be this, "event.type"
     "event.type": String, // "CARD_TRANSACTION" // important! how do our shuk-clans tip ? the most
 })
+
+MoneySchema.pre('save', function(next) {
+    // this. refers to the object being saved. 
+    this.data.card = JSON.parse(this.data.card)
+    next();
+});
 
 module.exports = mongoose.model('Money', MoneySchema)
