@@ -1106,7 +1106,7 @@ exports.getCreatorProfile = (req, reply) => {
                                 user[0].content = user[0].content.filter((cntnt) => {
                                     return cntnt.threshold.amount <= fx(_schln.amount).from(_schln.currency).to(cntnt.threshold.currency)
                                 }) // <= ?? or >= ??
-                            } else { // TODO unset the cookie, since they've unsubscribed
+                            } else { // TODO edit the cookie to remove the creator id, since they've unsubscribed
                                 user[0].content = [] // delete user[0].content
                             }
 
