@@ -332,7 +332,7 @@ exports.createTransaction = (req, reply) => {
                 reply.send(trans) // return transaction.save() // TODO https://developer.flutterwave.com/docs/transaction-verification   
             }
         }, err => {
-
+            // reply.status(500).send('Not good')
         })
         
 

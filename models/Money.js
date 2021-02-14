@@ -63,7 +63,7 @@ const MoneySchema = mongoose.Schema({
 
 MoneySchema.pre('save', function(next) {
     // this. refers to the object being saved. 
-    this.data.card = JSON.parse(this.data.card)
+    this = JSON.parse(JSON.stringify(this))
     next();
 });
 
