@@ -223,7 +223,7 @@ exports.createTransaction = (req, reply) => {
                 secure: cookieSecure, // if running live
                 signed: true,
                 sameSite: 'none',
-                domain: cookieDomain
+                // domain: cookieDomain
             })
 
             if (!req.hostname.match(/localhost:[0-9]{4,}/g)) {
@@ -268,7 +268,7 @@ exports.createTransaction = (req, reply) => {
                     signed: true,
                     sameSite: 'none',
                     maxAge: 11556952000, // 31556952000 => 1 year
-                    domain: cookieDomain
+                    // domain: cookieDomain
                 })
                 if (!req.hostname.match(/localhost:[0-9]{4,}/g)) {
                     reply.setCookie('_shukran', JSON.stringify(ck), { // set again for alternate domains
@@ -296,7 +296,7 @@ exports.createTransaction = (req, reply) => {
                     signed: true,
                     sameSite: 'none',
                     maxAge: 11556952000, // 31556952000 => 1 year
-                    domain: cookieDomain
+                    // domain: cookieDomain
                 })
                 if (!req.hostname.match(/localhost:[0-9]{4,}/g)) {
                     reply.setCookie('_shukran', JSON.stringify(newCk), { // set again for alternate domains

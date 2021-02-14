@@ -43,14 +43,15 @@ const MoneySchema = mongoose.Schema({
             deletedAt: String, // null,
             AccountId: Number, // 27468
         },
-        card: { // comes as a string not object, need to parse it.
-            first_6digits: String, // "539983",
-            last_4digits: String, // "1473",
-            issuer: String, // "MASTERCARD GUARANTY TRUST BANK Mastercard Naira Debit Card",
-            country: String, // "NG",
-            type: String, // "MASTERCARD", "VERVE"
-            expiry: String, // "08/21" 
-        },
+        card: String,
+        // card: {
+        //     first_6digits: String, // "539983",
+        //     last_4digits: String, // "1473",
+        //     issuer: String, // "MASTERCARD GUARANTY TRUST BANK Mastercard Naira Debit Card",
+        //     country: String, // "NG",
+        //     type: String, // "MASTERCARD", "VERVE"
+        //     expiry: String, // "08/21" 
+        // },
         payment_entity: String, // "1555852ca0687e2e4b6e5d8dccbbb869",
         entity: { // we should know this, right? and do what with it?
             card6: String, // "553188",
@@ -63,6 +64,7 @@ const MoneySchema = mongoose.Schema({
 
 MoneySchema.pre('save', function(next) {
     // this. refers to the object being saved. 
+    console.log(this);
     JSON.parse(JSON.stringify(this))
     next();
 });
