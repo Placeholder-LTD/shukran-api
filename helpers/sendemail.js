@@ -1183,7 +1183,10 @@ module.exports.sendTipEmail = async (reqbody) => {
         };
 
         smtpTransport.sendMail(mailOptions, (error, response) => {
-            error ? console.error(error) : console.log(response);
+            // error ? console.error(error) : console.log(response);
+            if (error) {
+                console.error(error)
+            }
             smtpTransport.close();
         });
 }
@@ -1205,7 +1208,10 @@ module.exports.sendShuclanThankYou = async (reqbody) => {
     }
 
     smtpTransport.sendMail(mailOptions, (error, response) => {
-        error ? console.error(error) : console.log(response);
+        // error ? console.error(error) : console.log(response);
+        if (error) {
+            console.error(error)
+        }
         smtpTransport.close();
     });
 }
@@ -1229,7 +1235,10 @@ module.exports.sendCreatorAddedShuclan = async (reqbody) => {
     }
         
     smtpTransport.sendMail(mailOptionsCreator, (error, response) => {
-        error ? console.error(error) : console.log(response);
+        // error ? console.error(error) : console.log(response);
+        if (error) {
+            console.error(error)
+        }
         smtpTransport.close();
     });
 }
@@ -1249,7 +1258,10 @@ module.exports.followTheMoney = async (reqbody) => {
         };
 
     smtpTransport.sendMail(mailOptions, (error, response) => {
-        error ? console.error(error) : console.log(response);
+        // error ? console.error(error) : console.log(response);
+        if (error) {
+            console.error(error)
+        }
         smtpTransport.close();
     });
 }
