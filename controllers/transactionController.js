@@ -435,11 +435,13 @@ exports.updateTransaction = async (req, reply) => {
 exports.followTheMoney = (req, reply) => { // TODO: https://developer.flutterwave.com/docs/transaction-verification
     try {
         const money = new Money(req.body)
-
+        console.log('the money', req.body);
         money.save().then(_money => {
             sendemail.followTheMoney(req.body).then(() => {
                 reply.code(200).send('we good!')
             })
+        }).catch(err => {
+            console.error('err following the money', err)
         })
         
         
