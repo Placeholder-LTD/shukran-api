@@ -222,8 +222,17 @@ exports.testCookies = (req, reply) => {
         cookieDomain = 'shukran.africa'
     }
 
+    let newCk = {
+        supporter_email: 'nwachukwuossai@gmail.com',
+        "shukran-subs": [{
+            creator_id: '5fd84b75d3cb6e0bd63a1335',
+            amount: 'amount',
+            currency: 'NGN'
+        }]
+    }
+
     reply
-    .setCookie('leadership-shukran', '#Create', {
+    .setCookie('leadership-shukran', JSON.stringify(newCk), {
       path: '/', // '/api/randomcreators/',
       httpOnly: true,
       // domain: cookieDomain,
