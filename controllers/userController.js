@@ -928,7 +928,7 @@ exports.getAll = (req, reply) => {
         console.log('setting cookie for', cookieDomain);
 
         console.log('do we have cookies?\n\n', req.cookies);
-        User.find({}, function (err, creators) {
+        User.find({}).sort({create_date: 'ascending'}).exec(function (err, creators) {
             if (err) {
                 reply.send([])
             } else {
