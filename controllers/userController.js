@@ -2,13 +2,16 @@ const boom = require('boom')
 const nodemailer = require("nodemailer");
 const jwt = require('jsonwebtoken')
 const User = require('../models/User')
-
+const PasswordResetTokens = require('../models/PasswordResetTokens')
+const bcrypt = require('bcrypt');
+const resetPasswordSaltRounds = 5;
+const resetPasswordSalt = 'sNoo%44$$w0rD';
 const ggle = require('../helpers/uploadgdrive');
 
 // maybe do a script/cronjob that'll regularly update our db
 const getAllSubscribers = require('../flutterwave-api-calls/get-all-subscribers')
 const getAllPaymentPlans = require('../flutterwave-api-calls/get-all-payment-plans');
-
+const sendemail = require('../helpers/sendemail')
 const fx = require('money')
 fx.base = "USD";
 fx.rates = { // Lower is Gooood
@@ -207,6 +210,107 @@ function handleErrors(err) {
     }
 
     return error
+}
+
+let hideEmail = function(email) { // https://stackoverflow.com/a/52154425/9259701
+    return email.replace(/(.{1})(.*)(?=@)/,
+    function(gp1, gp2, gp3) { 
+        for(let i = 0; i < gp3.length; i++) { 
+            gp2+= "*"; 
+        } return gp2; 
+    });
+};
+
+exports.changePassword = (req, reply) => {
+    console.log('changing password');
+    PasswordResetTokens.find({'creator_username': req.body.username, used: false, created: {
+        $gte: new Date(Date.now() - 24*60*60 * 1000)
+    }}, (err, _token) => {
+        if (_token.length > 0) {
+            console.log('found', _token);
+            // Load hash from your password DB.
+            bcrypt.compare(req.body.username, req.body.token).then(function(result) {
+                // result == true
+                if (result) { // perform update query
+                    let newUser = User.findOneAndUpdate({
+                        username: req.body.username
+                    }, {password: req.body.password}, {
+                        new: true
+                    }, (err, newUser) => {
+                        newUser.password = ''
+                        reply.status(200).send(newUser)
+
+                        PasswordResetTokens.findOneAndUpdate({
+                            'creator_username': req.body.username, used: false, created: _token[0].created
+                        }, {user: true})
+                    })
+                } else {
+                    reply.status(401).send('Bullshit!')
+                }
+            });
+        } else { // No such token, or it most likely expired, no need writing extra logic
+            console.log('no such token', req.body.token, 'for user', req.body.username);
+            reply.send('No such token')
+            reply.status(403).send()
+        }
+    })
+    
+}
+
+exports.verifyEmailAndUsername = (req, reply) => {
+    console.log('confirming ', 'username', req.body.username, 'email', req.body.email);
+    User.find({
+        $and: [
+            { 'username': req.body.username, 'email': req.body.email }
+        ]
+    }, {_id: 0}).select("email")
+    .exec((err, _user) => {
+        if (_user.length === 1) {
+            bcrypt.genSalt(resetPasswordSaltRounds, function(err, salt) {
+                bcrypt.hash(req.body.username, salt, function(err, hash) {
+                    // Store hash in your password DB.
+                    if (err) {
+                        console.error('we could not hash', err);
+                    } else {
+                        console.log("what's the hash?", hash);
+                    let t = new PasswordResetTokens({
+                        token_hash: hash, // just a hash of the username
+                        creator_username: req.body.username,
+                        creator_email: req.body.email
+                    }).save().then(s => {
+                        console.log('test saved', s);
+                        let reset_link = `https://useshukran.com/pr/${req.body.username}/?token=${hash}`;
+                        sendemail.sendPasswordResetEmail(req.body.username, req.body.email, reset_link)
+                        .then(() => {
+                            _user[0].email = hideEmail(_user[0].email)
+                            reply.send(_user)
+                        }, () => {
+                            reply.status(500) // ?
+                        })
+                        
+                    }, e => {
+                        console.error('test saving err', e);
+                    })
+                    }
+                });
+            });
+            
+        } else {
+            reply.send([])
+        }
+    })
+}
+
+exports.findEmailByUsername = (req, reply) => {
+    User.find({username: req.body.username}, {_id: 0}).select("email")
+    .exec((err, _user) => {
+        if (_user.length === 1) {
+            _user[0].email = hideEmail(_user[0].email)
+            reply.send(_user)
+        } else {
+            reply.send([])
+        }
+    })
 }
 
 exports.testCookies = (req, reply) => {

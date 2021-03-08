@@ -16,6 +16,27 @@ const contactMailOption = {
     }
   }
 
+module.exports.sendPasswordResetEmail = async (username, email, reset_link) => {
+    const smtpTransport = nodemailer.createTransport(contactMailOption);
+    const mailOptions = {
+        from: "The Shukran Team <contact@useshukran.com>",
+        to: email,
+        subject: "Password reset",
+        generateTextFromHTML: true,
+        html: "<h3>Hi, <b>" + username + "</h3></b> "
+        + "Use this link to reset your password:" + "<br>"
+        + `<a href='${reset_link}'>Password reset.</a>`
+        };
+
+        smtpTransport.sendMail(mailOptions, (error, response) => {
+            // error ? console.error(error) : console.log(response);
+            if (error) {
+                console.error(error)
+            }
+            smtpTransport.close();
+        });
+}
+
 /**
  * 
  * @param {string} username - the creator's username

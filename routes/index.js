@@ -8,6 +8,21 @@ const subscriptionController = require('../controllers/subscriptionController')
 const routes = [
     {
         method: 'POST',
+        url: '/api/changepassword/',
+        handler: userController.changePassword
+    },
+    {
+        method: 'POST',
+        url: '/api/verifyemail/',
+        handler: userController.verifyEmailAndUsername
+    },
+    {
+        method: 'POST',
+        url: '/api/findcreatorbyemail/',
+        handler: userController.findEmailByUsername
+    },
+    {
+        method: 'POST',
         url: '/api/createaccount/',
         handler: userController.signup
     },
