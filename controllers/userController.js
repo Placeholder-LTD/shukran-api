@@ -223,10 +223,13 @@ let hideEmail = function(email) { // https://stackoverflow.com/a/52154425/925970
 
 exports.changePassword = (req, reply) => {
     console.log('changing password');
-    PasswordResetTokens.find({'creator_username': req.body.username, used: false, created: {
-        $gte: new Date(Date.now() - 24*60*60 * 1000)
-    }}, (err, _token) => {
-        if (_token.length > 0) {
+    PasswordResetTokens.find(
+        {$and: [{'creator_username': req.body.username, used: false, created: {
+            $gte: new Date(Date.now() - 24*60*60 * 1000)
+        }}]}, (err, _token) => {
+            if (err) {
+                reply.status(500).send()
+            } else if (_token.length > 0) {
             console.log('found', _token);
             // Load hash from your password DB.
             bcrypt.compare(req.body.username, req.body.token).then(function(result) {
@@ -237,12 +240,19 @@ exports.changePassword = (req, reply) => {
                     }, {password: req.body.password}, {
                         new: true
                     }, (err, newUser) => {
-                        newUser.password = ''
-                        reply.status(200).send(newUser)
+                        console.log('updaing', _token[0]._id);
+                        let _u = PasswordResetTokens.findByIdAndUpdate(
+                            _token[0]._id
+                        , {used: true}, {new: true}, (err, updated) => {
+                            if (err) {
+                                console.error('???', err);
+                            } else {
+                                console.log('updated', updated);
+                                newUser.password = ''
+                                reply.status(200).send(newUser)
+                            }
+                        })
 
-                        PasswordResetTokens.findOneAndUpdate({
-                            'creator_username': req.body.username, used: false, created: _token[0].created
-                        }, {user: true})
                     })
                 } else {
                     reply.status(401).send('Bullshit!')

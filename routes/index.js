@@ -3,9 +3,16 @@ const transactionController = require('../controllers/transactionController')
 const feedbackController = require('../controllers/FeedbackController')
 const productController = require('../controllers/ProductsController')
 const subscriptionController = require('../controllers/subscriptionController')
+const socialMediaController = require('../controllers/socialMediaController');
 
 // we need to track creators tipping link clicks from external sources
+
 const routes = [
+    {
+        method: 'GET',
+        url: '/api/smp/:username/',
+        handler: socialMediaController.creatorProfilePreview
+    },
     {
         method: 'POST',
         url: '/api/changepassword/',
