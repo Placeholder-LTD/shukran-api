@@ -84,7 +84,7 @@ routes.forEach((route, index) => {
 // Declare index route
 fastify.get('/', (request, reply) => {
 
-  console.log('\nhave cookies?\n\n', req.cookies);
+  console.log('\nhave cookies?\n\n', request.cookies);
 
     let cookieDomain = 'shukran-api.herokuapp.com', cookieSecure = true;
 
