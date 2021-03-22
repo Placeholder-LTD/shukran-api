@@ -239,7 +239,7 @@ exports.changePassword = (req, reply) => {
                         username: req.body.username
                     }, {password: req.body.password}, {
                         new: true
-                    }, (err, newUser) => {
+                    }, (err, _newUser) => {
                         console.log('updaing', _token[0]._id);
                         let _u = PasswordResetTokens.findByIdAndUpdate(
                             _token[0]._id
@@ -247,9 +247,10 @@ exports.changePassword = (req, reply) => {
                             if (err) {
                                 console.error('???', err);
                             } else {
-                                console.log('updated', updated);
+                                console.log('updated password reset token usage', updated);
+                                console.log('updated password?', );
                                 newUser.password = ''
-                                reply.status(200).send(newUser)
+                                reply.status(200).send(_newUser)
                             }
                         })
 
@@ -259,9 +260,8 @@ exports.changePassword = (req, reply) => {
                 }
             });
         } else { // No such token, or it most likely expired, no need writing extra logic
-            console.log('no such token', req.body.token, 'for user', req.body.username);
-            reply.send('No such token')
-            reply.status(403).send()
+            console.log('expird or no such token', req.body.token, 'for user', req.body.username);
+            reply.status(403).send('Used or expired token'); // there's a better way to check ...select token first, then check date
         }
     })
     
