@@ -47,7 +47,7 @@ exports.getAllSubscribers = new Promise((resolve, reject) => { // https://stacko
                     
                     resolve(endData);
                 } else {
-                    throw new Error('failed')
+                    reject('Failed to get all subscribers') // throw new Error('failed') //
                 }
             });
 

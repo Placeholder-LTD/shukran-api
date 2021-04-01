@@ -47,7 +47,7 @@ exports.getAllPaymentPlans = new Promise((resolve, reject) => { // https://stack
                     
                     resolve(endData);
                 } else {
-                    throw new Error('failed')
+                    reject('Failed to get all payment plans') // throw new Error('failed')
                 }
             });
 
