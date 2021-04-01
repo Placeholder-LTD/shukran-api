@@ -47,12 +47,13 @@ exports.getAllSubscribers = new Promise((resolve, reject) => { // https://stacko
                     
                     resolve(endData);
                 } else {
+                    console.error('Failed to get all subscribers')
                     reject('Failed to get all subscribers') // throw new Error('failed') //
                 }
             });
 
         }).on("error", (err) => {
-            console.log("Error: ", err, err.message);
+            console.error("Error: ", err, err.message);
             // return err
             reject(err.message);
         }).end();

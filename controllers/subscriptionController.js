@@ -259,6 +259,7 @@ exports.uploadInCreatorFolder = async (req, reply) => {
         console.info('political g.data.webViewLink', g.data.webViewLink)
         reply.code(200).send(g.data.id)
     } else {
-        throw new Error(`upload error! status: ${g.status}`);
+        console.error(`upload error! status: ${g.status}`)
+        reply.code(500).send(`upload error! status: ${g.status}`) // throw new Error(`upload error! status: ${g.status}`);
     }
 }
