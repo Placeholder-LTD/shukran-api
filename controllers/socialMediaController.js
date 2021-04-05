@@ -3,6 +3,12 @@ const Jimp = require('jimp');
 const User = require('../models/User');
 const fs = require('fs');
 const ggle = require('../helpers/uploadgdrive');
+
+// SSR
+// Step 1.0: Create a Vue instance
+const Vue = require('vue')
+
+
 // console.log(jimp_reading_images); // array of promises
 
 /**
@@ -78,7 +84,6 @@ exports.creatorProfilePreview = (req, reply) => {
                     })
                   })
                   
-                
                 }).catch((err) => {
                   console.error('Oops', err); // make default img, maybe with just text!
                   // reply.send(200).type('image/png').send('helpers/logo.png')
@@ -95,10 +100,57 @@ exports.creatorProfilePreview = (req, reply) => {
           
         }
     })
-
-  
 }
 
+exports.creatorProfileSSR = (req, reply) => {
+  
+fs.readFile('./vue-templates/support.template.html', 'utf-8', (err, template) => {
+  if (err) {
+    console.error(err)
+  } else {
+    // console.log('visited url', req)
+
+    // Step 2: Create a renderer
+    const renderer = require('vue-server-renderer').createRenderer({
+      template,
+    })
+
+    // step 1.1 Create a Vue instance
+    const app = new Vue({
+      data: {
+        url: req.raw.url,
+        username: req.params.username
+      },
+      template: `<div>{{ username }} visited URL {{ url }}</div>`,
+    });
+
+    const context = {
+      title: 'Support chuks?',
+      meta: `
+        <meta ...>
+        <meta ...>
+      `
+    }
+  
+    // Step 3: Render the Vue instance to HTML
+    renderer.renderToString(app, context, (err, html) => {
+      if (err) {
+        console.error('err rendering', err)
+        reply.code(500).send('Internal Server Error')
+        // return
+      } else {
+        reply.code(200)
+        .type('text/html') // as html?
+        .send(html)
+      }
+      
+    })
+
+
+  }
+  
+})
+}
 
 /**
  * JIMP:

@@ -94,19 +94,15 @@ exports.createSubscription = async (req, reply) => { // https://attacomsian.com/
  * 
  */
 exports.getAllSubscriptions = (req, reply) => {
-    try {
-        getAllPaymentPlans.getAllPaymentPlans.then((plans) => {
-            reply.send(plans) // return creatorShuklans
-        }, (err) => {
-
-        }).catch((why) => {
-
-        });
-
-        
-    } catch (err) {
-        throw boom.boomify(err)
-    }
+    getAllPaymentPlans.getAllPaymentPlans.then((plans) => {
+        reply.send(plans) // return creatorShuklans
+    }, (err) => {
+        reply.code(500)
+        console.error(err)
+    }).catch((why) => {
+        console.error('whyyy err', why)
+        reply.code(500)
+    });
 }
 
 exports.getCreatorSubscrptions = (req, reply) => {
@@ -165,26 +161,22 @@ exports.getCreatorSubscrptions = (req, reply) => {
  * get details of all the subscribers of a creator
  */
 exports.getSubscribers = (req, reply) => {
-    try {
+    // https://stackoverflow.com/a/13437802/9259701
 
-        // https://stackoverflow.com/a/13437802/9259701
-
-        getAllPaymentPlans.getAllPaymentPlans.then((plans) => {
-            let creatorPlans = plans.filter(plan => plan.name.includes(req.query.id))
-            getAllSubscribers.getAllSubscribers.then((shuklans) => {
-                let creatorShuklans = shuklans.filter(shuklan => creatorPlans.some(plan => plan.id === shuklan.plan))
-                reply.send(creatorShuklans) // return creatorShuklans
-            }, (err) => {
-
-            })
+    getAllPaymentPlans.getAllPaymentPlans.then((plans) => {
+        let creatorPlans = plans.filter(plan => plan.name.includes(req.query.id))
+        getAllSubscribers.getAllSubscribers.then((shuklans) => {
+            let creatorShuklans = shuklans.filter(shuklan => creatorPlans.some(plan => plan.id === shuklan.plan))
+            reply.send(creatorShuklans) // return creatorShuklans
         }, (err) => {
 
-        });
-        
-        
-    } catch (err) {
-        throw boom.boomify(err)
-    }
+        })
+    }, (err) => {
+
+    }).catch((why) => {
+        console.error('whyyy err', why)
+        reply.code(500)
+    });
 }
 
 exports.getTotalRevenue = async (req, reply) => {

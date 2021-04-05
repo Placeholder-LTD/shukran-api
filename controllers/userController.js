@@ -987,8 +987,7 @@ exports.resetPassword = async (req, reply) => {
  * we don't save in database because when supporters unsubscribe, we can't know in real time... so we might need to be running a cron job to regularly update our db if we go with that route.
  */
 exports.getCreatorProfile = (req, reply) => {
-    try {
-        let username = req.body.username
+    let username = req.body.username
         User.find({ 'username': username }, (err, user) => { // user is an array // remove password
             if (err) {
                 console.log('errr\n', err);
@@ -1073,9 +1072,6 @@ exports.getCreatorProfile = (req, reply) => {
                 reply.send([]) // user doesn't exist, should this change too...
             }
         })
-    } catch (error) {
-        throw boom.boomify(error)
-    }
 }
 
 exports.deleteUser = async (req, reply) => {

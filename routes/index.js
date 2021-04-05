@@ -14,6 +14,11 @@ const routes = [
         handler: socialMediaController.creatorProfilePreview
     },
     {
+        method: 'GET',
+        url: '/api/test-smp/:username/',
+        handler: socialMediaController.creatorProfileSSR
+    },
+    {
         method: 'POST',
         url: '/api/changepassword/',
         handler: userController.changePassword
