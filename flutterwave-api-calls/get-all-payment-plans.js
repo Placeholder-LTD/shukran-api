@@ -58,6 +58,8 @@ exports.getAllPaymentPlans = new Promise((resolve, reject) => { // https://stack
             reject(err.message);
         }).end();
         call(1); // first call, get first page_number
+    }).catch((err) => {
+        console.error('err calling get all payment plans', err)
     })
 
 

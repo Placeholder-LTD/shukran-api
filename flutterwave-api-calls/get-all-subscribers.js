@@ -58,6 +58,8 @@ exports.getAllSubscribers = new Promise((resolve, reject) => { // https://stacko
             reject(err.message);
         }).end();
         call(1);
+    }).catch((err) => {
+        console.error('err calling get all subscribers plans', err)
     })
 
 
