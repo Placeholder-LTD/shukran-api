@@ -101,7 +101,7 @@ exports.getAllSubscriptions = (req, reply) => {
         console.error(err)
     }).catch((why) => {
         console.error('whyyy err', why)
-        reply.code(500)
+        reply.code(500) // hmmmm
     });
 }
 
@@ -162,7 +162,7 @@ exports.getCreatorSubscrptions = (req, reply) => {
  */
 exports.getSubscribers = (req, reply) => {
     // https://stackoverflow.com/a/13437802/9259701
-
+    // need to make better writing
     getAllPaymentPlans.getAllPaymentPlans.then((plans) => {
         let creatorPlans = plans.filter(plan => plan.name.includes(req.query.id))
         getAllSubscribers.getAllSubscribers.then((shuklans) => {
@@ -170,6 +170,10 @@ exports.getSubscribers = (req, reply) => {
             reply.send(creatorShuklans) // return creatorShuklans
         }, (err) => {
 
+        }).catch((why) => { // why usually is => (node:4) UnhandledPromiseRejectionWarning: TypeError: Cannot read property 'filter' of undefined
+            reply
+            // .code(500) // necessary ?
+            .send([])
         })
     }, (err) => {
 
