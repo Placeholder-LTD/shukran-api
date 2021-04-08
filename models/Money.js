@@ -17,31 +17,43 @@ const MoneySchema = mongoose.Schema({
         payment_type: String, // "card",
         created_at: String, // "2020-08-13T12:37:49.000Z",
         account_id: Number, // 144883,
-
         id: Number, // transaction_id,
         orderRef: String, // "URF_1587826781271_4887235",
-        payment_plan: String,
-        paymentPlan: String, // null, // should be a number, be string should work
         paymentPage: Number, // 40, // ?
         amount: Number, // 54600,
         charged_amount: Number, // 54600,
         currency: String, // "NGN",
         // "merchantbearsfee": 1,
 
+
+
+        account_number: String,
+        bank_name: String,
+        bank_code: String,
+        fullname: String,
+        created_at: String,
+        currency: String,
+        debit_currency: String,
+        amount: Number,
+        fee: Number,
+        status: String,
+        reference: String,
+        meta: String,// null,
+        narration: String,
+        approver: String, // null,
+        complete_message: String,
+        requires_approval: Number,
+        is_approved: Number,
+
+
+
         // KYC
         customer: {
             name: String, // "Anonymous customer",
             phone_number: String, // null, // could it be any?
-
+            created_at: String,
             id: Number, // 367450,
-            phone: String, // "08102909304",
-            fullName: String, // "Yemi Desola",
-            customertoken: String, // null,
             email: String, // "user@gmail.com",
-            createdAt: String, // "2020-04-25T13:51:38.000Z",
-            updatedAt: String, //"2020-04-25T13:51:38.000Z",
-            deletedAt: String, // null,
-            AccountId: Number, // 27468
         },
         // card: String,
         card: {
@@ -60,17 +72,29 @@ const MoneySchema = mongoose.Schema({
     },
     // should be this, "event.type"
     "event.type": String, // "CARD_TRANSACTION" // important! how do our shuk-clans tip ? the most
+    // event_type: String,
 })
 MoneySchema.pre('validate', function(next) {
     // this. refers to the object being saved. 
+    // JSON.parse(JSON.stringify(this))
     console.log('pre validate', this);
-    JSON.parse(JSON.stringify(this))
+    let k = this.event.type
+    delete this.event.type
+
+    this.event_type = k
     next();
 });
-MoneySchema.pre('save', function(next) {
+MoneySchema.pre('save', function(next) { // convert event.type to event_type
     // this. refers to the object being saved. 
+    
+
+    // JSON.parse(JSON.stringify(this))
+    let k = this.event.type
+    delete this.event.type
+
+    this.event_type = k
     console.log('pre save', this);
-    JSON.parse(JSON.stringify(this))
+
     next();
 });
 

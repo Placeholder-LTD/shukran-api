@@ -19,6 +19,16 @@ fastify.register(require('fastify-cookie'), {
   parseOptions: {} // options for parsing cookies
 })
 
+fastify.register(require('fastify-cors'), { 
+  // put your options here
+   // Configures the Access-Control-Allow-Origin CORS header.
+   origin: ['http://localhost:8080', 'https://useshukran.com', 'https://shukranstaging.netlify.app', 'https://shukran.africa'],
+   credentials: true, // Configures the Access-Control-Allow-Credentials CORS header
+   optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+   exposedHeaders: ['Set-Cookie'], // 
+   allowedHeaders: ['Content-Type', 'Set-Cookie', 'Authorization', 'Via', 'Status', 'Last-Modified'], // https://stackoverflow.com/a/39012388/9259701
+})
+
 const db = process.env.ATLAS_CONNECTION_STRING
 const ggle = require('./helpers/uploadgdrive');
 fastify.register(require('fastify-multipart'))
