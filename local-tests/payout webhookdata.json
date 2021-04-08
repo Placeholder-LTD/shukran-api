@@ -1,0 +1,24 @@
+{
+    "event":"transfer.completed",
+    "event.type":"Transfer",
+    "data":{
+        "id":7988503,
+        "account_number":"0239938074",
+        "bank_name":"GTBANK PLC",
+        "bank_code":"058",
+        "fullname":"OWHONDAH VANESSA NNENDAH ",
+        "created_at":"2021-04-07T11:08:21.000Z",
+        "currency":"NGN",
+        "debit_currency":"NGN",
+        "amount":900,
+        "fee":10.75,
+        "status":"SUCCESSFUL",
+        "reference":"TRF-716171919771",
+        "meta":null,
+        "narration":"Your Shukran Payout!",
+        "approver":null,
+        "complete_message":"Transaction was successful",
+        "requires_approval":0,
+        "is_approved":1
+        }
+    }

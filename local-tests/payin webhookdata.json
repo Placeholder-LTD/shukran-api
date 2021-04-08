@@ -1,0 +1,30 @@
+{
+    "event":"charge.completed",
+    "data":{
+        "id":395849987,
+        "tx_ref":"fizzymidasquill@gmail.com-shukran-5ed29ba52be3ac001829de86 @ 1617144919556",
+        "flw_ref":"787271617144935783",
+        "device_fingerprint":"e4cf6d4219bb2462b797dc922548b262",
+        "amount":1000,
+        "currency":"NGN",
+        "charged_amount":1014,
+        "app_fee":14,
+        "merchant_fee":0,
+        "processor_response":"Transaction Successful",
+        "auth_model":"USSD",
+        "ip":"197.210.85.231",
+        "narration":"Shukran By Placeholder",
+        "status":"successful",
+        "payment_type":"ussd",
+        "created_at":"2021-03-30T22:55:35.000Z",
+        "account_id":144883,
+        "customer":{
+            "id":252751350,
+            "name":"Anonymous Customer",
+            "phone_number":null,
+            "email":"fizzymidasquill@gmail.com",
+            "created_at":"2021-03-30T22:55:35.000Z"
+        }
+    },
+    "event.type":"USSD_TRANSACTION"
+}
