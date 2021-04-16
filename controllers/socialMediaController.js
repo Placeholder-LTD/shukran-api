@@ -66,7 +66,7 @@ exports.creatorProfilePreview = (req, reply) => {
                   images[0].composite(images[1], 447, 80); // 2nd img, starting x cordinate, starting y cordinate
                 
                   Jimp.loadFont(Jimp.FONT_SANS_32_BLACK).then(font => {
-                    images[0].print(font, 80, 220, printableText(_user[0].summary), 330); // print creator summary
+                    images[0].print(font, 80, 220, _user[0].summary ? printableText(_user[0].summary) : `Hey there! Support my art with Shukran.`, 330); // print creator summary IF THEY HAVE!!!
                 
                     images[0].print(font, 650, 750, _user[0].craft_type, 350);
                 
@@ -80,7 +80,11 @@ exports.creatorProfilePreview = (req, reply) => {
                       .getBufferAsync(Jimp.MIME_PNG)
                       .then((img) => {
                         reply.code(200).type('image/png').send(img)
+                      }).catch((err) => {
+                        console.error('problem writing text for username', err)
                       })
+                    }).catch((err) => {
+                      console.error('problem writing text for summary & craft', err)
                     })
                   })
                   

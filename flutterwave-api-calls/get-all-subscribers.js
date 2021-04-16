@@ -1,6 +1,8 @@
 const https = require('https');
 let fs = require('fs');
 let endData = [];
+
+// we should be caching the response so we don't make them everytime
 exports.getAllSubscribers = new Promise((resolve, reject) => { // https://stackoverflow.com/a/59274104/9259701
         
         //  reading through https://developer.flutterwave.com/reference#get-payment-plans
