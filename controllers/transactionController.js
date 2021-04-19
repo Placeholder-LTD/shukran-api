@@ -5,7 +5,7 @@ const Money = require('../models/Money')
 const nodemailer = require("nodemailer"); // would soon not need to import
 const User = require('../models/User')
 const sendemail = require('../helpers/sendemail')
-const fx = require('../helpers/fx')
+const fx = require('../helpers/fx').fx
 
 // Capitalize function
 String.prototype.capitalize = function() {

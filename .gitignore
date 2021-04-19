@@ -1,7 +1,7 @@
 .DS_Store
 node_modules/
 test[0-9]*.js
-test*.json
+local-tests/
 *.log
 *.txt
 # write CI test for our heroku builds when we push to deploy, also what about using a staging db, that'll be a replica or real db

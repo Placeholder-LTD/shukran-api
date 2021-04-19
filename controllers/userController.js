@@ -12,7 +12,7 @@ const ggle = require('../helpers/uploadgdrive');
 const getAllSubscribers = require('../flutterwave-api-calls/get-all-subscribers')
 const getAllPaymentPlans = require('../flutterwave-api-calls/get-all-payment-plans');
 const sendemail = require('../helpers/sendemail')
-const fx = require('../helpers/fx')
+const fx = require('../helpers/fx').fx
 
 // Capitalize function
 String.prototype.capitalize = function () {
