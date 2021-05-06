@@ -1,6 +1,5 @@
 const boom = require('boom')
 const nodemailer = require("nodemailer");
-const jwt = require('jsonwebtoken')
 const User = require('../models/User')
 const PasswordResetTokens = require('../models/PasswordResetTokens')
 const bcrypt = require('bcrypt');
