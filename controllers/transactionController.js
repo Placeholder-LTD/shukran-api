@@ -12,6 +12,28 @@ String.prototype.capitalize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
 }
 
+/**
+ * sample input 
+ * 1. ryanmwas@gmail.com-shukran-5f2c28d2516d290018eddd03 @ 1618564158976 | https://useshukran.com/cr/wanji
+ * 2. randoma@mail.com-word-5a2i96d1517d290018eghd44 @ 1618564102876 | https://sitesth.com/cr/waewe32w
+ * @param {*} tx_ref 
+ * @returns creator id
+ */
+function extractCreatorIdFromTxRef(tx_ref) {
+    return tx_ref.substring( // extract creator ID
+        req.body.tx_ref.lastIndexOf("-") + 1, 
+        req.body.tx_ref.indexOf(" ")
+    )
+}
+
+function extractCreatorUsernameFromTxRef(tx_ref) {
+    let url = tx_ref.match(/(https?:\/\/[^ ]*)/)[1] // extract url
+    return url.substring( // extract username from url
+                url.lastIndexOf('/') + 1,
+                url.length
+            )
+}
+
 exports.createTransaction = (req, reply) => {
     try {
 
@@ -263,6 +285,23 @@ exports.followTheMoney = (req, reply) => { // TODO: https://developer.flutterwav
     try {
         const money = new Money(JSON.parse(JSON.stringify(req.body)))
         console.log('the money', req.body);
+
+        let amount = req.body.data.amount
+        if (req.body.data.currency !== "NGN") {
+            // we can do more
+            amount = fx(amount) // convert to NGN
+              .from(response.currency)
+              .to("NGN");
+        }
+        const transaction = new Trans({
+            username: extractCreatorUsernameFromTxRef(req.body.data.tx_ref), // creator_username
+            creator_id: extractCreatorIdFromTxRef(req.body.data.tx_ref),
+            supporter_nickname: req.body.data.supporter_nickname,
+            amount: amount,
+            message: req.body.data.message,
+            status: (req.body.event ? "charge.completed" : 'received' ? "transfer.completed" : "paid"),
+            currency: 'NGN',
+        })
         money.save().then(_money => {
             sendemail.followTheMoney(req.body).then(() => {
                 reply.code(200).send('we good!')
