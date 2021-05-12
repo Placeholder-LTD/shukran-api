@@ -22,8 +22,8 @@ String.prototype.capitalize = function() {
  */
 function extractCreatorIdFromTxRef(tx_ref) {
     return tx_ref.substring( // extract creator ID
-        req.body.tx_ref.lastIndexOf("-") + 1, 
-        req.body.tx_ref.indexOf(" ")
+        tx_ref.lastIndexOf("-") + 1, 
+        tx_ref.indexOf(" ")
     )
 }
 
@@ -294,7 +294,7 @@ exports.followTheMoney = (req, reply) => { // TODO: https://developer.flutterwav
               .from(response.currency)
               .to("NGN");
         }
-        const transaction = new TestTrans({
+        const testTransaction = new TestTrans({
             username: extractCreatorUsernameFromTxRef(req.body.data.tx_ref), // creator_username
             creator_id: extractCreatorIdFromTxRef(req.body.data.tx_ref),
             supporter_nickname: req.body.data.supporter_nickname,
