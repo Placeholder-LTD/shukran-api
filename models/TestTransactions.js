@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const TransSchema = mongoose.Schema({
+const TestTransSchema = mongoose.Schema({
     username: String, // creator_username
     creator_id: String,
     supporter_nickname: String,
@@ -14,4 +14,4 @@ const TransSchema = mongoose.Schema({
     }
 })
 
-module.exports = mongoose.model('Transaction', TransSchema)
+module.exports = mongoose.model('TestTransaction', TestTransSchema)

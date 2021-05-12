@@ -13,18 +13,18 @@ const userSchema = new mongoose.Schema({
         unique: [true, 'Seems email already exists'],
         validate: [isEmail, 'Please provide a valid email']
     },
-    password: String,
-    fullname: String,
-    craft_type: String,
-    account_name: String,
-    account_number: String,
-    summary: String,
-    country: String,
-    bank: String,
-    phone: String,
-    redirect: String,
-    audience_size: String,
-    primary_link: String,
+    password: { type: String },
+    fullname: { type: String },
+    craft_type: { type: String },
+    account_name: { type: String },
+    account_number: { type: String },
+    summary: { type: String },
+    country: { type: String },
+    bank: { type: String },
+    phone: { type: String },
+    redirect: { type: String },
+    audience_size: { type: String },
+    primary_link: { type: String },
     picture_id: {
         type: String,
         default: '1aMDqEuCDesg0cTpHJj0IHehEDUEk3l_F', // '1l6Yn2_89KDaDZhH67Ge4Z6T8x7C0Q91J' // red shapes pattern
@@ -38,8 +38,8 @@ const userSchema = new mongoose.Schema({
         default: null
     },
     content: [{
-        filename: String,
-        file_type: String, // mime type
+        filename: { type: String },
+        file_type: { type: String }, // mime type
         created_at: {
             type: Date,
             default: Date.now
@@ -57,19 +57,19 @@ const userSchema = new mongoose.Schema({
                 type: Number,
                 default: 0.00 // 0.00 means it's free
             },
-            currency: String
+            currency: { type: String }
         },
-        file_id: String,
-        description: String, // some text by the creator to make the product enticing to their audience.
+        file_id: { type: String },
+        description: { type: String }, // some text by the creator to make the product enticing to their audience.
     }],
     /* subscribers: [{
-        email: String,
-        amount: Number,
-        due_time: String,
-        start_time: String,
+        email: { type: String },
+        amount: { type: Number },
+        due_time: { type: String },
+        start_time: { type: String },
         permissions: [{
-            id: String, // actually numbers as string
-            file: String // the file id
+            id: { type: String }, // actually numbers as string
+            file: { type: String } // the file id
         }],
     }] */
 })

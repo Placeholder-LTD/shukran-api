@@ -1,13 +1,13 @@
 const mongoose = require('mongoose')
 
 const TransSchema = mongoose.Schema({
-    username: String, // creator_username
-    creator_id: String,
-    supporter_nickname: String,
-    amount: String,
-    message: String,
-    status: String,
-    currency: String,
+    username: { type: String }, // creator_username
+    creator_id: { type: String },
+    supporter_nickname: { type: String },
+    amount: { type: String },
+    message: { type: String },
+    status: { type: String },
+    currency: { type: String },
     transaction_date: {
         type: Date,
         default: Date.now
