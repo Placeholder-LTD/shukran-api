@@ -1,6 +1,7 @@
 const boom = require('boom')
 // const fx = require('money');
 const TestTrans =  require('../models/TestTransactions')
+const Trans =  require('../models/Transactions')
 const Money = require('../models/Money')
 const nodemailer = require("nodemailer"); // would soon not need to import
 const User = require('../models/User')
