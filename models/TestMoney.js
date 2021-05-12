@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const MoneySchema = mongoose.Schema({
+const TestMoneySchema = mongoose.Schema({
     // event: String, // "charge.completed", // can't have this and "event.type"
     data: {
         tx_ref: String, // "Obakam -shukran-love and light podcast @ 1597322203407",
@@ -70,10 +70,10 @@ const MoneySchema = mongoose.Schema({
         }
     },
     // should be this, "event.type"
-    "event.type": String, // "CARD_TRANSACTION" // important! how do our shuk-clans tip ? the most
+    "event.type": { type: String }, // "CARD_TRANSACTION" // important! how do our shuk-clans tip ? the most
     // event_type: String,
 })
-MoneySchema.pre('validate', function(next) {
+TestMoneySchema.pre('validate', function(next) {
     // this. refers to the object being saved. 
     // JSON.parse(JSON.stringify(this))
     console.log('pre validate', this);
@@ -83,7 +83,7 @@ MoneySchema.pre('validate', function(next) {
     this.event_type = k
     next();
 });
-MoneySchema.pre('save', function(next) { // convert event.type to event_type
+TestMoneySchema.pre('save', function(next) { // convert event.type to event_type
     // this. refers to the object being saved. 
     
 
@@ -97,4 +97,4 @@ MoneySchema.pre('save', function(next) { // convert event.type to event_type
     next();
 });
 
-module.exports = mongoose.model('Money', MoneySchema)
+module.exports = mongoose.model('TestMoney', TestMoneySchema)
