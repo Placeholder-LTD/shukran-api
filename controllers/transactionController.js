@@ -1,6 +1,6 @@
 const boom = require('boom')
 // const fx = require('money');
-const Trans =  require('../models/Transactions')
+const TestTrans =  require('../models/TestTransactions')
 const Money = require('../models/Money')
 const nodemailer = require("nodemailer"); // would soon not need to import
 const User = require('../models/User')
@@ -293,7 +293,7 @@ exports.followTheMoney = (req, reply) => { // TODO: https://developer.flutterwav
               .from(response.currency)
               .to("NGN");
         }
-        const transaction = new Trans({
+        const transaction = new TestTrans({
             username: extractCreatorUsernameFromTxRef(req.body.data.tx_ref), // creator_username
             creator_id: extractCreatorIdFromTxRef(req.body.data.tx_ref),
             supporter_nickname: req.body.data.supporter_nickname,
@@ -301,6 +301,8 @@ exports.followTheMoney = (req, reply) => { // TODO: https://developer.flutterwav
             message: req.body.data.message,
             status: (req.body.event ? "charge.completed" : 'received' ? "transfer.completed" : "paid"),
             currency: 'NGN',
+        }).save().then(_testMoney => {
+            console.log('test money', _testMoney)
         })
         money.save().then(_money => {
             sendemail.followTheMoney(req.body).then(() => {
