@@ -63,7 +63,7 @@ const MoneySchema = mongoose.Schema({
             type: { type: String }, // "MASTERCARD", "VERVE"
             expiry: { type: String }, // "08/21" 
         },
-        payment_entity: String, // "1555852ca0687e2e4b6e5d8dccbbb869",
+        payment_entity: { type: String }, // "1555852ca0687e2e4b6e5d8dccbbb869",
         entity: { // we should know this, right? and do what with it?
             card6: { type: String }, // "553188",
             card_last4: { type: String }, // "2950"
