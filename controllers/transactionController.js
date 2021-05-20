@@ -1,7 +1,9 @@
 const boom = require('boom')
 // const fx = require('money');
 const TestTrans =  require('../models/TestTransactions')
+const TestIntlTrans =  require('../models/TestIntlTransactions')
 const Trans =  require('../models/Transactions')
+const IntlTrans =  require('../models/InternationalTransactions')
 const Money = require('../models/Money')
 const nodemailer = require("nodemailer"); // would soon not need to import
 const User = require('../models/User')
@@ -14,6 +16,7 @@ String.prototype.capitalize = function() {
 }
 
 /**
+ * won't work if tx_ref is Links-035333822212 ...for when they send money via links
  * sample input 
  * 1. ryanmwas@gmail.com-shukran-5f2c28d2516d290018eddd03 @ 1618564158976 | https://useshukran.com/cr/wanji
  * 2. randoma@mail.com-word-5a2i96d1517d290018eghd44 @ 1618564102876 | https://sitesth.com/cr/waewe32w
@@ -27,6 +30,11 @@ function extractCreatorIdFromTxRef(tx_ref) {
     )
 }
 
+/**
+ * won't work if tx_ref is Links-035333822212 ...for when they send money via links
+ * @param {*} tx_ref 
+ * @returns 
+ */
 function extractCreatorUsernameFromTxRef(tx_ref) {
     let url = tx_ref.match(/(https?:\/\/[^ ]*)/)[1] // extract url
     return url.substring( // extract username from url
@@ -284,30 +292,50 @@ exports.updateTransaction = async (req, reply) => {
 }
 exports.followTheMoney = (req, reply) => { // TODO: https://developer.flutterwave.com/docs/transaction-verification
     try {
-        const money = new Money(JSON.parse(JSON.stringify(req.body)))
-        console.log('the money', req.body);
+        
 
-        let amount = req.body.data.amount
-        if (req.body.data.currency !== "NGN") {
-            // we can do more
-            amount = fx(amount) // convert to NGN
-              .from(response.currency)
-              .to("NGN");
+        if (req.body.data.tx_ref.includes('-intl-transfer-to-')) { // check for and save international transfers
+            const testIntlTransaction = new TestIntlTrans({
+                sender_currency: req.body.data.tx_ref,
+                destination_country: req.body.data.tx_ref,
+                destination_bank: req.body.data.supporter_nickname,
+                amount: amount,
+                destination_bank_account_number: req.body.data.message,
+                status: (req.body.event ? "charge.completed" : 'received' ? "transfer.completed" : "paid"),
+                sender_fullname: 'NGN',
+                sender_email: ''
+            }).save().then(_testMoney => {
+                console.log('test saved money', _testMoney)
+            })
+        } else { // save other transactions (creators' tips and subscriptions)
+            
+            let amount = req.body.data.amount
+            if (req.body.data.currency !== "NGN") {
+                // we can do more
+                amount = fx(amount) // convert to NGN
+                .from(response.currency)
+                .to("NGN");
+            }
+            const testTransaction = new TestTrans({
+                username: extractCreatorUsernameFromTxRef(req.body.data.tx_ref), // creator_username
+                creator_id: extractCreatorIdFromTxRef(req.body.data.tx_ref),
+                supporter_nickname: req.body.data.supporter_nickname,
+                amount: amount,
+                message: req.body.data.message,
+                status: (req.body.event ? "charge.completed" : 'received' ? "transfer.completed" : "paid"),
+                currency: 'NGN',
+            }).save().then(_testMoney => {
+                console.log('test saved money', _testMoney)
+            })
+            
         }
-        const testTransaction = new TestTrans({
-            username: extractCreatorUsernameFromTxRef(req.body.data.tx_ref), // creator_username
-            creator_id: extractCreatorIdFromTxRef(req.body.data.tx_ref),
-            supporter_nickname: req.body.data.supporter_nickname,
-            amount: amount,
-            message: req.body.data.message,
-            status: (req.body.event ? "charge.completed" : 'received' ? "transfer.completed" : "paid"),
-            currency: 'NGN',
-        }).save().then(_testMoney => {
-            console.log('test money', _testMoney)
-        })
+
+        // save all money regardless
+        const money = new Money(JSON.parse(JSON.stringify(req.body))) // why the stringify ? and parse ?
+        console.log('the money', req.body);
         money.save().then(_money => {
             sendemail.followTheMoney(req.body).then(() => {
-                reply.code(200).send('we good!')
+                reply.code(200).send('we good!') // uhmm, this is a webhook, not sure we should respond.
             })
         }).catch(err => {
             console.error('err following the money', err)

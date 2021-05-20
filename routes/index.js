@@ -4,7 +4,7 @@ const feedbackController = require('../controllers/FeedbackController')
 const productController = require('../controllers/ProductsController')
 const subscriptionController = require('../controllers/subscriptionController')
 const socialMediaController = require('../controllers/socialMediaController');
-
+const internationalTransactionController = require('../controllers/internationalTransactionController')
 // we need to track creators tipping link clicks from external sources
 
 const routes = [
@@ -132,6 +132,11 @@ const routes = [
         method: 'POST',
         url: '/api/deletecontent/',
         handler: userController.deleteContent
+    },
+    {
+        method: 'POST',
+        url: '/api/createinternationaltransaction/',
+        handler: internationalTransactionController.createInternationalTransaction
     },
     {
         method: 'POST',
