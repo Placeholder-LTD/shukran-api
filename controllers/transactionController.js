@@ -295,18 +295,18 @@ exports.followTheMoney = (req, reply) => { // TODO: https://developer.flutterwav
         
 
         if (req.body.data.tx_ref.includes('-intl-transfer-to-')) { // check for and save international transfers
-            const testIntlTransaction = new TestIntlTrans({
-                sender_currency: req.body.data.tx_ref,
-                destination_country: req.body.data.tx_ref,
-                destination_bank: req.body.data.supporter_nickname,
-                amount: amount,
-                destination_bank_account_number: req.body.data.message,
-                status: (req.body.event ? "charge.completed" : 'received' ? "transfer.completed" : "paid"),
-                sender_fullname: 'NGN',
-                sender_email: ''
-            }).save().then(_testMoney => {
-                console.log('test saved money', _testMoney)
-            })
+            // const testIntlTransaction = new TestIntlTrans({
+            //     sender_currency: req.body.data.tx_ref,
+            //     destination_country: req.body.data.tx_ref,
+            //     destination_bank: req.body.data.supporter_nickname,
+            //     amount: amount,
+            //     destination_bank_account_number: req.body.data.message,
+            //     status: (req.body.event ? "charge.completed" : 'received' ? "transfer.completed" : "paid"),
+            //     sender_fullname: 'NGN',
+            //     sender_email: ''
+            // }).save().then(_testMoney => {
+            //     console.log('test saved money', _testMoney)
+            // })
         } else { // save other transactions (creators' tips and subscriptions)
             
             let amount = req.body.data.amount
