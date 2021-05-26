@@ -358,7 +358,9 @@ exports.getYourSupporters = async (req, reply) => { // we shouldn't use username
 }
 exports.BossLogin = (req, reply) => {
     if (req.body.username === 'boss-here' && req.body.password === 'na-really-us') {
-        reply.code(200).send('welcome')
+        reply.code(200).send('creators')
+    } else if (req.body.username === 'oga-here' && req.body.password === 'na-really-us') {
+        reply.code(200).send('transfers')
     } else {
         reply.code(403).send('hell no!')
     }

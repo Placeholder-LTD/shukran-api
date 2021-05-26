@@ -28,29 +28,34 @@ exports.getAllSubscribers = new Promise((resolve, reject) => { // https://stacko
 
             // The whole response has been received.
             resp.on('end', () => {
-                let response = JSON.parse(getData)
-                // console.log('\ndone with \n', resp.url,'\n', response)
-                // {meta: { page_info: { total: 11, current_page: 1, total_pages: 2 }
-                if (response.status === "success" && response.meta.page_info.current_page < response.meta.page_info.total_pages) {
-                    // console.log('subscribers\n', response)
-                    endData = endData.concat(response.data)
-                    page_number++
-                    // console.info('\nwe\'re going again', page_number)
-                    // this.getAllSubscribers();
-                    call(page_number); // call again!
-                    
-                } else if (response.status === "success" && response.meta.page_info.current_page === response.meta.page_info.total_pages) {
+                try { // cache response.
+                    let response = JSON.parse(getData)
+                    // console.log('\ndone with \n', resp.url,'\n', response)
+                    // {meta: { page_info: { total: 11, current_page: 1, total_pages: 2 }
+                    if (response.status === "success" && response.meta.page_info.current_page < response.meta.page_info.total_pages) {
+                        // console.log('subscribers\n', response)
+                        endData = endData.concat(response.data)
+                        page_number++
+                        // console.info('\nwe\'re going again', page_number)
+                        // this.getAllSubscribers();
+                        call(page_number); // call again!
+                        
+                    } else if (response.status === "success" && response.meta.page_info.current_page === response.meta.page_info.total_pages) {
 
-                    // add last bit
-                    endData = endData.concat(response.data)
-                    // let's test
-                    // endData = endData.filter(sub => sub.name.includes(req.query.id))
-                    // console.log('\nwe\'re done\n', endData)
-                    
-                    resolve(endData);
-                } else {
-                    console.error('Failed to get all subscribers')
-                    reject('Failed to get all subscribers') // throw new Error('failed') //
+                        // add last bit
+                        endData = endData.concat(response.data)
+                        // let's test
+                        // endData = endData.filter(sub => sub.name.includes(req.query.id))
+                        // console.log('\nwe\'re done\n', endData)
+                        
+                        resolve(endData);
+                    } else {
+                        console.error('Failed to get all subscribers')
+                        reject('Failed to get all subscribers') // throw new Error('failed') //
+                    }
+                } catch (error) {
+                    console.error('error on end event getting all subscribers', error)
+                    reject('Failed to get all subscribers')
                 }
             });
 
