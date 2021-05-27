@@ -168,7 +168,7 @@ exports.createTransaction = (req, reply) => {
                 }
             }
         }
-        transaction.save().then(trans => {
+        /* transaction.save().then(trans => {
             console.log('transaction saved?', trans);
             if (req.body.tx_ref.includes('-shukraning-')) { // send back user profile with appropriate content
                 User.find({'username': req.body.username}, (err, user) => { // remove password!!
@@ -191,7 +191,10 @@ exports.createTransaction = (req, reply) => {
             }
         }, err => {
             // reply.status(500).send('Not good')
-        })
+        }) */
+
+        // quick fix here
+        reply.send(200)
         
 
     } catch (err) {
@@ -316,16 +319,28 @@ exports.followTheMoney = (req, reply) => { // TODO: https://developer.flutterwav
                 .from(response.currency)
                 .to("NGN");
             }
-            const testTransaction = new TestTrans({
-                username: extractCreatorUsernameFromTxRef(req.body.data.tx_ref), // creator_username
-                creator_id: extractCreatorIdFromTxRef(req.body.data.tx_ref),
+            // const testTransaction = new TestTrans({
+            //     username: extractCreatorUsernameFromTxRef(req.body.data.tx_ref), // creator_username
+            //     creator_id: extractCreatorIdFromTxRef(req.body.data.tx_ref),
+            //     supporter_nickname: req.body.data.supporter_nickname,
+            //     amount: amount,
+            //     message: req.body.data.message,
+            //     status: (req.body.event == "charge.completed" ? 'received' : "paid"),
+            //     currency: 'NGN',
+            // }).save().then(_testMoney => {
+            //     console.log('test saved money', _testMoney)
+            // })
+
+            const transaction = new Trans({
+                username: req.body.data.meta_data.username, // creator_username
+                creator_id: req.body.data.meta_data.username,
                 supporter_nickname: req.body.data.supporter_nickname,
                 amount: amount,
-                message: req.body.data.message,
-                status: (req.body.event ? "charge.completed" : 'received' ? "transfer.completed" : "paid"),
+                message: req.body.data.meta_data.message,
+                status: (req.body.event == "charge.completed" ? 'received' : "paid"), // "transfer.completed"
                 currency: 'NGN',
             }).save().then(_testMoney => {
-                console.log('test saved money', _testMoney)
+                console.log('==> saved money', _testMoney)
             })
             
         }

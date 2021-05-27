@@ -169,14 +169,18 @@ exports.getSubscribers = (req, reply) => {
             let creatorShuklans = shuklans.filter(shuklan => creatorPlans.some(plan => plan.id === shuklan.plan))
             reply.send(creatorShuklans) // return creatorShuklans
         }, (err) => {
-
+            reply
+            // .code(500) // necessary ?
+            .send([])
         }).catch((why) => { // why usually is => (node:4) UnhandledPromiseRejectionWarning: TypeError: Cannot read property 'filter' of undefined
             reply
             // .code(500) // necessary ?
             .send([])
         })
     }, (err) => {
-
+        reply
+        // .code(500) // necessary ?
+        .send([])
     }).catch((why) => {
         console.error('whyyy err', why)
         reply.code(500)
