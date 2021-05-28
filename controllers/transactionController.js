@@ -296,7 +296,7 @@ exports.updateTransaction = async (req, reply) => {
 exports.followTheMoney = (req, reply) => { // TODO: https://developer.flutterwave.com/docs/transaction-verification
     try {
         
-        console.log('the money', req.body);
+        
         if (req.body.data.tx_ref && req.body.data.tx_ref.includes('-intl-transfer-to-')) { // check for and save international transfers
             // const testIntlTransaction = new TestIntlTrans({
             //     sender_currency: req.body.data.tx_ref,
@@ -345,9 +345,14 @@ exports.followTheMoney = (req, reply) => { // TODO: https://developer.flutterwav
             
         }
 
+        
+    } catch (err) {
+      throw boom.boomify(err)
+    } finally {
+        console.log('the money', req.body);
         // save all money regardless
         const money = new Money(JSON.parse(JSON.stringify(req.body))) // why the stringify ? and parse ?
-        
+                
         money.save().then(_money => {
             sendemail.followTheMoney(req.body).then(() => {
                 reply.code(200).send('we good!') // uhmm, this is a webhook, not sure we should respond.
@@ -355,10 +360,6 @@ exports.followTheMoney = (req, reply) => { // TODO: https://developer.flutterwav
         }).catch(err => {
             console.error('err following the money', err)
         })
-        
-        
-    } catch (err) {
-      throw boom.boomify(err)
     }
 }
 exports.getYourSupporters = async (req, reply) => { // we shouldn't use username/email, but sth more uhmmm IDish, ...
