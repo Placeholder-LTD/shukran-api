@@ -296,8 +296,8 @@ exports.updateTransaction = async (req, reply) => {
 exports.followTheMoney = (req, reply) => { // TODO: https://developer.flutterwave.com/docs/transaction-verification
     try {
         
-
-        if (req.body.data.tx_ref.includes('-intl-transfer-to-')) { // check for and save international transfers
+        console.log('the money', req.body);
+        if (req.body.data.tx_ref && req.body.data.tx_ref.includes('-intl-transfer-to-')) { // check for and save international transfers
             // const testIntlTransaction = new TestIntlTrans({
             //     sender_currency: req.body.data.tx_ref,
             //     destination_country: req.body.data.tx_ref,
@@ -310,7 +310,7 @@ exports.followTheMoney = (req, reply) => { // TODO: https://developer.flutterwav
             // }).save().then(_testMoney => {
             //     console.log('test saved money', _testMoney)
             // })
-        } else { // save other transactions (creators' tips and subscriptions)
+        } else if (req.body.event.includes("charge")) { // save other transactions (creators' tips and subscriptions)
             
             let amount = req.body.data.amount
             if (req.body.data.currency !== "NGN") {
@@ -347,7 +347,7 @@ exports.followTheMoney = (req, reply) => { // TODO: https://developer.flutterwav
 
         // save all money regardless
         const money = new Money(JSON.parse(JSON.stringify(req.body))) // why the stringify ? and parse ?
-        console.log('the money', req.body);
+        
         money.save().then(_money => {
             sendemail.followTheMoney(req.body).then(() => {
                 reply.code(200).send('we good!') // uhmm, this is a webhook, not sure we should respond.
