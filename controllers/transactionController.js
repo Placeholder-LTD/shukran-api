@@ -332,7 +332,7 @@ exports.followTheMoney = (req, reply) => { // TODO: https://developer.flutterwav
             // })
 
             const transaction = new Trans({
-                username: req.body.meta_data.username, // creator_username
+                username: extractCreatorUsernameFromTxRef(req.body.data.tx_ref), // req.body.meta_data.username, // creator_username
                 creator_id: extractCreatorIdFromTxRef(req.body.data.tx_ref),
                 supporter_nickname: req.body.meta_data.supporter_nickname,
                 amount: amount,
