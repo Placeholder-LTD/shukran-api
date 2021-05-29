@@ -38,15 +38,7 @@ const MoneySchema = mongoose.Schema({
         fee: { type: Number},
         status: { type: String },
         reference: { type: String },
-        meta_data: { 
-            __CheckoutInitAddress: { type: String }, // 'https://shukranstaging.netlify.app/cr/feeddustbinestate',
-            username: { type: String }, // 'feeddustbinestate',
-            supporter_nickname: { type: String }, // 'Testing',
-            supporter_email: { type: String }, // 'obakamtomgeorge@gmail.com',
-            creator_id: { type: String }, // '6088608f57b1920004ec2276',
-            message: { type: String }, // 'Testing',
-            creator_email: { type: String }, // 'helloobakam@gmail.com'
-         },
+        
         narration: { type: String },
         approver: { type: String }, // null,
         complete_message: { type: String },
@@ -76,6 +68,15 @@ const MoneySchema = mongoose.Schema({
             card6: { type: String }, // "553188",
             card_last4: { type: String }, // "2950"
         }
+    },
+    meta_data: { 
+        __CheckoutInitAddress: { type: String }, // 'https://shukranstaging.netlify.app/cr/feeddustbinestate',
+        username: { type: String }, // 'feeddustbinestate',
+        supporter_nickname: { type: String }, // 'Testing',
+        supporter_email: { type: String }, // 'obakamtomgeorge@gmail.com',
+        creator_id: { type: String }, // '6088608f57b1920004ec2276',
+        message: { type: String }, // 'Testing',
+        creator_email: { type: String }, // 'helloobakam@gmail.com'
     },
     // should be this, "event.type"
     "event.type": { type: String }, // "CARD_TRANSACTION" // important! how do our shuk-clans tip ? the most

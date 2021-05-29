@@ -332,11 +332,11 @@ exports.followTheMoney = (req, reply) => { // TODO: https://developer.flutterwav
             // })
 
             const transaction = new Trans({
-                username: req.body.data.meta_data.username, // creator_username
-                creator_id: req.body.data.meta_data.username,
-                supporter_nickname: req.body.data.supporter_nickname,
+                username: req.body.meta_data.username, // creator_username
+                creator_id: req.body.meta_data.username,
+                supporter_nickname: req.body.meta_data.supporter_nickname,
                 amount: amount,
-                message: req.body.data.meta_data.message,
+                message: req.body.meta_data.message,
                 status: (req.body.event == "charge.completed" ? 'received' : "paid"), // "transfer.completed"
                 currency: 'NGN',
             }).save().then(_testMoney => {
