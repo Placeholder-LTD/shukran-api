@@ -5,7 +5,10 @@ const TransSchema = mongoose.Schema({
     creator_id: { type: String },
     supporter_nickname: { type: String },
     amount: { type: String },
-    message: { type: String },
+    message: { 
+        type: String,
+        default: "" 
+    },
     status: { type: String },
     currency: { type: String },
     transaction_date: {
