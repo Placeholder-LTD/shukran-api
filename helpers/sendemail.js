@@ -1186,6 +1186,35 @@ module.exports.send2020Highlights = async (username, email, fullname, currency, 
 }
 
 /**
+ * won't work if tx_ref is Links-035333822212 ...for when they send money via links
+ * @param {*} tx_ref 
+ * @returns 
+ */
+ function extractCreatorUsernameFromTxRef(tx_ref) {
+    let url = tx_ref.match(/(https?:\/\/[^ ]*)/)[1] // extract url
+    return url.substring( // extract username from url
+                url.lastIndexOf('/') + 1,
+                url.length
+            )
+}
+
+/**
+ * won't work if tx_ref is Links-035333822212 ...for when they send money via links
+ * sample input 
+ * 1. ryanmwas@gmail.com-shukran-5f2c28d2516d290018eddd03 @ 1618564158976 | https://useshukran.com/cr/wanji
+ * 2. randoma@mail.com-word-5a2i96d1517d290018eghd44 @ 1618564102876 | https://sitesth.com/cr/waewe32w
+ * @param {*} tx_ref 
+ * @returns supporter email
+ */
+ function extractSupporterEmailFromTxRef(tx_ref) {
+    return tx_ref.substring(
+        0,
+        tx_ref.indexOf("-")
+    )
+}
+
+
+/**
  * 
  * @param {object} reqbody 
  * 
@@ -1195,11 +1224,11 @@ module.exports.sendTipEmail = async (reqbody) => {
     const smtpTransport = nodemailer.createTransport(contactMailOption);
     const mailOptions = {
         from: "Ola from Shukran <contact@useshukran.com>",
-        to: reqbody.creator_email,
-        subject: "You just got tipped " + reqbody.username.capitalize(), // do we want to capitalize?, well unless it contains underscore
+        to: reqbody.meta_data.creator_email,
+        subject: "You just got tipped " + extractCreatorUsernameFromTxRef(reqbody.data.tx_ref).capitalize(), // do we want to capitalize?, well unless it contains underscore
         generateTextFromHTML: true,
-        html: "<h3>Hi, <b>" + reqbody.username.capitalize() + "</h3></b> "
-        + reqbody.supporter_nickname + " just tipped you!" + "<br>"
+        html: "<h3>Hi, <b>" + extractCreatorUsernameFromTxRef(reqbody.data.tx_ref).capitalize() + "</h3></b> "
+        + reqbody.meta_data.supporter_nickname + " just tipped you!" + "<br>"
         + "<a href='https://useshukran.com/accounts'>Login to find out how much.</a>"
         };
 
@@ -1217,10 +1246,10 @@ module.exports.sendShuclanThankYou = async (reqbody) => {
 
     const mailOptions = {
         from: 'Ola from Shukran <contact@useshukran.com>',
-        to: reqbody.supporter_email.trim(),
-        subject: "Hey, thank you for joining " +  reqbody.username.trim()+"'s" + " Shuclan!",
+        to: extractSupporterEmailFromTxRef(reqbody.data.tx_ref), // reqbody.supporter_email.trim(),
+        subject: "Hey, thank you for joining " + extractCreatorUsernameFromTxRef(reqbody.data.tx_ref)+"'s" + " Shuclan!",
         generateTextFromHTML: true,
-        html: `<h3>Thank you for choosing to support ${reqbody.username} monthly.</h3>
+        html: `<h3>Thank you for choosing to support ${extractCreatorUsernameFromTxRef(reqbody.data.tx_ref)} monthly.</h3>
         <p>Your support means alot to them. Please feel free to talk about this by tweeting using this link: </p>
         <a href="https://twitter.com/intent/tweet?url=http%3A%2F%2Fuseshukran.com%2F&text=I+just+joined+a+creator's+Shuclan+on
         +@useshukran.+You+can+support+your+favorite+creator+too+here:&hashtags=saythanks,shukran"
@@ -1243,8 +1272,8 @@ module.exports.sendCreatorAddedShuclan = async (reqbody) => {
 
     const mailOptionsCreator = {
         from: 'Ola from Shukran <contact@useshukran.com>',
-        to: reqbody.creator_email.trim(),
-        subject: "Hey, " + reqbody.username + " someone just joined your Shuclan!",
+        to: reqbody.meta_data.creator_email.trim(),
+        subject: "Hey, " + extractCreatorUsernameFromTxRef(reqbody.data.tx_ref) + " someone just joined your Shuclan!",
         generateTextFromHTML: true,
         // tell them to log in to find out how much, & that means we'll be showing newest shuclan members in vue end
         html: `<h3>Hey! We are excited to announce that someone has joined your Shuclan.</h3>

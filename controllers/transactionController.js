@@ -43,6 +43,11 @@ function extractCreatorUsernameFromTxRef(tx_ref) {
             )
 }
 
+/**
+ * old method ... req.body.tx_ref ... is used only in this block, in others (esp. follow the money method) it should be req.body.data.tx_ref
+ * @param {*} req 
+ * @param {*} reply 
+ */
 exports.createTransaction = (req, reply) => {
     try {
 
@@ -342,6 +347,13 @@ exports.followTheMoney = (req, reply) => { // TODO: https://developer.flutterwav
                     currency: 'NGN',
                 }).save().then(_testMoney => {
                     console.log('==> saved money', _testMoney)
+
+                    if (req.body.data.tx_ref.includes('-shukraning-')) {
+                        sendemail.sendCreatorAddedShuclan(req.body).catch(err => console.error(err))
+                        sendemail.sendShuclanThankYou(req.body).catch(err => console.error(err))
+                    } else { // just send that they were tipped
+                        /* await */ sendemail.sendTipEmail(req.body)
+                    }
                 })
                 
             }
