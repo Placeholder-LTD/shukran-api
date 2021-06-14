@@ -317,7 +317,7 @@ exports.followTheMoney = (req, reply) => { // TODO: https://developer.flutterwav
                 if (req.body.data.currency !== "NGN") {
                     // we can do more
                     amount = fx(amount) // convert to NGN
-                    .from(response.currency)
+                    .from(req.body.data.currency)
                     .to("NGN");
                 }
                 // const testTransaction = new TestTrans({
