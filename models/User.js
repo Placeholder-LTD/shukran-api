@@ -17,7 +17,8 @@ const userSchema = new mongoose.Schema({
     fullname: { type: String },
     craft_type: { type: String },
     account_name: { type: String },
-    account_number: { type: String },
+    account_number: { type: String }, // 8-digits for UK banks/creators
+    sort_code: { type: String }, // for UK creators/banks ... 6-digits
     summary: { type: String },
     country: { type: String },
     bank: { type: String },
