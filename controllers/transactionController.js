@@ -321,6 +321,7 @@ exports.followTheMoney = (req, reply) => { // TODO: https://developer.flutterwav
                     destination_country: req.body.meta_data.destination_country,
                     destination_bank: req.body.meta_data.destination_bank,
                     amount: req.body.meta_data.amount,
+                    destination_bank_account_name: req.body.meta_data.destination_bank_account_name,
                     destination_bank_account_number: req.body.meta_data.destination_bank_account_number,
                     status: 'received', // req.body.status,
                     sender_fullname: req.body.meta_data.sender_fullname,
