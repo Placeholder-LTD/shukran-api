@@ -11,7 +11,7 @@ const TestIntlTransSchema = mongoose.Schema({
     status: { 
         type: String
     },
-    // destination_currency: { type: String }, // can be auto infered from destination_country & destination_bank_account_number (& maybe for DOM accts)
+    destination_bank_account_name: { type: String },
     transaction_date: {
         type: Date,
         default: Date.now

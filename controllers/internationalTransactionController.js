@@ -22,6 +22,7 @@ exports.createInternationalTransaction = (req, reply) => {
             destination_country: req.body.destination_country,
             destination_bank: req.body.destination_bank,
             amount: req.body.amount,
+            destination_bank_account_name: req.body.destination_bank_account_name,
             destination_bank_account_number: req.body.destination_bank_account_number,
             status: req.body.status,
             sender_fullname: req.body.sender_fullname,

@@ -10,7 +10,7 @@ const InternationalTransactionsSchema = mongoose.Schema({
     sender_fullname: { type: String },
     sender_email: { type: String },
 
-    // currency: { type: String },
+    destination_bank_account_name: { type: String },
     transaction_date: {
         type: Date,
         default: Date.now
