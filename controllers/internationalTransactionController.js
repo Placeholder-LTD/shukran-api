@@ -9,14 +9,15 @@ const sendemail = require('../helpers/sendemail')
 const fx = require('../helpers/fx').fx
 
 /**
- * we should be using webhook
+ * doing tests for now just to check
+ * we are actually using webhook
  * @param {*} req 
  * @param {*} reply 
  */
 exports.createInternationalTransaction = (req, reply) => {
     try {
         // save a cookie with the supporter_email
-        const testIntlTransaction = new IntlTrans({
+        const testIntlTransaction = new TestIntlTrans({
             sender_currency: req.body.sender_currency,
             destination_country: req.body.destination_country,
             destination_bank: req.body.destination_bank,
@@ -26,10 +27,30 @@ exports.createInternationalTransaction = (req, reply) => {
             sender_fullname: req.body.sender_fullname,
             sender_email: req.body.sender_email
         }).save().then(_testMoney => {
-            console.log('test saved money', _testMoney)
+            console.log('test saved intl money', _testMoney)
         })
         
+    } catch (err) {
+      throw boom.boomify(err)
+    }
+}
 
+exports.AllIntlTransactions = async (req, reply) => {
+    try {
+        let money = Money.find({"data.tx_ref": /-intl-transfer-to-/}) // 
+        return money
+    } catch (error) {
+        throw boom.boomify(error)
+    }
+}
+
+exports.updateTransaction = async (req, reply) => {
+    try {
+      const id = req.body.id
+      const transaction = req.body
+      const { ...updateData } = transaction
+      const update = await Trans.findByIdAndUpdate(id, updateData, { new: true })
+      return update
     } catch (err) {
       throw boom.boomify(err)
     }

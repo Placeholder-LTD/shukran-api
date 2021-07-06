@@ -170,6 +170,11 @@ const routes = [
     },
     {
         method: 'GET',
+        url: '/api/allinternationaltransactions/',
+        handler: internationalTransactionController.AllIntlTransactions
+    },
+    {
+        method: 'GET',
         url: '/api/alltransactions/',
         handler: transactionController.AllTransactions
     },

@@ -316,6 +316,22 @@ exports.followTheMoney = (req, reply) => { // TODO: https://developer.flutterwav
                 // }).save().then(_testMoney => {
                 //     console.log('test saved money', _testMoney)
                 // })
+                const intlTransaction = new IntlTrans({
+                    sender_currency: req.body.meta_data.sender_currency,
+                    destination_country: req.body.meta_data.destination_country,
+                    destination_bank: req.body.meta_data.destination_bank,
+                    amount: req.body.meta_data.amount,
+                    destination_bank_account_number: req.body.meta_data.destination_bank_account_number,
+                    status: 'received', // req.body.status,
+                    sender_fullname: req.body.meta_data.sender_fullname,
+                    sender_email: req.body.meta_data.sender_email
+                }).save().then(_money => {
+                    console.log('saved international money, transfer', _money)
+                }, _testMoneyError => {
+                    console.error('error in saving international money, transfer', _testMoneyError)
+                }).catch((_reason) => {
+                    console.error('catching error in saving international money, transfer', _reason)
+                })
             } else if (req.body.event.includes("charge")) { // save other transactions (creators' tips and subscriptions)
                 
                 let amount = req.body.data.amount

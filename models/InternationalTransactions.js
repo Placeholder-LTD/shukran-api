@@ -1,13 +1,16 @@
 const mongoose = require('mongoose')
 
 const InternationalTransactionsSchema = mongoose.Schema({
-    username: { type: String }, // creator_username
-    creator_id: { type: String },
-    supporter_nickname: { type: String },
+    sender_currency: { type: String },
+    destination_country: { type: String },
+    destination_bank: { type: String },
     amount: { type: String },
-    message: { type: String },
+    destination_bank_account_number: { type: String },
     status: { type: String },
-    currency: { type: String },
+    sender_fullname: { type: String },
+    sender_email: { type: String },
+
+    // currency: { type: String },
     transaction_date: {
         type: Date,
         default: Date.now
