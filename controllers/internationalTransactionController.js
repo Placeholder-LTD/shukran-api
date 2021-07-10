@@ -38,13 +38,17 @@ exports.createInternationalTransaction = (req, reply) => {
 
 exports.AllIntlTransactions = async (req, reply) => {
     try {
-        let money = Money.find({"data.tx_ref": /-intl-transfer-to-/}) // 
-        return money
+        // let money = Money.find({"data.tx_ref": /-intl-transfer-to-/}) // 
+        // return money
+
+        var trans = IntlTrans.find()
+        return trans
     } catch (error) {
         throw boom.boomify(error)
     }
 }
 
+// needs work
 exports.updateTransaction = async (req, reply) => {
     try {
       const id = req.body.id
@@ -54,5 +58,41 @@ exports.updateTransaction = async (req, reply) => {
       return update
     } catch (err) {
       throw boom.boomify(err)
+    }
+}
+
+exports.getTransferRequests = async (req, reply) => {
+    try {
+        // let money = Money.find({"data.tx_ref": /-intl-transfer-to-/}) // 
+        // return money
+
+        var trans = IntlTrans.find({status: "received"})
+        return trans
+    } catch (error) {
+        throw boom.boomify(error)
+    }
+}
+
+exports.updateInternationalTransaction = async (req, reply) => {
+    try {
+        const id = req.body.id
+        const transaction = req.body
+        // const { ...updateData } = transaction
+        const update = await Trans.findByIdAndUpdate(id, {status: 'paid'}, { new: true })
+        return update
+      } catch (err) {
+        throw boom.boomify(err)
+      }
+}
+
+exports.getAllUniqueUsers = async (req, reply) => {
+    try {
+        // let uniqueCustomers = Money.distinct("data.customer.email", {"data.tx_ref": /-intl-transfer-to-/}) // 
+        // return uniqueCustomers
+
+        let customers = IntlTrans.distinct("sender_email")
+        return customers
+    } catch (error) {
+        throw boom.boomify(error)
     }
 }

@@ -54,6 +54,11 @@ const routes = [
         handler: userController.getAll
     },
     {
+        method: 'GET',
+        url: '/api/allinternationaltransferusers/',
+        handler: internationalTransactionController.getAllUniqueUsers
+    },
+    {
         method: 'POST',
         url: '/api/bosslogin/',
         handler: transactionController.BossLogin
@@ -139,6 +144,11 @@ const routes = [
         handler: internationalTransactionController.createInternationalTransaction
     },
     {
+        method: 'GET',
+        url: '/api/internationaltransferrequests/',
+        handler: internationalTransactionController.getTransferRequests
+    },
+    {
         method: 'POST',
         url: '/api/createtransaction/',
         handler: transactionController.createTransaction
@@ -189,9 +199,19 @@ const routes = [
         handler: transactionController.updateTransaction
     },
     {
+        method:'POST',
+        url: '/api/updateinternationaltransaction/',
+        handler: internationalTransactionController.updateInternationalTransaction
+    },
+    {
         method: 'GET',
         url: '/api/allfeedback/',
         handler: feedbackController.getAll
+    },
+    {
+        method: 'GET',
+        url: '/api/allinternationalfeedback/',
+        handler: feedbackController.getAllInternational
     },
     {
         method: 'POST',

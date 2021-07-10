@@ -10,15 +10,30 @@ exports.newFeedback = async(req, reply) => {
         throw boom.boomify(error)
     }
 }
-exports.getAll = async(req, reply) => {
+exports.getAll = async (req, reply) => {
     try {
-        var feed = Feedback.find()
+        var feed = Feedback.find({
+            $or: [{
+                type: { $exists: false }
+            }, {
+                type: 'creators'
+            }]
+        }) // gets all feedback by creators
         return feed
     } catch (error) {
         throw boom.boomify(error)
     }
 }
-exports.sendMessage = async(req, reply) => {
+
+exports.getAllInternational = async (req, reply) => {
+    try {
+        var feed = Feedback.find({type: 'transfers'})
+        return feed
+    } catch (error) {
+        throw boom.boomify(error)
+    }
+}
+exports.sendMessage = async (req, reply) => {
     try {
         return new Promise((resolve, reject) => {
             const smtpTransport = nodemailer.createTransport({

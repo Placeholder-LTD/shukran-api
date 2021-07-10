@@ -6,6 +6,10 @@ const FeedbackSchema = mongoose.Schema({
     feedback_date: {
         type: Date,
         default: Date.now
+    },
+    type: {
+        type: String,
+        default: 'creators'
     }
 })
 
