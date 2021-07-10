@@ -53,8 +53,8 @@ exports.updateTransaction = async (req, reply) => {
     try {
       const id = req.body.id
       const transaction = req.body
-      const { ...updateData } = transaction
-      const update = await Trans.findByIdAndUpdate(id, updateData, { new: true })
+      // const { ...updateData } = transaction
+      const update = await Trans.findByIdAndUpdate(id, {status: 'paid'}, { new: true })
       return update
     } catch (err) {
       throw boom.boomify(err)
