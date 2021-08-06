@@ -8,6 +8,7 @@ const TestIntlTransSchema = mongoose.Schema({
     destination_bank_account_number: { type: String },
     sender_fullname: { type: String },
     sender_email: { type: String },
+    shukran_fee: { type: String, default: '0' },
     status: { 
         type: String
     },

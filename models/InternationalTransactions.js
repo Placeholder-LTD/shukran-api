@@ -9,7 +9,7 @@ const InternationalTransactionsSchema = mongoose.Schema({
     status: { type: String },
     sender_fullname: { type: String },
     sender_email: { type: String },
-
+    shukran_fee: { type: String, default: "0" }, 
     destination_bank_account_name: { type: String },
     transaction_date: {
         type: Date,

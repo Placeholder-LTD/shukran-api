@@ -324,10 +324,14 @@ exports.followTheMoney = (req, reply) => { // TODO: https://developer.flutterwav
                     destination_bank_account_name: req.body.meta_data.destination_bank_account_name,
                     destination_bank_account_number: req.body.meta_data.destination_bank_account_number,
                     status: 'received', // req.body.status,
+                    shukran_fee: req.body.meta_data.shukran_fee,
                     sender_fullname: req.body.meta_data.sender_fullname,
                     sender_email: req.body.meta_data.sender_email
                 }).save().then(_money => {
                     console.log('saved international money, transfer', _money)
+                    
+                    // TODO, email the sender that the transaction was successful
+                    // also email them when we make the payment
                 }, _testMoneyError => {
                     console.error('error in saving international money, transfer', _testMoneyError)
                 }).catch((_reason) => {
@@ -365,10 +369,10 @@ exports.followTheMoney = (req, reply) => { // TODO: https://developer.flutterwav
                 }).save().then(_testMoney => {
                     console.log('==> saved money', _testMoney)
 
-                    if (req.body.data.tx_ref.includes('-shukraning-')) {
+                    if (req.body.data.tx_ref.includes('-shukraning-')) { // a subscription
                         sendemail.sendCreatorAddedShuclan(req.body).catch(err => console.error(err))
                         sendemail.sendShuclanThankYou(req.body).catch(err => console.error(err))
-                    } else { // just send that they were tipped
+                    } else if (req.body.data.tx_ref.includes('-shukran-')) { // then it's tip, just send that they were tipped
                         /* await */ sendemail.sendTipEmail(req.body)
                     }
                 })

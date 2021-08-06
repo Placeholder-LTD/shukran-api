@@ -25,6 +25,7 @@ exports.createInternationalTransaction = (req, reply) => {
             destination_bank_account_name: req.body.destination_bank_account_name,
             destination_bank_account_number: req.body.destination_bank_account_number,
             status: req.body.status,
+            shukran_fee: req.body.shukran_fee,
             sender_fullname: req.body.sender_fullname,
             sender_email: req.body.sender_email
         }).save().then(_testMoney => {
