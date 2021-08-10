@@ -8,6 +8,13 @@ const ggle = require('../helpers/uploadgdrive');
 // Step 1.0: Create a Vue instance
 const Vue = require('vue')
 
+// step 2.1
+const template = require('fs').readFileSync('./vue-templates/social.template.html', 'utf-8')
+// step 2.2
+const renderer = require('vue-server-renderer').createRenderer({
+  template,
+})
+
 
 // console.log(jimp_reading_images); // array of promises
 
@@ -79,7 +86,56 @@ exports.creatorProfilePreview = (req, reply) => {
                       }) */
                       .getBufferAsync(Jimp.MIME_PNG)
                       .then((img) => {
-                        reply.code(200).type('image/png').send(img)
+
+                        // reply.code(200).type('image/png').send(img) // has our image
+
+                        let context = {
+                          title:'tip me',
+                          test: 'this is a handsomely test data. wtf.',
+                          req,
+                          img,
+                          metas: `
+                              <meta name="keyword" content="vue,ssr">
+                              <meta name="description" content="vue srr demo">
+                          `,
+                        };
+
+                        /**
+                         * TODO: So, instead of directly creating an app instance, 
+                         * we should expose a factory function that can be repeatedly 
+                         * executed to create fresh app instances for each request:
+                         * https://ssr.vuejs.org/guide/structure.html#avoid-stateful-singletons
+                         */
+                        const app = new Vue({
+                          data: {
+                            url: req.url
+                          },
+                          template: `<div>The visited URL is: {{ url }}</div>`,
+                        });
+                        // We can provide interpolation data by passing a "render context object" as the second argument to renderToString
+                        renderer.renderToString(app, context, (err, html) => {
+                          console.log(html) // will be the full page with app content injected.
+                          if (err) {
+                            res.status(500).end('Internal Server Error') // nope ...send a general template
+                            
+                          } else {
+                            // do we need to set the response type ??
+                            res.status(200).end(html)
+
+                          }
+                        })
+
+                        // in 2.5.0+, returns a Promise if no callback is passed:
+                        /**
+                         * // in 2.5.0+, returns a Promise if no callback is passed:
+                            renderer.renderToString(app).then(html => {
+                              console.log(html)
+                            }).catch(err => {
+                              console.error(err)
+                            })
+                         */
+                        // so might convert to promise based
+
                       }).catch((err) => {
                         console.error('problem writing text for username', err)
                       })
