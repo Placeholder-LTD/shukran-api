@@ -10,6 +10,11 @@ const internationalTransactionController = require('../controllers/international
 const routes = [
     {
         method: 'GET',
+        url: '/lol/:username/',
+        handler: socialMediaController.creatorProfilePreview
+    },
+    {
+        method: 'GET',
         url: '/api/smp/:username/',
         handler: socialMediaController.creatorProfilePreview
     },

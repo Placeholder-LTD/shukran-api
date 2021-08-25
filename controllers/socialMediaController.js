@@ -9,11 +9,22 @@ const ggle = require('../helpers/uploadgdrive');
 const Vue = require('vue')
 
 // step 2.1
-const template = require('fs').readFileSync('./vue-templates/social.template.html', 'utf-8')
-// step 2.2
+const template = fs.readFileSync('./vue-templates/social.template.html', 'utf-8')
+// step 2.2 (previous renderer)
 const renderer = require('vue-server-renderer').createRenderer({
   template,
 })
+
+
+// or this renderer
+const { createBundleRenderer } = require('vue-server-renderer')
+/* const serverBundle = require('../vue-app/config/vue-ssr-server-bundle.json')
+const clientManifest = require('/path/to/vue-ssr-client-manifest.json')
+const renderer = createBundleRenderer(serverBundle, {
+  runInNewContext: false, // recommended
+  template, // (optional) page template
+  clientManifest // (optional) client build manifest
+}) */
 
 
 // console.log(jimp_reading_images); // array of promises
@@ -95,32 +106,24 @@ exports.creatorProfilePreview = (req, reply) => {
                           req,
                           img,
                           metas: `
-                              <meta name="keyword" content="vue,ssr">
-                              <meta name="description" content="vue srr demo">
+                              <meta name="keyword" content="shukran,creator">
+                              <meta name="description" content="shukran creator profile">
                           `,
                         };
 
-                        /**
-                         * TODO: So, instead of directly creating an app instance, 
-                         * we should expose a factory function that can be repeatedly 
-                         * executed to create fresh app instances for each request:
-                         * https://ssr.vuejs.org/guide/structure.html#avoid-stateful-singletons
-                         */
-                        const app = new Vue({
-                          data: {
-                            url: req.url
-                          },
-                          template: `<div>The visited URL is: {{ url }}</div>`,
-                        });
+                        // should be in server.js
+                        const createApp = require('../vue-app/app')
+
+                        const app = createApp(context)
                         // We can provide interpolation data by passing a "render context object" as the second argument to renderToString
                         renderer.renderToString(app, context, (err, html) => {
                           console.log(html) // will be the full page with app content injected.
                           if (err) {
-                            res.status(500).end('Internal Server Error') // nope ...send a general template
+                            reply.status(500).send('Internal Server Error') // nope ...send a general template
                             
                           } else {
                             // do we need to set the response type ??
-                            res.status(200).end(html)
+                            reply.status(200).send(html)
 
                           }
                         })
@@ -138,9 +141,11 @@ exports.creatorProfilePreview = (req, reply) => {
 
                       }).catch((err) => {
                         console.error('problem writing text for username', err)
+                        reply.status(500).send('Internal Server Error') // nope ...send a general template
                       })
                     }).catch((err) => {
                       console.error('problem writing text for summary & craft', err)
+                      reply.status(500).send('Internal Server Error') // nope ...send a general template
                     })
                   })
                   
