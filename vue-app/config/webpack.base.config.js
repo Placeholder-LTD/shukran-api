@@ -39,7 +39,8 @@ module.exports = {
         use: {
             loader: 'babel-loader',
             query: { // https://stackoverflow.com/a/41263548/9259701
-                presets: ["es2015"]
+                presets: ["es2015", ], // "@babel/preset-env" causes error ... 
+                plugins: ["syntax-dynamic-import"], // https://github.com/babel/babel-loader/issues/493#issuecomment-336493807
             }
         },
         exclude: /node_modules/

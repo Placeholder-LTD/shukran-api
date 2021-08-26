@@ -1,9 +1,9 @@
 // app.js
-const Vue = require('vue')
-import App from './App.vue'
-import { createRouter } from './router'
-import { createStore } from './store'
-import { sync } from 'vuex-router-sync'
+const Vue = require('vue') // import Vue from 'vue'
+const App = require('./App.vue') // import App from './App.vue'
+const { createRouter } = require('./router') // import { createRouter } from './router'
+const { createStore } = require('./store') // import { createStore } from './store'
+const { sync } = require('vuex-router-sync') // import { sync } from 'vuex-router-sync'
 
 module.exports = function oldCreateApp (context) {
   /**
@@ -29,7 +29,7 @@ module.exports = function oldCreateApp (context) {
   return app
 }
 
-export function createApp () {
+module.exports =  function createApp () {
     // create router and store instance
     const router = createRouter()
     const store = createStore()
