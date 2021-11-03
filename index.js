@@ -6,7 +6,7 @@ const fastify = require('fastify')({
 })
 const cors = require('cors')
 // use it before all route definitions
-const ourAllowedOrigins = ['http://localhost:8080', 'https://useshukran.com', 'https://shukranstaging.netlify.app', 'https://shukran.africa', '**', 'null']; // how to allow any place ?
+const ourAllowedOrigins = ['http://localhost:8080', 'http://localhost:3005', 'https://useshukran.com', 'https://shukranstaging.netlify.app', 'https://shukran.africa', '**', 'null']; // how to allow any place ?
 const ourAllowedHeaders = ['Content-Type', 'Set-Cookie', 'Authorization', 'Via', 'Status', 'Last-Modified']; // https://stackoverflow.com/a/39012388/9259701
 fastify.use(cors({
   // Configures the Access-Control-Allow-Origin CORS header.
@@ -126,6 +126,7 @@ fastify.get('/', (request, reply) => {
 const start = async () => {
     try {
       await fastify.listen(process.env.PORT || 3000,  '0.0.0.0')
+      console.log(`server listening on ${fastify.server.address().port}`);
       fastify.log.info(`server listening on ${fastify.server.address().port}`)
     } catch (err) {
       fastify.log.error(err)
