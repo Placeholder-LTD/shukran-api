@@ -87,7 +87,7 @@ mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true, useFindA
 
 
 })
-.catch(err => console.log(err))
+.catch(err => console.log('mongooes connection error', err))
 
 const routes = require('./routes')
 routes.forEach((route, index) => {
