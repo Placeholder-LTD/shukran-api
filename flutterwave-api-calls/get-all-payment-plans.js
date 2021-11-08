@@ -14,7 +14,7 @@ exports.getAllPaymentPlans = new Promise((resolve, reject) => { // https://stack
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer FLWSECK-b93f3a40802ee2c2fa85f83ba38e7bd6-X`
+                'Authorization': `Bearer ${process.env.FLUTTERWAVE_SEC_KEY}`
             }
         }, (resp) => {
             let getData = ''; // very important to initialize
