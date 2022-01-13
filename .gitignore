@@ -4,4 +4,6 @@ test[0-9]*.js
 local-tests/
 *.log
 *.txt
+
+*.env
 # write CI test for our heroku builds when we push to deploy, also what about using a staging db, that'll be a replica or real db
