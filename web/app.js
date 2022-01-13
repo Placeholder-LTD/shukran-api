@@ -4,18 +4,22 @@ const fastify = require('fastify')({
   logger: true,
   ignoreTrailingSlash: true
 })
-const cors = require('cors')
+
 // use it before all route definitions
-const ourAllowedOrigins = ['http://localhost:8080', 'https://useshukran.com', 'https://shukranstaging.netlify.app', 'https://shukran.africa', '**', 'null']; // how to allow any place ?
+const ourAllowedOrigins = ['http://localhost:8080', 'https://useshukran.com', 'https://shukranstaging.netlify.app', 'https://shukran.africa']; // how to allow any place ?
 const ourAllowedHeaders = ['Content-Type', 'Set-Cookie', 'Authorization', 'Via', 'Status', 'Last-Modified']; // https://stackoverflow.com/a/39012388/9259701
-fastify.use(cors({
-  // Configures the Access-Control-Allow-Origin CORS header.
-  origin: ourAllowedOrigins,
-  credentials: true, // Configures the Access-Control-Allow-Credentials CORS header
-  optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
-  exposedHeaders: ['Set-Cookie'], // 
-  allowedHeaders: ourAllowedHeaders
-}));
+
+// const cors = require('cors')
+
+// fastify.use(cors({
+//   // Configures the Access-Control-Allow-Origin CORS header.
+//   origin: ourAllowedOrigins,
+//   credentials: true, // Configures the Access-Control-Allow-Credentials CORS header
+//   optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+//   exposedHeaders: ['Set-Cookie'], // 
+//   allowedHeaders: ourAllowedHeaders
+// }));
+
 fastify.register(require('fastify-cookie'), {
   secret: process.env.SECRET_KEY, // for cookies signature
   parseOptions: {} // options for parsing cookies
