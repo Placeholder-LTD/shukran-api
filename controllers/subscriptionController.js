@@ -100,7 +100,7 @@ exports.getAllSubscriptions = (req, reply) => {
         reply.code(500)
         console.error(err)
     }).catch((why) => {
-        console.error('whyyy err', why)
+        console.error('err getAllSubscriptions(): ', why)
         reply.code(500) // hmmmm
     });
 }
@@ -164,9 +164,9 @@ exports.getSubscribers = (req, reply) => {
     // https://stackoverflow.com/a/13437802/9259701
     // need to make better writing
     getAllPaymentPlans.getAllPaymentPlans.then((plans) => {
-        let creatorPlans = plans.filter(plan => plan.name.includes(req.query.id))
+        let creatorPlans = plans?.filter(plan => plan.name.includes(req.query.id))
         getAllSubscribers.getAllSubscribers.then((shuklans) => {
-            let creatorShuklans = shuklans.filter(shuklan => creatorPlans.some(plan => plan.id === shuklan.plan))
+            let creatorShuklans = shuklans.filter(shuklan => creatorPlans?.some(plan => plan.id === shuklan.plan))
             reply.send(creatorShuklans) // return creatorShuklans
         }, (err) => {
             reply
@@ -182,7 +182,7 @@ exports.getSubscribers = (req, reply) => {
         // .code(500) // necessary ?
         .send([])
     }).catch((why) => {
-        console.error('whyyy err', why)
+        console.error('err getSubscribers(): ', why)
         reply.code(500)
     });
 }

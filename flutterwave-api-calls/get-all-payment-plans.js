@@ -53,14 +53,14 @@ exports.getAllPaymentPlans = new Promise((resolve, reject) => { // https://stack
                     }
                 } catch (error) {
                     console.error('caught error getting all payment plans', error)
-                    reject('Failed to get all payment plans')
+                    reject(error)
                 }
             });
 
         }).on("error", (err) => {
             console.log("Error: ", err, err.message);
             // return err
-            reject(err.message);
+            reject(err);
         }).end();
         call(1); // first call, get first page_number
     }).catch((err) => {
