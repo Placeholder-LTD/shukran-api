@@ -18,7 +18,7 @@ String.prototype.capitalize = function() {
 /**
  * won't work if tx_ref is Links-035333822212 ...for when they send money via links
  * sample input 
- * 1. ryanmwas@gmail.com-shukran-5f2c28d2516d290018eddd03 @ 1618564158976 | https://useshukran.com/cr/wanji
+ * 1. noname@gmail.com-shukran-5f2c28d2516d290018eddd03 @ 1618564158976 | https://useshukran.com/cr/noname
  * 2. randoma@mail.com-word-5a2i96d1517d290018eghd44 @ 1618564102876 | https://sitesth.com/cr/waewe32w
  * @param {*} tx_ref 
  * @returns creator id
@@ -211,16 +211,16 @@ exports.requestPayout = async (req, reply) => {
         const transaction = new Trans(req.body)
                     let email = req.body.email
                     const smtpTransport = nodemailer.createTransport({
-                        host: 'smtp.zoho.com',
+                        host: process.env.SHUKRAN_EMAIL_SMTP_HOST,
                         port: 465,
                         secure: true,
                         auth: {
-                            user: 'contact@useshukran.com',
-                            pass: 'Password2020'
+                            user: process.env.SHUKRAN_CONTACT_EMAIL,
+                            pass: process.env.SHUKRAN_CONTACT_EMAIL_PASSWORD
                         }
                       });
                    const mailOptions = {
-                       from: "Ola from Shukran <contact@useshukran.com>",
+                       from: `Ola from Shukran <${process.env.SHUKRAN_CONTACT_EMAIL}>`,
                        to: 'olamide@useshukran.com',
                        subject: "Payout request by " + req.body.username.capitalize(),
                        generateTextFromHTML: true,

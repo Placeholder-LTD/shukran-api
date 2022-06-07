@@ -7,19 +7,19 @@ String.prototype.capitalize = function() {
 }
 
 const contactMailOption = {
-    host: 'smtp.zoho.com',
+    host: process.env.SHUKRAN_EMAIL_SMTP_HOST,
     port: 465,
     secure: true,
     auth: {
-        user: 'contact@useshukran.com',
-        pass: 'Password2020'
+        user: process.env.SHUKRAN_CONTACT_EMAIL,
+        pass: process.env.SHUKRAN_CONTACT_EMAIL_PASSWORD
     }
   }
 
 module.exports.sendPasswordResetEmail = async (username, email, reset_link) => {
     const smtpTransport = nodemailer.createTransport(contactMailOption);
     const mailOptions = {
-        from: "The Shukran Team <contact@useshukran.com>",
+        from: `The Shukran Team <${process.env.SHUKRAN_CONTACT_EMAIL}>`,
         to: email,
         subject: "Password reset",
         generateTextFromHTML: true,
@@ -52,7 +52,7 @@ module.exports.send2020Highlights = async (username, email, fullname, currency, 
     const smtpTransport = nodemailer.createTransport(contactMailOption);
 
     const mailOptions = {
-        from: `Shukran Team <contact@useshukran.com>`,
+        from: `Shukran Team <${process.env.SHUKRAN_CONTACT_EMAIL}>`,
         to: `${fullname.trim()} <${email.trim()}>`,
         subject: 'Your 2020 Highlight',
         generateTextFromHTML: true,
@@ -1201,7 +1201,7 @@ module.exports.send2020Highlights = async (username, email, fullname, currency, 
 /**
  * won't work if tx_ref is Links-035333822212 ...for when they send money via links
  * sample input 
- * 1. ryanmwas@gmail.com-shukran-5f2c28d2516d290018eddd03 @ 1618564158976 | https://useshukran.com/cr/wanji
+ * 1. noname@gmail.com-shukran-5f2c28d2516d290018eddd03 @ 1618564158976 | https://useshukran.com/cr/noname
  * 2. randoma@mail.com-word-5a2i96d1517d290018eghd44 @ 1618564102876 | https://sitesth.com/cr/waewe32w
  * @param {*} tx_ref 
  * @returns supporter email
@@ -1223,7 +1223,7 @@ module.exports.send2020Highlights = async (username, email, fullname, currency, 
 module.exports.sendTipEmail = async (reqbody) => {
     const smtpTransport = nodemailer.createTransport(contactMailOption);
     const mailOptions = {
-        from: "Ola from Shukran <contact@useshukran.com>",
+        from: `Ola from Shukran <${process.env.SHUKRAN_CONTACT_EMAIL}>`,
         to: reqbody.meta_data.creator_email,
         subject: "You just got tipped " + extractCreatorUsernameFromTxRef(reqbody.data.tx_ref).capitalize(), // do we want to capitalize?, well unless it contains underscore
         generateTextFromHTML: true,
@@ -1245,7 +1245,7 @@ module.exports.sendShuclanThankYou = async (reqbody) => {
     const smtpTransport = nodemailer.createTransport(contactMailOption);
 
     const mailOptions = {
-        from: 'Ola from Shukran <contact@useshukran.com>',
+        from: `Ola from Shukran <${process.env.SHUKRAN_CONTACT_EMAIL}>`,
         to: extractSupporterEmailFromTxRef(reqbody.data.tx_ref), // reqbody.supporter_email.trim(),
         subject: "Hey, thank you for joining " + extractCreatorUsernameFromTxRef(reqbody.data.tx_ref)+"'s" + " Shuclan!",
         generateTextFromHTML: true,
@@ -1271,7 +1271,7 @@ module.exports.sendCreatorAddedShuclan = async (reqbody) => {
     const smtpTransport = nodemailer.createTransport(contactMailOption);
 
     const mailOptionsCreator = {
-        from: 'Ola from Shukran <contact@useshukran.com>',
+        from: `Ola from Shukran <${process.env.SHUKRAN_CONTACT_EMAIL}>`,
         to: reqbody.meta_data.creator_email.trim(),
         subject: "Hey, " + extractCreatorUsernameFromTxRef(reqbody.data.tx_ref) + " someone just joined your Shuclan!",
         generateTextFromHTML: true,
@@ -1298,8 +1298,8 @@ module.exports.followTheMoney = async (reqbody) => {
     const smtpTransport = nodemailer.createTransport(contactMailOption);
     
     const mailOptions = {
-        from: "Ola from Shukran <contact@useshukran.com>",
-        to: 'nwachukwuossai@gmail.com; theolaakomolafe@gmail.com; obakamtomgeorge@gmail.com',
+        from: `Ola from Shukran <${process.env.SHUKRAN_CONTACT_EMAIL}>`,
+        to: `${process.env.CH_EMAIL}; ${process.env.OL_EMAIL}; ${process.env.OB_EMAIL}`,
         subject: "A transact just happened",
         generateTextFromHTML: true,
         html: "<h2>Hi <b>We got webhook data like:</b></h2>"

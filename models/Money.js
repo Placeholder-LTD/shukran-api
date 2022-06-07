@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const MoneySchema = mongoose.Schema({
     // event: String, // "charge.completed", // can't have this and "event.type"
     data: {
-        tx_ref: { type: String }, // "Obakam -shukran-love and light podcast @ 1597322203407",
+        tx_ref: { type: String }, // "Yourname -shukran-sth sth podcast @ 1597322203407",
         flw_ref: { type: String }, // "FLW296686322",
         device_fingerprint: { type: String }, // "4799c6b9c0431ac8360f392b86c87e2d",
         charged_amount: {type: Number}, // 304.2,
@@ -52,12 +52,12 @@ const MoneySchema = mongoose.Schema({
             name: { type: String }, // "Anonymous customer",
             phone_number: { type: String }, // null, // could it be any?
             created_at: { type: String },
-            id: {type: Number}, // 367450,
+            id: {type: Number}, // 111111,
             email: { type: String }, // "user@gmail.com",
         },
         card: {
-            first_6digits: { type: String }, // "539983",
-            last_4digits: { type: String }, // "1473",
+            first_6digits: { type: String }, // "111111",
+            last_4digits: { type: String }, // "1111",
             issuer: { type: String }, // "MASTERCARD GUARANTY TRUST BANK Mastercard Naira Debit Card",
             country: { type: String }, // "NG",
             type: { type: String }, // "MASTERCARD", "VERVE"
@@ -70,13 +70,13 @@ const MoneySchema = mongoose.Schema({
         }
     },
     meta_data: { 
-        __CheckoutInitAddress: { type: String }, // 'https://shukranstaging.netlify.app/cr/feeddustbinestate',
-        username: { type: String }, // 'feeddustbinestate',
+        __CheckoutInitAddress: { type: String }, // 'https://shukranstaging.netlify.app/cr/likeanothername',
+        username: { type: String }, // 'likeaname',
         supporter_nickname: { type: String }, // 'Testing',
-        supporter_email: { type: String }, // 'obakamtomgeorge@gmail.com',
+        supporter_email: { type: String }, // 'someemail@gmail.com',
         creator_id: { type: String }, // '6088608f57b1920004ec2276',
         message: { type: String }, // 'Testing',
-        creator_email: { type: String }, // 'helloobakam@gmail.com'
+        creator_email: { type: String }, // 'hellothere@gmail.com'
     },
     // should be this, "event.type"
     "event.type": { type: String }, // "CARD_TRANSACTION" // important! how do our shuk-clans tip ? the most

@@ -35,7 +35,7 @@ fastify.register(require('fastify-cors'), {
    allowedHeaders: ourAllowedHeaders
 })
 
-const db = process.env.ATLAS_CONNECTION_STRING
+const db = process.env.CURR_ENV !== 'production' ? process.env.MONGODB_LOCAL_URL : process.env.ATLAS_CONNECTION_STRING
 const ggle = require('../helpers/uploadgdrive');
 fastify.register(require('fastify-multipart'))
 
