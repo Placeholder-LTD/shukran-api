@@ -47,7 +47,8 @@ let fs = require('fs');
 const mongoose = require('mongoose')
 mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
 .then(function afterConn(db) {
-  console.log('MongoDB connected...')
+  console.log('using', db)
+  console.log('At least one MongoDB connection pool connected to', db.connections[0].host)
 })
 .catch(err => console.log(err))
 

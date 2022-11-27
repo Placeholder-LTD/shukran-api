@@ -10,6 +10,9 @@ const User = require('../models/User')
 const sendemail = require('../helpers/sendemail')
 const fx = require('../helpers/fx').fx
 
+const Flutterwave = require('flutterwave-node-v3');
+const flw = new Flutterwave(process.env.FLUTTERWAVE_PUB_KEY, process.env.FLUTTERWAVE_SEC_KEY);
+
 // Capitalize function
 String.prototype.capitalize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
@@ -206,8 +209,63 @@ exports.createTransaction = (req, reply) => {
       throw boom.boomify(err)
     }
 }
+
+
+/**
+ * FLOW OF LOGIC
+ * call flutterwave api and pay the person,
+ * on success, record the transaction. send email that we've paid the creator, they can confirm on our dashboard
+ * record the successful transaction.
+ * 
+ * on front end, so some refresh?? on success.
+ * 
+ * on failure ... tell them to try again ... or we'll send the money in a few hours/days ... then send email to admins to do payout
+ * 
+ * 
+ * Deats:
+ * 
+ */
 exports.requestPayout = async (req, reply) => {
     try {
+
+        // for now we'll be using bank to determine currency
+        // bank: "MPESA"
+        // account_number
+        // currency
+
+        /**
+         * what we just got on requestPayout {
+  username: 'chuks',
+  amount: '10',
+  status: 'requested',
+  email: 'nwachukwuossai@gmail.com',
+  bank: 'MPESA',
+  currency: 'NGN',
+  account_number: '0115335593'
+}
+         */
+
+        console.log('what we just got on requestPayout', req.body);
+
+
+        return true
+
+        const details = {
+            account_bank: "044",
+            account_number: "0690000040",
+            amount: 200,
+            narration: "Your Shukran payout",
+            currency: "NGN",
+            reference: generateTransactionReference(),
+            callback_url: "https://webhook.site/b3e505b0-fe02-430e-a538-22bbbce8ce0d",
+            debit_currency: "NGN"
+        };
+        flw.Transfer.initiate(details)
+            .then(console.log)
+            .catch(console.log);
+
+
+
         const transaction = new Trans(req.body)
                     let email = req.body.email
                     const smtpTransport = nodemailer.createTransport({
