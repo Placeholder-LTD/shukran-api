@@ -162,9 +162,9 @@ exports.testCookies = (req, reply) => {
     }
 
     let newCk = {
-        supporter_email: 'nwachukwuossai@gmail.com',
+        supporter_email: process.env.CH_EMAIL,
         "shukran-subs": [{
-            creator_id: '5fd84b75d3cb6e0bd63a1335',
+            creator_id: process.env.CH_DB_ID, // shd not be using CH_DB_ID
             amount: 'amount',
             currency: 'NGN'
         }]
@@ -294,12 +294,12 @@ exports.signup = async (req, reply) => {
         if ((await check).length === 0) {
             // set up email
             const smtpTransport = nodemailer.createTransport({
-                host: 'smtp.zoho.com',
+                host: process.env.SHUKRAN_EMAIL_SMTP_HOST,
                 port: 465,
                 secure: true,
                 auth: {
-                    user: 'contact@useshukran.com',
-                    pass: 'Password2020'
+                    user: process.env.SHUKRAN_CONTACT_EMAIL,
+                    pass: process.env.SHUKRAN_CONTACT_EMAIL_PASSWORD
                 }
             });
             // email content

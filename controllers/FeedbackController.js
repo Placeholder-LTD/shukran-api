@@ -37,16 +37,16 @@ exports.sendMessage = async (req, reply) => {
     try {
         return new Promise((resolve, reject) => {
             const smtpTransport = nodemailer.createTransport({
-                host: 'smtp.zoho.com',
+                host: process.env.SHUKRAN_EMAIL_SMTP_HOST,
                 port: 465,
                 secure: true,
                 auth: {
-                    user: 'contact@useshukran.com',
-                    pass: 'Password2020'
+                    user: process.env.SHUKRAN_CONTACT_EMAIL,
+                    pass: process.env.SHUKRAN_CONTACT_EMAIL_PASSWORD
                 }
             });
             const mailOptions = {
-                from: `${req.body.username} via Shukran <contact@useshukran.com>`,
+                from: `${req.body.username} via Shukran <${process.env.SHUKRAN_CONTACT_EMAIL}>`,
                 to: req.body.subscribers,
                 subject: req.body.message_subject,
                 generateTextFromHTML: true,
