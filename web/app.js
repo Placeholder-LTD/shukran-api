@@ -42,7 +42,7 @@ fastify.register(require('fastify-multipart'))
 const hoss = require('hoss');
   
 // At the beginning of your code, run the following for instrumentation
-hoss(HOSS_API_KEY);
+hoss(process.env.HOSS_API_KEY);
 let fs = require('fs');
 const mongoose = require('mongoose')
 mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
