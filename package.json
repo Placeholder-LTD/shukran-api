@@ -7,7 +7,7 @@
     "node": "14.x"
   },
   "scripts": {
-    "start": "nodemon index.js --trace-warnings"
+    "start": "nodemon --trace-warnings --unhandled-rejections=warn ./index.js"
   },
   "keywords": [
     "creators",

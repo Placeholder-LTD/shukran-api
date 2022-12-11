@@ -42,12 +42,12 @@ fastify.register(require('fastify-multipart'))
 const hoss = require('hoss');
   
 // At the beginning of your code, run the following for instrumentation
-hoss("development-5hDQ8UQHeP29JrBTtZT16T2ef45sQwuL7UFR1FnpfoPt");
+hoss(HOSS_API_KEY);
 let fs = require('fs');
 const mongoose = require('mongoose')
 mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
 .then(function afterConn(db) {
-  console.log('using', db)
+  // console.log('using', db)
   console.log('At least one MongoDB connection pool connected to', db.connections[0].host)
 })
 .catch(err => console.log(err))
