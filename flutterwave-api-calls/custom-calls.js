@@ -9,19 +9,19 @@ async function getCreatorShuclans(creator_id) {
     Promise.all([
         getAllPaymentPlans.getAllPaymentPlans,
         getAllSubscribers.getAllSubscribers
-        ])
+    ])
         .then(([plans, shuclans]) => {
             // console.log('got shuclans', shuclans.length);
             // console.log('got plans', plans.length);
             let creatorPlans = plans.filter(plan => plan.name.includes(creator_id))
             console.log('No. of creatorPlans', creatorPlans.length)
-            
+
             let creatorShuclans = shuclans.filter(shuklan => creatorPlans.some(plan => plan.id === shuklan.id))
             console.log('No. of creatorShuclans', creatorShuclans.length)
 
-    }).catch((error) => {
-        console.error(error)
-    });
+        }).catch((error) => {
+            console.error(error)
+        });
 
     /**
      * let plans = await getAllPaymentPlans.getAllPaymentPlans;

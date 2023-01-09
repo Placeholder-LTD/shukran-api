@@ -26,6 +26,10 @@ const userSchema = new mongoose.Schema({
     redirect: { type: String },
     audience_size: { type: String },
     primary_link: { type: String },
+    googleToken: { 
+        type: String,
+        default: null
+    },
     picture_id: {
         type: String,
         default: '1aMDqEuCDesg0cTpHJj0IHehEDUEk3l_F', // '1l6Yn2_89KDaDZhH67Ge4Z6T8x7C0Q91J' // red shapes pattern

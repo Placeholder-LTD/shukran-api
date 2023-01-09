@@ -4,7 +4,7 @@
   "description": "The backend for creators to earn.",
   "main": "index.js",
   "engines": {
-    "node": "14.x"
+    "node": ">=14.x"
   },
   "scripts": {
     "start": "nodemon --trace-warnings --unhandled-rejections=warn ./index.js"
@@ -21,6 +21,7 @@
     "bcrypt": "^5.0.1",
     "boom": "^7.3.0",
     "cors": "^2.8.5",
+    "date-fns": "^2.29.3",
     "dotenv": "^8.2.0",
     "fastify": "^2.15.3",
     "fastify-cookie": "^5.1.0",
@@ -39,5 +40,12 @@
     "validator": "13.1.17",
     "vue": "^2.6.14",
     "vue-server-renderer": "^2.6.14"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "./flutterwave-api-calls/output.json",
+      "**/docs/**"
+    ],
+    "delay": 2500
   }
 }

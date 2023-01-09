@@ -1,9 +1,19 @@
 const https = require('https');
 let fs = require('fs');
+const formatDistanceToNowStrict = require('date-fns/formatDistanceToNowStrict')
 let endData = [];
 
+const FLV_OUTPUT_PATH = './flutterwave-api-calls/output.json'
+let FLV_JSON = { // this is more like a what we should expect from output.json, like a TS definition, not to be used
+    "payment_plans": [],
+    "last_payment_plan_call": "",
+    "subscribers": [],
+    "last_subscribers_call": ""
+}
+
 // we should be caching the response so we don't make them everytime
-exports.getAllSubscribers = new Promise((resolve, reject) => { // https://stackoverflow.com/a/59274104/9259701
+exports.getAllSubscribers = () => {
+    return new Promise((resolve, reject) => { // https://stackoverflow.com/a/59274104/9259701
         
         //  reading through https://developer.flutterwave.com/reference#get-payment-plans
         //  we'd need to get all the pages before sending to the front end
@@ -12,7 +22,7 @@ exports.getAllSubscribers = new Promise((resolve, reject) => { // https://stacko
         let call = (page_number) => https.request({ // https://nodejs.org/api/http.html#http_http_request_url_options_callback
             hostname: 'api.flutterwave.com', // don't add protocol
             port: 443, // optional
-            path: `/v3/subscriptions`, // ?&status=active
+            path: `/v3/subscriptions?page=${page_number}`, // ?&status=active
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -30,13 +40,13 @@ exports.getAllSubscribers = new Promise((resolve, reject) => { // https://stacko
             resp.on('end', () => {
                 try { // cache response.
                     let response = JSON.parse(getData)
-                    // console.log('\ndone with \n', resp.url,'\n', response)
+                    console.log('\ndone with \n\n') // response
                     // {meta: { page_info: { total: 11, current_page: 1, total_pages: 2 }
                     if (response.status === "success" && response.meta.page_info.current_page < response.meta.page_info.total_pages) {
-                        // console.log('subscribers\n', response)
+                        // console.log('subscribers\n\n\n\n', response)
                         endData = endData.concat(response.data)
                         page_number++
-                        // console.info('\nwe\'re going again', page_number)
+                        console.info('\nwe\'re going again', page_number)
                         // this.getAllSubscribers();
                         call(page_number); // call again!
                         
@@ -46,7 +56,34 @@ exports.getAllSubscribers = new Promise((resolve, reject) => { // https://stacko
                         endData = endData.concat(response.data)
                         // let's test
                         // endData = endData.filter(sub => sub.name.includes(req.query.id))
-                        // console.log('\nwe\'re done\n', endData)
+                        console.log('\nwe\'re done\nsubscribers')
+
+                        // save for next time
+                        // seems we can't replace only part of the text (for now), so we need the whole thing first, update, and replace whole file (this is easier)
+                        fs.readFile(FLV_OUTPUT_PATH, 'utf8', (err, jsonData1) => { // should we read the buffer when the server is started and just keep it in a variable then send it whenever we're here, instead of reading from fs with every request
+                            if (err) {
+                                console.error('Err 1', err); // what do we do here? proceed to fetch from the api
+                            } else {
+                                // check if we got data from the api call
+                                if (endData.length > 0) {
+                                    let jsonData2 = JSON.parse(jsonData1)
+                                    
+                                    jsonData2.subscribers = endData
+                                    jsonData2.last_subscribers_call = new Date()
+    
+                                    fs.writeFile(FLV_OUTPUT_PATH, JSON.stringify(jsonData2, null, 4), (err) => {
+                                        if (err) {
+                                            console.error('other error', err)
+                                        } else {
+                                            console.log('Saved get app payments api call.');
+                                        }
+                                    });
+                                }
+
+                   
+                            }
+                        
+                        })
                         
                         resolve(endData);
                     } else {
@@ -64,10 +101,37 @@ exports.getAllSubscribers = new Promise((resolve, reject) => { // https://stacko
             // return err
             reject(err.message);
         }).end();
-        call(1);
+
+        fs.readFile(FLV_OUTPUT_PATH, 'utf8', (err, jsonData) => { // should we read the buffer when the server is started and just keep it in a variable then send it whenever we're here, instead of reading from fs with every request
+            if (err) {
+                console.error('Err 1', err); // what do we do here? proceed to fetch from the api
+                call(1)
+            } else {
+
+                try {
+                    jsonData = JSON.parse(jsonData)
+                    const hourDifference = formatDistanceToNowStrict(new Date(jsonData.last_subscribers_call), {
+                        unit: 'hour',
+                    })
+                    let _diff = parseInt(hourDifference.replace( /\D/g, ''))
+    
+                    if (Number.isNaN(_diff) || _diff > 24) { // https://stackoverflow.com/a/51405252/9259701
+                        call(1); // first call, get first page_number
+                    } else {
+                        
+                        resolve(jsonData.subscribers);
+                    }
+                } catch (error) {
+                    console.error('oh wow subscribers', error)
+                    call(1)
+                }
+           
+            }
+
+        })
+        
+        
     }).catch((err) => {
         console.error('err calling get all subscribers plans', err)
     })
-
-
-// getAllSubscribers();
+}

@@ -94,7 +94,7 @@ exports.createSubscription = async (req, reply) => { // https://attacomsian.com/
  * 
  */
 exports.getAllSubscriptions = (req, reply) => {
-    getAllPaymentPlans.getAllPaymentPlans.then((plans) => {
+    getAllPaymentPlans.getAllPaymentPlans().then((plans) => {
         reply.send(plans) // return creatorShuklans
     }, (err) => {
         reply.code(500)
@@ -163,11 +163,11 @@ exports.getCreatorSubscrptions = (req, reply) => {
 exports.getSubscribers = (req, reply) => {
     // https://stackoverflow.com/a/13437802/9259701
     // need to make better writing
-    getAllPaymentPlans.getAllPaymentPlans.then((plans) => {
+    getAllPaymentPlans.getAllPaymentPlans().then((plans) => {
         let creatorPlans = plans?.filter(plan => plan.name.includes(req.query.id))
-        getAllSubscribers.getAllSubscribers.then((shuklans) => {
-            let creatorShuklans = shuklans.filter(shuklan => creatorPlans?.some(plan => plan.id === shuklan.plan))
-            reply.send(creatorShuklans) // return creatorShuklans
+        getAllSubscribers.getAllSubscribers().then((shuklans) => {
+            let creatorShuklans = shuklans?.filter(shuklan => creatorPlans?.some(plan => plan.id === shuklan.plan))
+            reply.send(creatorShuklans)
         }, (err) => {
             reply
             // .code(500) // necessary ?

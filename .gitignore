@@ -7,3 +7,4 @@ local-tests/
 
 *.env
 # write CI test for our heroku builds when we push to deploy, also what about using a staging db, that'll be a replica or real db
+/flutterwave-api-calls/output.json
