@@ -14,7 +14,7 @@ let FLV_JSON = { // this is more like a what we should expect from output.json, 
 // we should be caching the response so we don't make them everytime
 exports.getAllSubscribers = () => {
     return new Promise((resolve, reject) => { // https://stackoverflow.com/a/59274104/9259701
-        
+
         //  reading through https://developer.flutterwave.com/reference#get-payment-plans
         //  we'd need to get all the pages before sending to the front end
         //  so we'll have to make the calls recurringly until current_page === total_pages
@@ -30,7 +30,7 @@ exports.getAllSubscribers = () => {
             }
         }, (resp) => {
             let getData = ''; // very important to initialize
-            
+
             // A chunk of data has been recieved.
             resp.on('data', (chunk) => {
                 getData += chunk;
@@ -49,7 +49,7 @@ exports.getAllSubscribers = () => {
                         console.info('\nwe\'re going again', page_number)
                         // this.getAllSubscribers();
                         call(page_number); // call again!
-                        
+
                     } else if (response.status === "success" && response.meta.page_info.current_page === response.meta.page_info.total_pages) {
 
                         // add last bit
@@ -58,33 +58,41 @@ exports.getAllSubscribers = () => {
                         // endData = endData.filter(sub => sub.name.includes(req.query.id))
                         console.log('\nwe\'re done\nsubscribers')
 
-                        // save for next time
+                        // save for next time, do we wanna reject if an error is thrown?
                         // seems we can't replace only part of the text (for now), so we need the whole thing first, update, and replace whole file (this is easier)
                         fs.readFile(FLV_OUTPUT_PATH, 'utf8', (err, jsonData1) => { // should we read the buffer when the server is started and just keep it in a variable then send it whenever we're here, instead of reading from fs with every request
                             if (err) {
-                                console.error('Err 1', err); // what do we do here? proceed to fetch from the api
-                            } else {
-                                // check if we got data from the api call
-                                if (endData.length > 0) {
-                                    let jsonData2 = JSON.parse(jsonData1)
-                                    
-                                    jsonData2.subscribers = endData
-                                    jsonData2.last_subscribers_call = new Date()
-    
-                                    fs.writeFile(FLV_OUTPUT_PATH, JSON.stringify(jsonData2, null, 4), (err) => {
-                                        if (err) {
-                                            console.error('other error', err)
-                                        } else {
-                                            console.log('Saved get app payments api call.');
-                                        }
-                                    });
-                                }
+                                console.error('Err reading file', FLV_OUTPUT_PATH, err); // since it doesn't exist, create the file
+                                // TODO: maybe create file if it doesn't exist.
+                                fs.writeFile(FLV_OUTPUT_PATH, JSON.stringify(FLV_JSON, null, 4), (err) => {
+                                    if (err) {
+                                        console.error('error creating', FLV_OUTPUT_PATH, err)
+                                    } else {
+                                        console.log('Created', FLV_OUTPUT_PATH);
+                                    }
+                                });
 
-                   
                             }
-                        
+
+                            // we need this to execute after the previous if statement, how do we wait?
+                            // check if we got data from the api call
+                            if (endData.length > 0) {
+                                let jsonData2 = JSON.parse(jsonData1)
+
+                                jsonData2.subscribers = endData
+                                jsonData2.last_subscribers_call = new Date()
+
+                                fs.writeFile(FLV_OUTPUT_PATH, JSON.stringify(jsonData2, null, 4), (err) => {
+                                    if (err) {
+                                        console.error('other error', err)
+                                    } else {
+                                        console.log('Saved get app payments api call.');
+                                    }
+                                });
+
+                            }
                         })
-                        
+
                         resolve(endData);
                     } else {
                         console.error('Failed to get all subscribers')
@@ -113,24 +121,24 @@ exports.getAllSubscribers = () => {
                     const hourDifference = formatDistanceToNowStrict(new Date(jsonData.last_subscribers_call), {
                         unit: 'hour',
                     })
-                    let _diff = parseInt(hourDifference.replace( /\D/g, ''))
-    
+                    let _diff = parseInt(hourDifference.replace(/\D/g, ''))
+
                     if (Number.isNaN(_diff) || _diff > 24) { // https://stackoverflow.com/a/51405252/9259701
                         call(1); // first call, get first page_number
                     } else {
-                        
+
                         resolve(jsonData.subscribers);
                     }
                 } catch (error) {
                     console.error('oh wow subscribers', error)
                     call(1)
                 }
-           
+
             }
 
         })
-        
-        
+
+
     }).catch((err) => {
         console.error('err calling get all subscribers plans', err)
     })
