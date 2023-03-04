@@ -4,11 +4,28 @@ const formatDistanceToNowStrict = require('date-fns/formatDistanceToNowStrict')
 let endData = [];
 
 const FLV_OUTPUT_PATH = './flutterwave-api-calls/output.json'
-let FLV_JSON = { // this is more like a what we should expect from output.json, like a TS definition, not to be used
+const FLV_JSON = { // this is more like a what we should expect from output.json, like a TS definition, not to be used
     "payment_plans": [],
     "last_payment_plan_call": "",
     "subscribers": [],
     "last_subscribers_call": ""
+}
+
+const saveFlvSubscribersToOurCache = (fileContent, newSubscribersDataToAdd) => {
+    if (newSubscribersDataToAdd.length > 0) {
+        let _fileContent = JSON.parse(fileContent)
+
+        _fileContent.subscribers = endData
+        _fileContent.last_subscribers_call = new Date()
+
+        fs.writeFile(FLV_OUTPUT_PATH, JSON.stringify(_fileContent, null, 4), (err) => {
+            if (err) {
+                console.error('other error', err)
+            } else {
+                console.log('Saved get app payments api call.');
+            }
+        });
+    }
 }
 
 // we should be caching the response so we don't make them everytime
@@ -40,13 +57,13 @@ exports.getAllSubscribers = () => {
             resp.on('end', () => {
                 try { // cache response.
                     let response = JSON.parse(getData)
-                    console.log('\ndone with \n\n') // response
+                    console.log('\ndone\n\n') // response
                     // {meta: { page_info: { total: 11, current_page: 1, total_pages: 2 }
                     if (response.status === "success" && response.meta.page_info.current_page < response.meta.page_info.total_pages) {
                         // console.log('subscribers\n\n\n\n', response)
                         endData = endData.concat(response.data)
                         page_number++
-                        console.info('\nwe\'re going again', page_number)
+                        console.info('\nwe\'re going again for subscribers', page_number)
                         // this.getAllSubscribers();
                         call(page_number); // call again!
 
@@ -56,40 +73,26 @@ exports.getAllSubscribers = () => {
                         endData = endData.concat(response.data)
                         // let's test
                         // endData = endData.filter(sub => sub.name.includes(req.query.id))
-                        console.log('\nwe\'re done\nsubscribers')
+                        console.log('\n\nwe\'re done with subscribers')
 
                         // save for next time, do we wanna reject if an error is thrown?
                         // seems we can't replace only part of the text (for now), so we need the whole thing first, update, and replace whole file (this is easier)
                         fs.readFile(FLV_OUTPUT_PATH, 'utf8', (err, jsonData1) => { // should we read the buffer when the server is started and just keep it in a variable then send it whenever we're here, instead of reading from fs with every request
                             if (err) {
                                 console.error('Err reading file', FLV_OUTPUT_PATH, err); // since it doesn't exist, create the file
-                                // TODO: maybe create file if it doesn't exist.
+                                // create file if it doesn't exist.
                                 fs.writeFile(FLV_OUTPUT_PATH, JSON.stringify(FLV_JSON, null, 4), (err) => {
                                     if (err) {
                                         console.error('error creating', FLV_OUTPUT_PATH, err)
                                     } else {
                                         console.log('Created', FLV_OUTPUT_PATH);
+                                        saveFlvSubscribersToOurCache(jsonData1, endData)
                                     }
                                 });
-
-                            }
-
-                            // we need this to execute after the previous if statement, how do we wait?
-                            // check if we got data from the api call
-                            if (endData.length > 0) {
-                                let jsonData2 = JSON.parse(jsonData1)
-
-                                jsonData2.subscribers = endData
-                                jsonData2.last_subscribers_call = new Date()
-
-                                fs.writeFile(FLV_OUTPUT_PATH, JSON.stringify(jsonData2, null, 4), (err) => {
-                                    if (err) {
-                                        console.error('other error', err)
-                                    } else {
-                                        console.log('Saved get app payments api call.');
-                                    }
-                                });
-
+                            } else {
+                                // we need this to execute after the previous if statement, how do we wait?
+                                // check if we got data from the api call
+                                saveFlvSubscribersToOurCache(jsonData1, endData)
                             }
                         })
 
@@ -126,7 +129,6 @@ exports.getAllSubscribers = () => {
                     if (Number.isNaN(_diff) || _diff > 24) { // https://stackoverflow.com/a/51405252/9259701
                         call(1); // first call, get first page_number
                     } else {
-
                         resolve(jsonData.subscribers);
                     }
                 } catch (error) {
@@ -137,7 +139,6 @@ exports.getAllSubscribers = () => {
             }
 
         })
-
 
     }).catch((err) => {
         console.error('err calling get all subscribers plans', err)
